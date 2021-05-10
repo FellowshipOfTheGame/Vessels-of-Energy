@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bf7c34a0dc4e6348bea04faa70406ee, type: 3}
+  m_Name: Library_Fighter
+  m_EditorClassIdentifier: 
+  m_Labels:
+  - m_Name: HandR
+    m_Hash: -343536478
+    m_CategoryList:
+    - m_Name: fist
+      m_Hash: 729094268
+      m_Sprite: {fileID: -1813179733500117740, guid: c16e00611fe15a34fa2d48728cdec06d,
+        type: 3}
+    - m_Name: bridge
+      m_Hash: 1769475999
+      m_Sprite: {fileID: 5001428482957641850, guid: c16e00611fe15a34fa2d48728cdec06d,
+        type: 3}
+    - m_Name: prepare
+      m_Hash: 1690817674
+      m_Sprite: {fileID: 175818005060837468, guid: c16e00611fe15a34fa2d48728cdec06d,
+        type: 3}
+  - m_Name: HandL
+    m_Hash: 294203841
+    m_CategoryList:
+    - m_Name: fist
+      m_Hash: 729094268
+      m_Sprite: {fileID: -4415274656501896097, guid: c16e00611fe15a34fa2d48728cdec06d,
+        type: 3}
+    - m_Name: bridge
+      m_Hash: 1769475999
+      m_Sprite: {fileID: 3459763645579412457, guid: c16e00611fe15a34fa2d48728cdec06d,
+        type: 3}
+    - m_Name: prepare
+      m_Hash: 1690817674
+      m_Sprite: {fileID: 7374783899593479044, guid: c16e00611fe15a34fa2d48728cdec06d,
+        type: 3}
