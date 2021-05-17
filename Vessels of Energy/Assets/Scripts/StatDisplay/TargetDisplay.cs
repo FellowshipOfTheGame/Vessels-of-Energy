@@ -32,9 +32,9 @@ public class TargetDisplay : MonoBehaviour
             evasionValue.text = c.evasion.ToString();*/
             defenseValue.text = c.defense.ToString();
 
-            //TODO: Get these information from Character and Character's Weapon
+            //TODO: Get information from Character
             proficiencyDice.text = "1d8";
-            damageDice.text = "1d12";
+            damageDice.text = "1d" + c.weapon.baseDamageDice.ToString();
         }
         else{
             healthSlider.maxValue = 1;

@@ -11,6 +11,7 @@ public class Character : Token {
 
     [Space(5)]
 
+    public Weapon weapon;
     public int dexterity;
     public int strength;
     public int vitality;
