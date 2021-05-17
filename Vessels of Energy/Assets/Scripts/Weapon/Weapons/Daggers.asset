@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51b2fb101430f354aab18ff1ab54beca, type: 3}
   m_Name: Daggers
   m_EditorClassIdentifier: 
-  name: 
-  minRange: 0
-  maxRange: 0
-  baseDamageDice: 0
-  damagetype: 0
+  name: Daggers
+  minRange: 1
+  maxRange: 3
+  baseDamageDice: 8
+  damagetype: 112

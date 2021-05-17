@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.5724869, g: 0.40686622, b: 0.3006152, a: 1}
+  m_IndirectSpecularColor: {r: 0.5733354, g: 0.40715423, b: 0.3007074, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1463,6 +1463,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1787647075506354253, guid: 05dea36a192f0fb4a94455df46d58bd5,
+        type: 3}
+      propertyPath: weapon
+      value: 
+      objectReference: {fileID: 11400000, guid: 83941496e69681c418bdfb8da4f2f69a,
+        type: 2}
     - target: {fileID: 6351760540714064167, guid: 05dea36a192f0fb4a94455df46d58bd5,
         type: 3}
       propertyPath: m_LocalRotation.y
@@ -4131,6 +4137,12 @@ PrefabInstance:
       propertyPath: team
       value: 66
       objectReference: {fileID: 0}
+    - target: {fileID: 1787647075506354253, guid: 05dea36a192f0fb4a94455df46d58bd5,
+        type: 3}
+      propertyPath: weapon
+      value: 
+      objectReference: {fileID: 11400000, guid: 83941496e69681c418bdfb8da4f2f69a,
+        type: 2}
     - target: {fileID: 1827268351191705748, guid: 05dea36a192f0fb4a94455df46d58bd5,
         type: 3}
       propertyPath: m_Color.r
@@ -6432,6 +6444,12 @@ PrefabInstance:
       propertyPath: team
       value: 66
       objectReference: {fileID: 0}
+    - target: {fileID: 1787647075506354253, guid: 05dea36a192f0fb4a94455df46d58bd5,
+        type: 3}
+      propertyPath: weapon
+      value: 
+      objectReference: {fileID: 11400000, guid: 83941496e69681c418bdfb8da4f2f69a,
+        type: 2}
     - target: {fileID: 1827268351191705748, guid: 05dea36a192f0fb4a94455df46d58bd5,
         type: 3}
       propertyPath: m_Color.r
@@ -7883,6 +7901,12 @@ PrefabInstance:
       propertyPath: team
       value: 66
       objectReference: {fileID: 0}
+    - target: {fileID: 1787647075506354253, guid: 05dea36a192f0fb4a94455df46d58bd5,
+        type: 3}
+      propertyPath: weapon
+      value: 
+      objectReference: {fileID: 11400000, guid: 83941496e69681c418bdfb8da4f2f69a,
+        type: 2}
     - target: {fileID: 1827268351191705748, guid: 05dea36a192f0fb4a94455df46d58bd5,
         type: 3}
       propertyPath: m_Color.r
@@ -11329,6 +11353,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1787647075506354253, guid: 05dea36a192f0fb4a94455df46d58bd5,
+        type: 3}
+      propertyPath: weapon
+      value: 
+      objectReference: {fileID: 11400000, guid: 83941496e69681c418bdfb8da4f2f69a,
+        type: 2}
     - target: {fileID: 6351760540714064167, guid: 05dea36a192f0fb4a94455df46d58bd5,
         type: 3}
       propertyPath: m_LocalRotation.y
@@ -17451,6 +17481,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1787647075506354253, guid: 05dea36a192f0fb4a94455df46d58bd5,
+        type: 3}
+      propertyPath: weapon
+      value: 
+      objectReference: {fileID: 11400000, guid: 83941496e69681c418bdfb8da4f2f69a,
+        type: 2}
     - target: {fileID: 6351760540595462178, guid: 05dea36a192f0fb4a94455df46d58bd5,
         type: 3}
       propertyPath: m_LocalRotation.z

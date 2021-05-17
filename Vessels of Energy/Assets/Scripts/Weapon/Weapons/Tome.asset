@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51b2fb101430f354aab18ff1ab54beca, type: 3}
   m_Name: Tome
   m_EditorClassIdentifier: 
-  name: 
-  minRange: 0
-  maxRange: 0
-  baseDamageDice: 0
-  damagetype: 0
+  name: Tome
+  minRange: 3
+  maxRange: 4
+  baseDamageDice: 10
+  damagetype: 109

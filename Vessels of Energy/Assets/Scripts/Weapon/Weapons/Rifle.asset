@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51b2fb101430f354aab18ff1ab54beca, type: 3}
   m_Name: Rifle
   m_EditorClassIdentifier: 
-  name: 
-  minRange: 0
-  maxRange: 0
-  baseDamageDice: 0
-  damagetype: 0
+  name: Rifle
+  minRange: 2
+  maxRange: 5
+  baseDamageDice: 8
+  damagetype: 109
