@@ -528,7 +528,7 @@ AnimationClip:
     messageOptions: 0
   - time: 2.25
     functionName: Play
-    data: gears_2
+    data: airship_arrival
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
