@@ -26,7 +26,10 @@ public class Token : MonoBehaviour {
     public virtual void updateReach() { }
 
     public void Unselect() {
-        if (selected == this) selected = null;
+        if (selected == this) {
+            selected = null;
+            if (HUDManager.instance != null) HUDManager.instance.Hide(this);
+        }
         this.OnCancelSelect();
     }
     public virtual void OnCancelSelect() { }
