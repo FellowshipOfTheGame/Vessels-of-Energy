@@ -78,11 +78,11 @@ public class HexGrid : RaycastTarget {
     }
 
     public override void OnPointerEnter() {
-        if (HUDManager.instance != null) HUDManager.instance.Show(token);
+        if (token != null && HUDManager.instance != null) HUDManager.instance.Show(token);
         state.OnPointerEnter(this); 
     }
     public override void OnPointerExit() {
-        if (HUDManager.instance != null) HUDManager.instance.Hide(token);
+        if (token != null && HUDManager.instance != null) HUDManager.instance.Hide(token);
         state.OnPointerExit(this); 
     }
     public override void OnClick(int mouseButton){ state.OnClick(this, mouseButton); }

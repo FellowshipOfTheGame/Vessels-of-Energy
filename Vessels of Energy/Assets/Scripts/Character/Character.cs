@@ -90,6 +90,7 @@ public class Character : Token {
         }
 
         locked = false;
+        target = null;
     }
 
     public override void OnMove(GridManager.Grid path, HexGrid destiny) {

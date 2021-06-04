@@ -6,14 +6,18 @@ public class GameManager : MonoBehaviour {
 
     public static GameManager instance;
     public QTE qte;
+    public SceneLoader sceneLoader;
 
     public List<Character> unitsList;
-    public List<Character> teamAList;
-    public List<Character> teamBList;
+    [HideInInspector] public List<Character> teamAList;
+    [HideInInspector] public List<Character> teamBList;
 
     public static char currentTeam;
-    public bool endTurn;
-    public bool newTurn;
+    [HideInInspector] public bool endTurn;
+    [HideInInspector] public bool newTurn;
+
+    public GameObject victoryCam;
+    public List<HexGrid> victorySpot;
 
     private void Awake () {
         if ( instance != null && instance != this )
@@ -42,6 +46,8 @@ public class GameManager : MonoBehaviour {
 
         currentTeam = 'A';
         newTurn = true;
+        Gyroscope.cam = Camera.main.transform;
+        victoryCam.SetActive(false);
     }
 
     void Update()
@@ -50,6 +56,7 @@ public class GameManager : MonoBehaviour {
         if (newTurn) {
             resetStamina();
             newTurn = false;
+            HUDManager.instance.Clear();
             foreach (Character unit in unitsList) unit.place.OnTurnStart();
         }
 
@@ -110,7 +117,7 @@ public class GameManager : MonoBehaviour {
         }
         if (endGame) {
             Debug.Log("B is the Winner");
-            foreach ( Character c in teamBList ) c.animator.Dance();
+            StartCoroutine(VictoryScreen(teamBList));
             return;
         }
 
@@ -124,11 +131,28 @@ public class GameManager : MonoBehaviour {
         }
         if ( endGame ) {
             Debug.Log("A is the Winner");
-            foreach ( Character c in teamAList ) c.animator.Dance();
+            StartCoroutine(VictoryScreen(teamAList));
             return;
         }
 
         Debug.Log("There is no winner yet...");
     }
 
+    IEnumerator VictoryScreen(List<Character> winners) {
+        sceneLoader.BlinkScreen();
+        yield return new WaitForSeconds(1f);
+
+        Gyroscope.cam = victoryCam.transform;
+        victoryCam.SetActive(true);
+        int index = 0;
+
+        foreach (Character c in winners) {
+            if (c.HP > 0) {
+                c.Move(victorySpot[index]);
+                c.animator.Dance();
+                index++;
+            }
+        }
+
+    }
 }

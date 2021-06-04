@@ -10,7 +10,10 @@ public class Token : MonoBehaviour {
 
     public void Select() {
         if (!locked){
-            if (selected != null) selected.Unselect();
+            if (selected != null) {
+                selected.Unselect();
+                if (HUDManager.instance != null) HUDManager.instance.Show(this);
+            }
             selected = this;
             this.OnSelect();
         }
@@ -49,6 +52,12 @@ public class Token : MonoBehaviour {
         destiny.token = this;
         destiny.changeState("token");
         Raycast.block = false;
+    }
+
+    public void Move(HexGrid destiny) {
+        GridManager.Grid path = new GridManager.Grid(place);
+        path.grid.Add( new GridManager.GridPoint(destiny, 1) );
+        Move(path);
     }
 
     public virtual void OnMove(GridManager.Grid path, HexGrid destiny) {

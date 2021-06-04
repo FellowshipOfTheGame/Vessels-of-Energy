@@ -25,7 +25,6 @@ public class HUDManager : MonoBehaviour {
     }
 
     public void Show(Token token) {
-        if (token == null) return;
         Character c = (Character)token;
 
         if (Token.selected == null) {
@@ -43,7 +42,6 @@ public class HUDManager : MonoBehaviour {
     }
 
     public void Hide(Token token) {
-        if (token == null) return;
         Character c = (Character)token;
 
         if (Token.selected == null) {
@@ -57,5 +55,10 @@ public class HUDManager : MonoBehaviour {
                 targetDisplay.Hide();
             }
         }
+    }
+
+    public void Clear() {
+        selectedDisplay.Hide();
+        targetDisplay.Hide();
     }
 }

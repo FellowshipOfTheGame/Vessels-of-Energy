@@ -14,15 +14,14 @@ public class Gyroscope : MonoBehaviour {
     }
 
     List<Object2D> objects;
-    Transform cam;
     int margin = 40;
     public int order = 0;
     public List<Renderer> renderers;
 
+    public static Transform cam;
 
     // Start is called before the first frame update
     void Start() {
-        cam = Camera.main.transform;
         objects = new List<Object2D>();
 
         renderers = new List<Renderer>();
