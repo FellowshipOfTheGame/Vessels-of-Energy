@@ -24,6 +24,7 @@ public class TokenGridState : HexGridState {
             changeColor(hexagon, 1);
         else
             changeColor(hexagon, 3);
+        
         hexagon.token.OnHighlight();
     }
 
@@ -32,6 +33,7 @@ public class TokenGridState : HexGridState {
             changeColor(hexagon, 0);
         else
             changeColor(hexagon, 2);
+
         hexagon.token.OnCancelHighlight();
     }
 

@@ -50,4 +50,8 @@ public class SceneLoader : MonoBehaviour
         Application.Quit();
         Debug.Log("Game would have quit.");
     }
+
+    public void BlinkScreen() {
+        sceneAnim.SetTrigger("blink");
+    }
 }

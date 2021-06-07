@@ -51,7 +51,6 @@ public class Attack : MonoBehaviour {
                 if (target.HP <= 0) {
                     target.animator.Die();
                     target.HP = 0;
-                    GameManager.instance.checkWinner();
 
                     if (self.checkRange(0, self.stamina))
                         target.place.changeState("reach");
@@ -88,11 +87,13 @@ public class Attack : MonoBehaviour {
             });
         } else {
             Raycast.block = false;
+            target.Unselect();
             if ( CamControl.instance != null ) CamControl.instance.Unfocus();
         }
 
         self.updateReach();
         counterable = true;
+        GameManager.instance.checkWinner();
         self.animator.RetreatAction();
     }
 }
