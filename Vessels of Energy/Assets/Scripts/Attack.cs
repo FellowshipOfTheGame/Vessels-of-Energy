@@ -75,7 +75,7 @@ public class Attack : MonoBehaviour {
         // TODO: Check if attack range allows counter
         if (missed && counterable && target.stamina >= Character.ATTACK_COST ) {
 
-            QTE.instance.startQTE("counter", () => {
+            QTE.instance.startQTE("counter", target, () => {
                 Debug.Log("COUNTER!");
                 target.attack.PrepareAttack(self);
             },

@@ -142,6 +142,7 @@ MonoBehaviour:
   defense: 0
   resistence: 0
   team: 65
+  color: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &6756862905065300081
 MonoBehaviour:
   m_ObjectHideFlags: 0

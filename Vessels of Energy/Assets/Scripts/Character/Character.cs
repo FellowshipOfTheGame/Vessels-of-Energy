@@ -29,6 +29,7 @@ public class Character : Token {
     [Space(5)]
 
     public char team;
+    [HideInInspector] public Color color;
     GridManager.Grid reach = null;
     GridManager.Grid range = null;
 
@@ -39,6 +40,17 @@ public class Character : Token {
 
     //Calculate stats values for Character
     public void calculateStats() {
+        ChangeColor pallete = animator.GetComponent<ChangeColor>();
+        switch (team) {
+            case 'A':
+                color = pallete.colors[0].color[0];
+                break;
+
+            case 'B':
+                color = pallete.colors[1].color[0];
+                break;
+        }
+
         maxHP = 10 + 2 * vitality + willpower;
         HP = maxHP;
         maxStamina = 10 + 2 * dexterity + intelligence;
