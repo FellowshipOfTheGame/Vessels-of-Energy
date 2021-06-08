@@ -16,8 +16,7 @@ public class GameManager : MonoBehaviour {
     [HideInInspector] public bool endTurn;
     [HideInInspector] public bool newTurn;
 
-    public GameObject victoryCam;
-    public List<HexGrid> victorySpot;
+    public VictoryScreen victoryScreen;
 
     private void Awake () {
         if ( instance != null && instance != this )
@@ -47,7 +46,6 @@ public class GameManager : MonoBehaviour {
         currentTeam = 'A';
         newTurn = true;
         Gyroscope.cam = Camera.main.transform;
-        victoryCam.SetActive(false);
     }
 
     void Update()
@@ -117,7 +115,7 @@ public class GameManager : MonoBehaviour {
         }
         if (endGame) {
             Debug.Log("B is the Winner");
-            StartCoroutine(VictoryScreen(teamBList));
+            victoryScreen.DisplayTeam(teamBList);
             return;
         }
 
@@ -131,28 +129,10 @@ public class GameManager : MonoBehaviour {
         }
         if ( endGame ) {
             Debug.Log("A is the Winner");
-            StartCoroutine(VictoryScreen(teamAList));
+            victoryScreen.DisplayTeam(teamAList);
             return;
         }
 
         Debug.Log("There is no winner yet...");
-    }
-
-    IEnumerator VictoryScreen(List<Character> winners) {
-        sceneLoader.BlinkScreen();
-        yield return new WaitForSeconds(1f);
-
-        Gyroscope.cam = victoryCam.transform;
-        victoryCam.SetActive(true);
-        int index = 0;
-
-        foreach (Character c in winners) {
-            if (c.HP > 0) {
-                c.Move(victorySpot[index]);
-                c.animator.Dance();
-                index++;
-            }
-        }
-
     }
 }

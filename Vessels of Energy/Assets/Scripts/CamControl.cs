@@ -23,12 +23,14 @@ public class CamControl : MonoBehaviour {
     Camera cam;
     Configuration defaultConfig;
     Transform pivot;
+    bool onFocus;
 
 
     public float zoom = 0.2f, delay = 0.5f, tolerance = 0.1f;
     public float height = 0.19f;
     [Space(5)]
-    public float offsetY = 0.03f, offsetZ = 0.4f;
+    public float offsetY = 0.03f;
+    public float offsetZ = 0.4f;
     float offset;
 
     private void Awake() {
@@ -41,27 +43,37 @@ public class CamControl : MonoBehaviour {
         Debug.Log(defaultConfig.rot.eulerAngles);
         pivot = this.transform.GetChild(0);
         pivot.localPosition = this.transform.forward * offset;
-
+        onFocus = false;
     }
 
     // Update is called once per frame
-    void Update() {
+    public void Shift(Vector3 translation, Vector3 rotation) {
+        if (onFocus) return;
+
+        //calculating cam forward based on destiny and direction
+        Vector3 pos = defaultConfig.pos + translation;
+        Vector3 axis = Quaternion.Euler(rotation) * defaultConfig.axis;
+        defaultConfig = new Configuration(pos, axis, defaultConfig.zoom);
+
+        this.transform.position = pos - offset * axis;
+        this.transform.rotation = defaultConfig.rot;
     }
 
     public void Focus(Vector3 destiny, Vector3 direction) {
+        onFocus = true;
         //calculating cam forward based on destiny and direction
         Vector3 pos = destiny + height * Vector3.up;
         pivot.transform.position = pos + offsetY * Vector3.up - offsetZ * direction;
         pivot.LookAt(pos);
 
-        StartCoroutine(Move(new Configuration(pos, pivot.forward, zoom)));
+        StartCoroutine(Move(new Configuration(pos, pivot.forward, zoom), delay, () => { }));
     }
 
     public void Unfocus() {
-        StartCoroutine(Move(defaultConfig));
+        StartCoroutine(Move(defaultConfig, delay, () => { onFocus = false; }));
     }
 
-    IEnumerator Move(Configuration destiny) {
+    IEnumerator Move(Configuration destiny, float delay, System.Action onStop) {
         Configuration start = new Configuration(this.transform.position + this.transform.forward * offset, this.transform.forward, cam.orthographicSize);
         Configuration end = new Configuration(destiny.pos, destiny.axis, destiny.zoom);
         float timeElapsed = 0;
@@ -86,5 +98,6 @@ public class CamControl : MonoBehaviour {
         this.transform.position = end.pos - offset * end.axis;
         this.transform.rotation = end.rot;
         cam.orthographicSize = end.zoom;
+        onStop.Invoke();
     }
 }

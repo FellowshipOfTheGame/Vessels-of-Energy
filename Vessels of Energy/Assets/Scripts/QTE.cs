@@ -8,6 +8,8 @@ public class QTE : MonoBehaviour
     public static QTE instance;
     public float countDownTime = 1f;
     KeyCode key;
+    [Space(5)]
+    public QTEIcon ui;
 
     private void Awake () {
         if ( instance != null && instance != this ) Destroy(this.gameObject);
@@ -19,13 +21,15 @@ public class QTE : MonoBehaviour
     }
 
     //Initiates a QTE
-    public void startQTE( string type, Action onPress, Action onMiss ) {
+    public void startQTE( string type, Character actor, Action onPress, Action onMiss ) {
         //Set type of QTE
         if(type == "counter"){
             key = KeyCode.C;
+            ui.ShowKey('C', "COUNTER!", countDownTime, actor);
         }
         else if (type == "evasion"){
             key = KeyCode.E;
+            ui.ShowKey('C', "DODGE!", countDownTime, actor);
         }
         else{
             Debug.Log("Invalid type of QTE");
@@ -33,7 +37,7 @@ public class QTE : MonoBehaviour
         }
 
         Debug.Log("QTE activated");
-        Debug.Log(key.ToString());
+        
         StopAllCoroutines();
         StartCoroutine( CountDown(onPress, onMiss) );
     }
@@ -60,6 +64,7 @@ public class QTE : MonoBehaviour
             yield return null;
         }
 
+        ui.Stop(correctKey);
         if ( !correctKey ) onMiss();
     }
 }
