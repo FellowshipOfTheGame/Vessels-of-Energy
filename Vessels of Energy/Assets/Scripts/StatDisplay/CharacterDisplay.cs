@@ -20,7 +20,7 @@ public class CharacterDisplay : MonoBehaviour
     public Text evasionValue;*/
     public Text defenseValue;
     public Text proficiencyDice;
-    public Text damageDice;
+    public Text strengthDice;
 
     private void Start() {
         display.SetActive(false);
@@ -37,11 +37,11 @@ public class CharacterDisplay : MonoBehaviour
             staminaValue.text = character.stamina.ToString();
             /*strengthValue.text = character.strength.ToString();
             evasionValue.text = character.evasion.ToString();*/
-            defenseValue.text = character.defense.ToString();
+            defenseValue.text = character.evasion.ToString() + "/" + character.defense.ToString();
+            strengthDice.text = "d" + (character.strength * 2 + 4).ToString();
 
             //TODO: Get these information from Character and Character's Weapon
-            proficiencyDice.text = "1d8";
-            damageDice.text = "1d12";
+            proficiencyDice.text = "d8/d12";
         }
     }
 

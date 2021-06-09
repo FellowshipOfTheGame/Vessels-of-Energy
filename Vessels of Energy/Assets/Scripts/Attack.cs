@@ -26,8 +26,8 @@ public class Attack : MonoBehaviour {
 
         // precision = 1d8 + 1d(2*stat+4)
         // evasion = evasion //+ 1d(2*dexterity+4)
-        missed = self.rollDices(8, 2 * self.strength + 4) < target.evasion;
-        //missed = true; //the ultimate Counter test
+        missed = DiceRoller.instance.Roll(self, 8, 2 * self.strength + 4) < target.evasion;
+
         //make camera focus on combat
         if (CamControl.instance != null) {
             Vector3 center = (self.transform.position + target.transform.position) / 2;
@@ -39,10 +39,11 @@ public class Attack : MonoBehaviour {
 
     public void ExecuteAttack() {
         self.animator.ExecuteAction();
+        DiceRoller.instance.ShowNumbers("ATAQUE!");
 
         if (!missed) {
             //damage = 1d12 (Weapon) + 1d(2*strength+4)
-            int damage = self.rollDices(12, 2 * self.strength + 4) - target.defense;
+            int damage = DiceRoller.instance.Roll(self, 12, 2 * self.strength + 4) - target.defense;
 
             if (damage > 0) {
                 target.HP -= damage;
@@ -70,7 +71,15 @@ public class Attack : MonoBehaviour {
         }
     }
 
+    public void LandAttack() {
+        if (!missed) {
+            DiceRoller.instance.ShowNumbers("DANO!");
+        }
+    }
+
     public void FinishAttack() {
+        DiceRoller.instance.Clear();
+
         // permitir contra ataque (reação) se o ataque errou
         // TODO: Check if attack range allows counter
         if (missed && counterable && target.stamina >= Character.ATTACK_COST ) {
