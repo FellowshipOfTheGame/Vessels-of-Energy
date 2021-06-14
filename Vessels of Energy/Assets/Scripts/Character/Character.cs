@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class Character : Token {
+public class Character : Token
+{
     public static Character target = null;
     public Puppet animator;
     [HideInInspector] public Attack attack;
@@ -34,14 +35,17 @@ public class Character : Token {
     GridManager.Grid range = null;
 
     // reset character's stamina
-    public void resetStamina() {
+    public void resetStamina()
+    {
         stamina = maxStamina;
     }
 
     //Calculate stats values for Character
-    public void calculateStats() {
+    public void calculateStats()
+    {
         ChangeColor pallete = animator.GetComponent<ChangeColor>();
-        switch (team) {
+        switch (team)
+        {
             case 'A':
                 color = pallete.colors[0].color[0];
                 break;
@@ -60,7 +64,8 @@ public class Character : Token {
     }
 
     // calculate reach of a character
-    public override void OnSelect() {
+    public override void OnSelect()
+    {
         animator.Select();
         //Debug.Log("Selected");
         //If selected character has no stamina or is from the other team
@@ -70,34 +75,43 @@ public class Character : Token {
 
         reach = gridM.getReach(place, stamina, "token", "enemy");
 
-        foreach (GridManager.GridPoint point in reach.grid) {
+        foreach (GridManager.GridPoint point in reach.grid)
+        {
             point.hex.changeState("reach");
         }
 
         reach = gridM.getReach(place, stamina);
-        foreach (GridManager.GridPoint point in reach.grid) {
+        foreach (GridManager.GridPoint point in reach.grid)
+        {
             Character c = (Character)point.hex.token;
             if (point.hex.state.name == "token" && c.team != this.team)
                 point.hex.changeState("enemy");
+            else if (point.hex.state.name == "token" && c.team == this.team)
+                point.hex.changeState("ally");
         }
 
         locked = true;
     }
 
     //Get the target of an action
-    public override void TargetSelect() {
+    public override void TargetSelect()
+    {
         if (selected != this) animator.Target();
         target = this;
     }
 
-    public override void OnCancelSelect() {
+    public override void OnCancelSelect()
+    {
         //animator.Unselect();
         if (reach == null) return;
 
-        foreach (GridManager.GridPoint point in reach.grid) {
+        foreach (GridManager.GridPoint point in reach.grid)
+        {
             if (point.hex.state.name == "reach")
                 point.hex.changeState("default");
             if (point.hex.state.name == "enemy")
+                point.hex.changeState("token");
+            if (point.hex.state.name == "ally")
                 point.hex.changeState("token");
         }
 
@@ -105,61 +119,77 @@ public class Character : Token {
         target = null;
     }
 
-    public override void OnMove(GridManager.Grid path, HexGrid destiny) {
+    public override void OnMove(GridManager.Grid path, HexGrid destiny)
+    {
         base.OnMove(path, destiny);
         if (reach == null) return;
 
         int qtd = path.grid.Count;
 
-        foreach (GridManager.GridPoint point in reach.grid) {
+        foreach (GridManager.GridPoint point in reach.grid)
+        {
             if (point.hex.state.name == "enemy")
                 point.hex.changeState("token");
-
+            if (point.hex.state.name == "ally")
+                point.hex.changeState("token");
             if (point.hex.state.name == "reach")
                 point.hex.changeState("default");
         }
 
         stamina -= qtd;
         GridManager gridM = GridManager.instance;
-        reach = gridM.getReach(destiny, stamina, "token", "enemy");
 
-        foreach (GridManager.GridPoint point in reach.grid) {
+        reach = gridM.getReach(destiny, stamina, "token", "enemy", "ally");
+        foreach (GridManager.GridPoint point in reach.grid)
+        {
             point.hex.changeState("reach");
         }
 
         reach = gridM.getReach(destiny, stamina);
-        foreach (GridManager.GridPoint point in reach.grid) {
+        foreach (GridManager.GridPoint point in reach.grid)
+        {
             Character c = (Character)point.hex.token;
             if (point.hex.state.name == "token" && c.team != this.team)
                 point.hex.changeState("enemy");
+            else if (point.hex.state.name == "token" && c.team == this.team)
+                point.hex.changeState("ally");
         }
 
-        if (stamina == 0) {
+        if (stamina == 0)
+        {
             locked = false;
         }
     }
 
     //After using using an Action, updates reach for selected
-    public override void updateReach() {
-        if ( reach == null ) return;
-        foreach (GridManager.GridPoint point in reach.grid) {
-            if (point.distance > this.stamina) {
-                if ( point.hex.state.name == "enemy" )
+    public override void updateReach()
+    {
+        if (reach == null) return;
+        foreach (GridManager.GridPoint point in reach.grid)
+        {
+            if (point.distance > this.stamina)
+            {
+                if (point.hex.state.name == "enemy")
                     point.hex.changeState("token");
 
-                if ( point.hex.state.name == "reach" )
+                if (point.hex.state.name == "ally")
+                    point.hex.changeState("token");
+
+                if (point.hex.state.name == "reach")
                     point.hex.changeState("default");
             }
         }
     }
 
     //Check if ability can be used based on its min and max range
-    public bool checkRange(int minDistance, int maxDistance) {
+    public bool checkRange(int minDistance, int maxDistance)
+    {
         GridManager gridM = GridManager.instance;
 
         range = gridM.getReach(place, minDistance, maxDistance);
 
-        foreach (GridManager.GridPoint point in range.grid) {
+        foreach (GridManager.GridPoint point in range.grid)
+        {
             if (point.hex.token == target)
                 return true;
         }
@@ -167,20 +197,23 @@ public class Character : Token {
     }
 
     //Rolls two dices and return their sum
-    public int rollDices(int dice1, int dice2 = 0){
-        int value1 = Random.Range(1, dice1+1);
-        if(dice2 == 0){
+    public int rollDices(int dice1, int dice2 = 0)
+    {
+        int value1 = Random.Range(1, dice1 + 1);
+        if (dice2 == 0)
+        {
             Debug.Log(value1);
             return value1;
         }
-        int value2 = Random.Range(1, dice2+1);
+        int value2 = Random.Range(1, dice2 + 1);
         Debug.Log(value1 + value2);
         return value1 + value2;
     }
 
     //Checks if character evades an Attack
-    public bool evade(int precision, int evasion){
-        if(precision >= evasion)
+    public bool evade(int precision, int evasion)
+    {
+        if (precision >= evasion)
             return false;
         return true;
     }

@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HexGrid : RaycastTarget {
+public class HexGrid : RaycastTarget
+{
 
     public HexGridState state;
 
@@ -19,16 +20,18 @@ public class HexGrid : RaycastTarget {
     public Token token;
     public List<HexGrid> neighbors;
 
-    public override void Awake(){
+    public override void Awake()
+    {
         base.Awake();
         neighbors = new List<HexGrid>();
 
         //initialize states
         stateList = new List<HexGridState>();
-        stateList.Add( new HexGridState()   );
-        stateList.Add( new TokenGridState() );
-        stateList.Add( new ReachGridState() );
-        stateList.Add( new EnemyGridState() );
+        stateList.Add(new HexGridState());
+        stateList.Add(new TokenGridState());
+        stateList.Add(new ReachGridState());
+        stateList.Add(new EnemyGridState());
+        stateList.Add(new AllyGridState());
 
         state = State("default");
 
@@ -36,19 +39,23 @@ public class HexGrid : RaycastTarget {
         Vector3 point1 = this.transform.position + Vector3.up * radarHeight;
         Vector3 point2 = this.transform.position + Vector3.down * radarHeight;
         Collider[] detected = Physics.OverlapCapsule(point1, point2, radarRadius, gridLayer);
-        foreach(Collider c in detected) {
+        foreach (Collider c in detected)
+        {
             RaycastCollider collider = c.GetComponent<RaycastCollider>();
-            if (collider != null && collider.target is HexGrid && collider.target != this){
+            if (collider != null && collider.target is HexGrid && collider.target != this)
+            {
                 neighbors.Add((HexGrid)collider.target);
             }
         }
 
         //detect token on top
         detected = Physics.OverlapSphere(this.transform.position, 0.05f, tokenLayer);
-        foreach (Collider c in detected) {
+        foreach (Collider c in detected)
+        {
             Token t = c.transform.GetComponent<Token>();
             token = t;
-            if (t != null) {
+            if (t != null)
+            {
                 state = State("token");
                 t.place = this;
                 t.transform.position = this.transform.position;
@@ -59,7 +66,8 @@ public class HexGrid : RaycastTarget {
         state.OnEnter(this);
     }
 
-    public void changeState(string stateName) {
+    public void changeState(string stateName)
+    {
         HexGridState newState = State(stateName);
         if (newState == null) return;
 
@@ -68,8 +76,10 @@ public class HexGrid : RaycastTarget {
         state.OnEnter(this);
     }
 
-    HexGridState State(string name) {
-        foreach(HexGridState s in stateList){
+    HexGridState State(string name)
+    {
+        foreach (HexGridState s in stateList)
+        {
             if (s.name == name)
                 return s;
         }
@@ -77,31 +87,37 @@ public class HexGrid : RaycastTarget {
         return null;
     }
 
-    public override void OnPointerEnter() {
+    public override void OnPointerEnter()
+    {
         if (token != null && HUDManager.instance != null) HUDManager.instance.Show(token);
-        state.OnPointerEnter(this); 
+        state.OnPointerEnter(this);
     }
-    public override void OnPointerExit() {
+    public override void OnPointerExit()
+    {
         if (token != null && HUDManager.instance != null) HUDManager.instance.Hide(token);
-        state.OnPointerExit(this); 
+        state.OnPointerExit(this);
     }
-    public override void OnClick(int mouseButton){ state.OnClick(this, mouseButton); }
+    public override void OnClick(int mouseButton) { state.OnClick(this, mouseButton); }
 
     public virtual void OnTurnStart() { state.OnTurnStart(this); }
     public virtual void OnTurnEnd() { state.OnTurnEnd(this); }
 
     [System.Serializable]
-    public class ColorSet {
+    public class ColorSet
+    {
         public string label;
         public Color[] colors;
-        public ColorSet(string label, params Color[] colors) {
+        public ColorSet(string label, params Color[] colors)
+        {
             this.label = label;
             this.colors = colors;
         }
     }
 
-    public ColorSet GetColors(string name) {
-        foreach (ColorSet colors in pallete) {
+    public ColorSet GetColors(string name)
+    {
+        foreach (ColorSet colors in pallete)
+        {
             if (colors.label == name)
                 return colors;
         }
