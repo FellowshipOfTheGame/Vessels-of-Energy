@@ -53,7 +53,8 @@ public class Character : Token {
 
         maxHP = 10 + 2 * vitality + willpower;
         HP = maxHP;
-        maxStamina = 10 + 2 * dexterity + intelligence;
+        maxStamina = 7 + 2 * dexterity + intelligence;
+        stamina = maxStamina;
         evasion = 4 + dexterity + perception;
         defense = 2 + vitality + (strength / 2);
         resistence = 2 + intelligence + (willpower / 2);
@@ -91,7 +92,7 @@ public class Character : Token {
     }
 
     public override void OnCancelSelect() {
-        //animator.Unselect();
+        animator.Unselect();
         if (reach == null) return;
 
         foreach (GridManager.GridPoint point in reach.grid) {
@@ -100,6 +101,7 @@ public class Character : Token {
             if (point.hex.state.name == "enemy")
                 point.hex.changeState("token");
         }
+        Debug.Log("Cancelling select on " + name);
 
         locked = false;
         target = null;
@@ -151,6 +153,7 @@ public class Character : Token {
                     point.hex.changeState("default");
             }
         }
+        Debug.Log("Reach " + reach.grid.Count.ToString() + " Updated on " + name);
     }
 
     //Check if ability can be used based on its min and max range

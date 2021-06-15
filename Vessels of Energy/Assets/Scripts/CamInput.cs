@@ -23,16 +23,16 @@ public class CamInput : MonoBehaviour {
     void Update(){
         if (block) return;
 
-        if (Input.GetKey(KeyCode.W)) {
+        if (Input.GetKey(KeyCode.UpArrow)) {
             Vector3 translation = axis * speed * Time.deltaTime;
             control.Shift(ClampOffset(translation), Vector3.zero);
-        } else if (Input.GetKey(KeyCode.A)) {
+        } else if (Input.GetKey(KeyCode.LeftArrow)) {
             Vector3 translation = Quaternion.Euler(0f, -90f, 0f) * axis * speed * Time.deltaTime;
             control.Shift(ClampOffset(translation), Vector3.zero);
-        } else if (Input.GetKey(KeyCode.S)) {
+        } else if (Input.GetKey(KeyCode.DownArrow)) {
             Vector3 translation = - axis * speed * Time.deltaTime;
             control.Shift(ClampOffset(translation), Vector3.zero);
-        } else if (Input.GetKey(KeyCode.D)) {
+        } else if (Input.GetKey(KeyCode.RightArrow)) {
             Vector3 translation = Quaternion.Euler(0f, 90f, 0f) * axis * speed * Time.deltaTime;
             control.Shift(ClampOffset(translation), Vector3.zero);
         }

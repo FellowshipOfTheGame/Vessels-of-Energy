@@ -111,6 +111,7 @@ public class DiceRoller : MonoBehaviour {
             foreach(DiceRoller.Die die in dice ) {
                 int value = Random.Range(1, die.size + 1);
                 die.number.text = value.ToString();
-            }        }
+            }
+        }
     }
 }

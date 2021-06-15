@@ -7,7 +7,7 @@ public class Attack : MonoBehaviour {
     [HideInInspector] public Character self;
     Character target;
 
-    bool missed = true, counterable = true;
+    bool missed = true;
 
     private void Awake() {
         self = this.GetComponent<Character>();
@@ -82,27 +82,33 @@ public class Attack : MonoBehaviour {
 
         // permitir contra ataque (reação) se o ataque errou
         // TODO: Check if attack range allows counter
-        if (missed && counterable && target.stamina >= Character.ATTACK_COST ) {
-
-            QTE.instance.startQTE("counter", target, () => {
-                Debug.Log("COUNTER!");
-                target.attack.PrepareAttack(self);
-            },
-            () => {
-                Debug.Log("Missed Opportunity to Counter...");
+        if (missed) {
+            if (target.stamina >= Character.ATTACK_COST) {
+                QTE.instance.startQTE("counter", target, () => {
+                    Debug.Log("COUNTER!");
+                    self.animator.TurnAround();
+                    target.animator.TurnAround();
+                    target.attack.PrepareAttack(self);
+                },
+                () => {
+                    Debug.Log("Missed Opportunity to Counter...");
+                    target.animator.RetreatAction();
+                    Reset();
+                });
+            } else {
                 target.animator.RetreatAction();
-                Raycast.block = false;
-                if ( CamControl.instance != null ) CamControl.instance.Unfocus();
-            });
+                Reset();
+            }
         } else {
-            Raycast.block = false;
-            target.Unselect();
-            if ( CamControl.instance != null ) CamControl.instance.Unfocus();
+            GameManager.instance.checkWinner();
+            Reset();
         }
-
-        self.updateReach();
-        counterable = true;
-        GameManager.instance.checkWinner();
         self.animator.RetreatAction();
+    }
+
+    private void Reset() {
+        if (Token.selected == this) target.Unselect();
+        Raycast.block = false;
+        if (CamControl.instance != null) CamControl.instance.Unfocus();
     }
 }

@@ -8,10 +8,14 @@ public class Warrior : Character {
     private int minRange = 1;
 
     void Start() {
+        int seed1 = UnityEngine.Random.Range(0, 2);
+        int seed2 = UnityEngine.Random.Range(0, 2);
+
+
         //Stats still need to be balanced
-        dexterity = 0;
-        strength = 3;
-        vitality = 4;
+        dexterity = 3 - seed1 - seed2;
+        strength = 3 + seed1;
+        vitality = 4 + seed2;
         intelligence = 0;
         perception = 2;
         willpower = 1;

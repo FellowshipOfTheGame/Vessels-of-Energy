@@ -62,6 +62,9 @@ public class GameManager : MonoBehaviour {
             if ( Token.selected != null ) {
                 Token.selected.Unselect();
             }
+            if (Character.target != null) {
+                Character.target.Unselect();
+            }
 
             switch (currentTeam) {
                 case 'A':

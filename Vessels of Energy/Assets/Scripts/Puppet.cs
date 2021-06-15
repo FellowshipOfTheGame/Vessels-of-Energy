@@ -26,6 +26,10 @@ public class Puppet : MonoBehaviour {
         if (gyroscope != null) gyroscope.order = -1;
     }
 
+    public void TurnAround() {
+        if (gyroscope != null) gyroscope.order = 1 - gyroscope.order;
+    }
+
     public void Attacked() {
         animator.SetInteger("action", 2);
         animator.SetTrigger("prepare");
