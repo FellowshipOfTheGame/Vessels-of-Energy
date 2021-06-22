@@ -6,15 +6,8 @@ public class Healer : Character
 {
     void Start()
     {
-        //Stats still need to be balanced
-        dexterity = 2;
-        strength = 0;
-        vitality = 0;
-        intelligence = 2;
-        perception = 0;
-        willpower = 4;
-
-        this.calculateStats();
+        this.stats.calculateStats();
+        this.HP = stats.maxHP;
     }
 
     //Restores health for target
@@ -23,10 +16,10 @@ public class Healer : Character
     {
         this.stamina -= 2;
         //TODO: Balance this ability with a multiplier (mult*willpower)
-        int healing = this.willpower;
+        int healing = this.stats.willpower;
         target.HP += healing;
         //If health goes above max health
-        if(target.HP > target.maxHP) target.HP = target.maxHP;
+        if(target.HP > target.stats.maxHP) target.HP = target.stats.maxHP;
 
         return healing;
     }
@@ -35,7 +28,7 @@ public class Healer : Character
         //If selected and target are from the same team
         if(target.team == GameManager.currentTeam){
             //If healer has enough stamina and target has less health than maxHealth
-            if(this.stamina >= 2 && target.HP != target.maxHP){
+            if(this.stamina >= 2 && target.HP != target.stats.maxHP){
                 //If target is in range of the Heal ability
                 //Range of Heal is [0, 1]
                 if (checkRange(0, 1)){
@@ -52,7 +45,7 @@ public class Healer : Character
             Debug.Log("Attacking target...");
         }
 
-        if(stamina == 0){
+        if(this.stamina == 0){
             locked = false;
         }
     }

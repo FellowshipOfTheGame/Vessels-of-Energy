@@ -14,7 +14,7 @@ public class CharacterDisplay : MonoBehaviour
     {
         Character c = GetComponent<Character>();
         //TODO: Test Health Bar
-        healthSlider.maxValue = c.maxHP;
+        healthSlider.maxValue = c.stats.maxHP;
         healthSlider.value = c.HP;
 
         //Changes bar color depending on the % of health

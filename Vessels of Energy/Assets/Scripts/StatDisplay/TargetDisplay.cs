@@ -21,7 +21,7 @@ public class TargetDisplay : MonoBehaviour
         if (Character.target != null){
             Character c = Character.target;
 
-            healthSlider.maxValue = c.maxHP;
+            healthSlider.maxValue = c.stats.maxHP;
             healthSlider.value = c.HP;
 
             //Changes bar color depending on the % of health
@@ -30,7 +30,7 @@ public class TargetDisplay : MonoBehaviour
             staminaValue.text = c.stamina.ToString();
             /*strengthValue.text = c.strength.ToString();
             evasionValue.text = c.evasion.ToString();*/
-            defenseValue.text = c.defense.ToString();
+            defenseValue.text = c.stats.defense.ToString();
 
             //TODO: Get information from Character
             proficiencyDice.text = "1d8";

@@ -6,15 +6,8 @@ public class Artificer : Character
 {
     void Start()
     {
-        //Stats still need to be balanced
-        dexterity = 1;
-        strength = 0;
-        vitality = 2;
-        intelligence = 3;
-        perception = 4;
-        willpower = 2;
-
-        this.calculateStats();
+        this.stats.calculateStats();
+        this.HP = stats.maxHP;
     }
 
     public override void Action(){

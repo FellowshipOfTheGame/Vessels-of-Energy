@@ -26,7 +26,7 @@ public class Attack : MonoBehaviour {
 
         // precision = 1d8 + 1d(2*stat+4)
         // evasion = evasion //+ 1d(2*dexterity+4)
-        missed = self.rollDices(8, 2 * self.strength + 4) < target.evasion;
+        missed = self.rollDices(8, 2 * self.stats.strength + 4) < target.stats.evasion;
         //missed = true; //the ultimate Counter test
         //make camera focus on combat
         if (CamControl.instance != null) {
@@ -42,7 +42,7 @@ public class Attack : MonoBehaviour {
 
         if (!missed) {
             //damage = 1d12 (Weapon) + 1d(2*strength+4)
-            int damage = self.rollDices(12, 2 * self.strength + 4) - target.defense;
+            int damage = self.rollDices(self.weapon.baseDamageDice, 2 * self.stats.strength + 4) - target.stats.defense;
 
             if (damage > 0) {
                 target.HP -= damage;
