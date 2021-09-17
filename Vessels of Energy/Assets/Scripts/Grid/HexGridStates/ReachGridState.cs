@@ -16,7 +16,7 @@ public class ReachGridState : HexGridState {
         base.OnPointerEnter(hexagon);
 
         GridManager gridM = GridManager.instance;
-        path = gridM.getPath(Token.selected.place, hexagon, "token","enemy");
+        path = gridM.getPath(Token.selected.place, hexagon, "token","enemy","ally");
 
         if (path != null) {
             foreach(GridManager.GridPoint point in path.grid) {

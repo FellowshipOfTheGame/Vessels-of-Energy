@@ -73,7 +73,7 @@ public class Character : Token
 
         GridManager gridM = GridManager.instance;
 
-        reach = gridM.getReach(place, stamina, "token", "enemy");
+        reach = gridM.getReach(place, stamina, "token", "enemy", "ally");
 
         foreach (GridManager.GridPoint point in reach.grid)
         {
@@ -109,10 +109,15 @@ public class Character : Token
         {
             if (point.hex.state.name == "reach")
                 point.hex.changeState("default");
+
             if (point.hex.state.name == "enemy")
                 point.hex.changeState("token");
+
             if (point.hex.state.name == "ally")
                 point.hex.changeState("token");
+
+            if (point.hex.state.name == "coop")
+                point.hex.changeState("default");
         }
 
         locked = false;
@@ -130,8 +135,13 @@ public class Character : Token
         {
             if (point.hex.state.name == "enemy")
                 point.hex.changeState("token");
+
             if (point.hex.state.name == "ally")
                 point.hex.changeState("token");
+
+            if (point.hex.state.name == "coop")
+                point.hex.changeState("reach");
+
             if (point.hex.state.name == "reach")
                 point.hex.changeState("default");
         }
@@ -174,6 +184,9 @@ public class Character : Token
 
                 if (point.hex.state.name == "ally")
                     point.hex.changeState("token");
+
+                if (point.hex.state.name == "coop")
+                    point.hex.changeState("reach");
 
                 if (point.hex.state.name == "reach")
                     point.hex.changeState("default");

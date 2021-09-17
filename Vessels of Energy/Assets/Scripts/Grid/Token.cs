@@ -2,34 +2,49 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Token : MonoBehaviour {
+public class Token : MonoBehaviour
+{
 
     public static Token selected = null;
     public static bool locked = false;
     [HideInInspector] public HexGrid place;
 
-    public void Select() {
-        if (!locked){
-            if (selected != null) {
+    public void Select()
+    {
+        if (!locked)
+        {
+            if (selected != null)
+            {
                 selected.Unselect();
                 if (HUDManager.instance != null) HUDManager.instance.Show(this);
             }
             selected = this;
             this.OnSelect();
         }
-        else{
+        else
+        {
             this.TargetSelect();
             selected.Action();
             selected.updateReach();
         }
     }
+
+    public void OnTarget()
+    {
+        this.TargetSelect();
+        selected.Action();
+        selected.updateReach();
+    }
+
     public virtual void OnSelect() { }
     public virtual void TargetSelect() { }
     public virtual void Action() { }
     public virtual void updateReach() { }
 
-    public void Unselect() {
-        if (selected == this) {
+    public void Unselect()
+    {
+        if (selected == this)
+        {
             selected = null;
             if (HUDManager.instance != null) HUDManager.instance.Hide(this);
         }
@@ -40,7 +55,8 @@ public class Token : MonoBehaviour {
     public virtual void OnHighlight() { }
     public virtual void OnCancelHighlight() { }
 
-    public void Move(GridManager.Grid path) {
+    public void Move(GridManager.Grid path)
+    {
         place.changeState("default");
         place.token = null;
 
@@ -54,13 +70,15 @@ public class Token : MonoBehaviour {
         Raycast.block = false;
     }
 
-    public void Move(HexGrid destiny) {
+    public void Move(HexGrid destiny)
+    {
         GridManager.Grid path = new GridManager.Grid(place);
-        path.grid.Add( new GridManager.GridPoint(destiny, 1) );
+        path.grid.Add(new GridManager.GridPoint(destiny, 1));
         Move(path);
     }
 
-    public virtual void OnMove(GridManager.Grid path, HexGrid destiny) {
+    public virtual void OnMove(GridManager.Grid path, HexGrid destiny)
+    {
         this.transform.position = destiny.transform.position;
         //Debug.Log("MOVED");
     }
