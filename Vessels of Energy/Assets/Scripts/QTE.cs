@@ -50,7 +50,7 @@ public class QTE : MonoBehaviour
                 correctKey = true;
                 break;
             }
-            
+
             if (elapsedTime >= countDownTime) {
                 countingDown = false;
                 break;

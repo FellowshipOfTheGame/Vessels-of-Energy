@@ -1469,6 +1469,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 83941496e69681c418bdfb8da4f2f69a,
         type: 2}
+    - target: {fileID: 1787647075506354253, guid: 05dea36a192f0fb4a94455df46d58bd5,
+        type: 3}
+      propertyPath: stats
+      value: 
+      objectReference: {fileID: 11400000, guid: f867d35427956434fa121949f1618f02,
+        type: 2}
     - target: {fileID: 6351760540714064167, guid: 05dea36a192f0fb4a94455df46d58bd5,
         type: 3}
       propertyPath: m_LocalRotation.y
@@ -4143,6 +4149,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 83941496e69681c418bdfb8da4f2f69a,
         type: 2}
+    - target: {fileID: 1787647075506354253, guid: 05dea36a192f0fb4a94455df46d58bd5,
+        type: 3}
+      propertyPath: stats
+      value: 
+      objectReference: {fileID: 11400000, guid: f867d35427956434fa121949f1618f02,
+        type: 2}
     - target: {fileID: 1827268351191705748, guid: 05dea36a192f0fb4a94455df46d58bd5,
         type: 3}
       propertyPath: m_Color.r
@@ -6450,6 +6462,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 83941496e69681c418bdfb8da4f2f69a,
         type: 2}
+    - target: {fileID: 1787647075506354253, guid: 05dea36a192f0fb4a94455df46d58bd5,
+        type: 3}
+      propertyPath: stats
+      value: 
+      objectReference: {fileID: 11400000, guid: f867d35427956434fa121949f1618f02,
+        type: 2}
     - target: {fileID: 1827268351191705748, guid: 05dea36a192f0fb4a94455df46d58bd5,
         type: 3}
       propertyPath: m_Color.r
@@ -7906,6 +7924,12 @@ PrefabInstance:
       propertyPath: weapon
       value: 
       objectReference: {fileID: 11400000, guid: 83941496e69681c418bdfb8da4f2f69a,
+        type: 2}
+    - target: {fileID: 1787647075506354253, guid: 05dea36a192f0fb4a94455df46d58bd5,
+        type: 3}
+      propertyPath: stats
+      value: 
+      objectReference: {fileID: 11400000, guid: f867d35427956434fa121949f1618f02,
         type: 2}
     - target: {fileID: 1827268351191705748, guid: 05dea36a192f0fb4a94455df46d58bd5,
         type: 3}
@@ -11358,6 +11382,12 @@ PrefabInstance:
       propertyPath: weapon
       value: 
       objectReference: {fileID: 11400000, guid: 83941496e69681c418bdfb8da4f2f69a,
+        type: 2}
+    - target: {fileID: 1787647075506354253, guid: 05dea36a192f0fb4a94455df46d58bd5,
+        type: 3}
+      propertyPath: stats
+      value: 
+      objectReference: {fileID: 11400000, guid: f867d35427956434fa121949f1618f02,
         type: 2}
     - target: {fileID: 6351760540714064167, guid: 05dea36a192f0fb4a94455df46d58bd5,
         type: 3}
@@ -17486,6 +17516,12 @@ PrefabInstance:
       propertyPath: weapon
       value: 
       objectReference: {fileID: 11400000, guid: 83941496e69681c418bdfb8da4f2f69a,
+        type: 2}
+    - target: {fileID: 1787647075506354253, guid: 05dea36a192f0fb4a94455df46d58bd5,
+        type: 3}
+      propertyPath: stats
+      value: 
+      objectReference: {fileID: 11400000, guid: f867d35427956434fa121949f1618f02,
         type: 2}
     - target: {fileID: 6351760540595462178, guid: 05dea36a192f0fb4a94455df46d58bd5,
         type: 3}

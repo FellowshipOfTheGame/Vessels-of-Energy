@@ -8,6 +8,7 @@ public class Character : Token {
     public Puppet animator;
     [HideInInspector] public Attack attack;
     public const int ATTACK_COST = 3;
+    public const int EVADE_COST  = 3;
 
     [Space(5)]
 

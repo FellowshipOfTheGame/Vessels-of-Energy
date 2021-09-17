@@ -8,6 +8,7 @@ public class Attack : MonoBehaviour {
     Character target;
 
     bool missed = true, counterable = true;
+    int extra_evasion = 0;
 
     private void Awake() {
         self = this.GetComponent<Character>();
@@ -26,7 +27,22 @@ public class Attack : MonoBehaviour {
 
         // precision = 1d8 + 1d(2*stat+4)
         // evasion = evasion //+ 1d(2*dexterity+4)
-        missed = self.rollDices(8, 2 * self.stats.strength + 4) < target.stats.evasion;
+
+        extra_evasion = 0;
+
+        if(target.stamina >= Character.EVADE_COST){
+            QTE.instance.startQTE("evasion", () => {
+                Debug.Log("EVASION!");
+                target.stamina -= Character.EVADE_COST;
+                extra_evasion = target.rollDices(2 * target.stats.dexterity + 4);
+                //extra_evasion = 100; // extra_evasion test
+            },
+            () => {
+                Debug.Log("Missed Opportunity to Evade...");
+                //extra_evasion = 0;
+            });
+        }
+
         //missed = true; //the ultimate Counter test
         //make camera focus on combat
         if (CamControl.instance != null) {
@@ -39,6 +55,12 @@ public class Attack : MonoBehaviour {
 
     public void ExecuteAttack() {
         self.animator.ExecuteAction();
+
+        //Debug.Log("extra_evasion:");
+        //Debug.Log(extra_evasion);
+
+        missed = self.rollDices(8, 2 * self.stats.strength + 4) < target.stats.evasion + extra_evasion;
+        //missed = self.rollDices(8, 2 * self.stats.strength + 4) < extra_evasion; //extra_evasion test
 
         if (!missed) {
             //damage = 1d12 (Weapon) + 1d(2*strength+4)
