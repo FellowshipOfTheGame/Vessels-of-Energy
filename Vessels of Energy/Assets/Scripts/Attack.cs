@@ -64,7 +64,17 @@ public class Attack : MonoBehaviour {
 
         if (!missed) {
             //damage = 1d12 (Weapon) + 1d(2*strength+4)
-            int damage = self.rollDices(self.weapon.baseDamageDice, 2 * self.stats.strength + 4) - target.stats.defense;
+            //or
+            //damage = 1d12 (Weapon) + 1d(2*intelligence+4)
+            int damage;
+            if(self.weapon.damagetype == 'p'){
+                Debug.Log("Physical Attack!");
+                damage = self.rollDices(self.weapon.baseDamageDice, 2 * self.stats.strength + 4) - target.stats.defense;
+            }
+            else{ // damagetype == 'm'
+                Debug.Log("Magic Attack!");
+                damage = self.rollDices(self.weapon.baseDamageDice, 2 * self.stats.intelligence + 4) - target.stats.resistence;
+            }
 
             if (damage > 0) {
                 target.HP -= damage;
