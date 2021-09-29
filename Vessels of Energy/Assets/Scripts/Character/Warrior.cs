@@ -3,30 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Warrior : Character
-{
-    private int maxRange = 1;
-    private int minRange = 1;
+public class Warrior : Character {
+    /*private int maxRange = 1;
+    private int minRange = 1;*/
 
     void Start() {
-        int seed1 = UnityEngine.Random.Range(0, 2);
-        int seed2 = UnityEngine.Random.Range(0, 2);
 
-
-        //Stats still need to be balanced
-        dexterity = 3 - seed1 - seed2;
-        strength = 3 + seed1;
-        vitality = 4 + seed2;
-        intelligence = 0;
-        perception = 2;
-        willpower = 1;
-        this.calculateStats();
-    }
-
-    //QTE
-    void Update()
-    {
-
+        if(this.stats != null){
+            this.stats.calculateStats();
+        }
+        else{
+            Debug.Log("Character don't have stats!!!");
+        }
+        this.HP = stats.maxHP;
     }
 
     public override void Action()
@@ -39,9 +28,8 @@ public class Warrior : Character
             if (this.stamina >= ATTACK_COST && target.HP >= 0)
             {
                 target.place.changeState("enemy");
-                this.ShortDistanceAttack(target, minRange, maxRange);
-            }
-            else
+                this.ShortDistanceAttack(target, this.weapon.minRange, this.weapon.maxRange);
+            } else
                 Debug.Log("Not enough stamina");
         }
         else
@@ -56,8 +44,7 @@ public class Warrior : Character
         }
 
 
-        if (stamina == 0)
-        {
+        if (this.stamina == 0) {
             locked = false;
         }
     }
@@ -67,6 +54,7 @@ public class Warrior : Character
         if (checkRange(minRange, maxRange))
         {
             attack.PrepareAttack(target);
+
         }
         //Debug.Log("Out of range");
         return 0;

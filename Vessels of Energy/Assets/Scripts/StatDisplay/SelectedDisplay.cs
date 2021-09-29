@@ -21,7 +21,7 @@ public class SelectedDisplay : MonoBehaviour
         if (Token.selected != null){
             Character c = (Character)Token.selected;
 
-            healthSlider.maxValue = c.maxHP;
+            healthSlider.maxValue = c.stats.maxHP;
             healthSlider.value = c.HP;
 
             //Changes bar color depending on the % of health
@@ -30,11 +30,11 @@ public class SelectedDisplay : MonoBehaviour
             staminaValue.text = c.stamina.ToString();
             /*strengthValue.text = c.strength.ToString();
             evasionValue.text = c.evasion.ToString();*/
-            defenseValue.text = c.defense.ToString();
+            defenseValue.text = c.stats.defense.ToString();
 
-            //TODO: Get these information from Character and Character's Weapon
+            //TODO: Get information from Character
             proficiencyDice.text = "1d8";
-            damageDice.text = "1d12";
+            damageDice.text = "1d" + c.weapon.baseDamageDice.ToString();
         }
         else{
             healthSlider.maxValue = 1;

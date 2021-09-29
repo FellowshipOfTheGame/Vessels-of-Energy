@@ -93,14 +93,14 @@ public class GameManager : MonoBehaviour {
         {
             for (int i = 0; i < teamAList.Count; i++)
             {
-                teamAList[i].resetStamina();
+                teamAList[i].refillStamina();
             }
         }
         else
         {
             for (int i = 0; i < teamBList.Count; i++)
             {
-                teamBList[i].resetStamina();
+                teamBList[i].refillStamina();
             }
         }
     }

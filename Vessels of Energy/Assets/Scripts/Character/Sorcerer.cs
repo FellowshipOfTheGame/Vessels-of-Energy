@@ -6,15 +6,8 @@ public class Sorcerer : Character
 {
     void Start()
     {
-        //Stats still need to be balanced
-        dexterity = 1;
-        strength = 0;
-        vitality = 1;
-        intelligence = 4;
-        perception = 2;
-        willpower = 3;
-
-        this.calculateStats();
+        this.stats.calculateStats();
+        this.HP = stats.maxHP;
     }
 
     public override void Action(){

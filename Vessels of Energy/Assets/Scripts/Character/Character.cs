@@ -9,24 +9,14 @@ public class Character : Token
     public Puppet animator;
     [HideInInspector] public Attack attack;
     public const int ATTACK_COST = 3;
+    public const int EVADE_COST  = 3;
 
     [Space(5)]
 
-    public int dexterity;
-    public int strength;
-    public int vitality;
-    public int intelligence;
-    public int perception;
-    public int willpower;
-    [Space(5)]
-
+    public Weapon weapon;
+    public Stats stats;
     public int HP;
-    public int maxHP;
-    public int stamina = 0;
-    public int maxStamina = 10; //temporary value for test
-    public int evasion;
-    public int defense;
-    public int resistence;
+    public int stamina;
     [Space(5)]
 
     public char team;
@@ -34,34 +24,9 @@ public class Character : Token
     GridManager.Grid reach = null;
     GridManager.Grid range = null;
 
-    // reset character's stamina
-    public void resetStamina()
-    {
-        stamina = maxStamina;
-    }
-
-    //Calculate stats values for Character
-    public void calculateStats()
-    {
-        ChangeColor pallete = animator.GetComponent<ChangeColor>();
-        switch (team)
-        {
-            case 'A':
-                color = pallete.colors[0].color[0];
-                break;
-
-            case 'B':
-                color = pallete.colors[1].color[0];
-                break;
-        }
-
-        maxHP = 10 + 2 * vitality + willpower;
-        HP = maxHP;
-        maxStamina = 7 + 2 * dexterity + intelligence;
-        stamina = maxStamina;
-        evasion = 4 + dexterity + perception;
-        defense = 2 + vitality + (strength / 2);
-        resistence = 2 + intelligence + (willpower / 2);
+    // refill character's stamina
+    public void refillStamina() {
+        this.stamina = this.stats.maxStamina;
     }
 
     // calculate reach of a character
@@ -70,7 +35,7 @@ public class Character : Token
         animator.Select();
         //Debug.Log("Selected");
         //If selected character has no stamina or is from the other team
-        if (stamina == 0 || team != GameManager.currentTeam) return;
+        if (this.stamina == 0 || team != GameManager.currentTeam) return;
 
         GridManager gridM = GridManager.instance;
 
@@ -81,9 +46,8 @@ public class Character : Token
             point.hex.changeState("reach");
         }
 
-        reach = gridM.getReach(place, stamina);
-        foreach (GridManager.GridPoint point in reach.grid)
-        {
+        reach = gridM.getReach(place, this.stamina);
+        foreach (GridManager.GridPoint point in reach.grid) {
             Character c = (Character)point.hex.token;
             if (point.hex.state.name == "token" && c.team != this.team)
                 point.hex.changeState("enemy");
@@ -148,7 +112,7 @@ public class Character : Token
                 point.hex.changeState("default");
         }
 
-        stamina -= qtd;
+        this.stamina -= qtd;
         GridManager gridM = GridManager.instance;
 
         reach = gridM.getReach(destiny, stamina, "token", "enemy", "ally");
@@ -157,9 +121,8 @@ public class Character : Token
             point.hex.changeState("reach");
         }
 
-        reach = gridM.getReach(destiny, stamina);
-        foreach (GridManager.GridPoint point in reach.grid)
-        {
+        reach = gridM.getReach(destiny, this.stamina);
+        foreach (GridManager.GridPoint point in reach.grid) {
             Character c = (Character)point.hex.token;
             if (point.hex.state.name == "token" && c.team != this.team)
                 point.hex.changeState("enemy");
@@ -167,8 +130,7 @@ public class Character : Token
                 point.hex.changeState("ally");
         }
 
-        if (stamina == 0)
-        {
+        if (this.stamina == 0) {
             locked = false;
         }
     }
