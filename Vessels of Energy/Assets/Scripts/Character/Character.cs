@@ -24,6 +24,10 @@ public class Character : Token
     GridManager.Grid reach = null;
     GridManager.Grid range = null;
 
+    void Awake() {
+        if (animator) color = animator.GetComponent<ChangeColor>().GetColor(team);
+    }
+
     // refill character's stamina
     public void refillStamina() {
         this.stamina = this.stats.maxStamina;

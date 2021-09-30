@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public class Puppet : MonoBehaviour {
 
-    public Animator animator;
+    Animator animator;
     Gyroscope gyroscope;
     public UnityEvent OnDrawWeapon, OnHitTargetEvent, OnFinishAttackEvent, OnFallDeadEvent;
 

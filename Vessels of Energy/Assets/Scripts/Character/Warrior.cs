@@ -62,29 +62,29 @@ public class Warrior : Character {
 
     public void ThrowAlly(Character target)
     {
-        if (checkRange(minRange, maxRange))
+        if (checkRange(1, 1))
         {
             //Find a way to select another character
             locked = false;
             target.Select();
-            
+
             //target.OnTarget();
-            int throwableDistance = strength;
+            int throwableDistance = stats.strength;
 
             // show throwable hexagons
             GridManager gridM = GridManager.instance;
             GridManager.Grid reach = gridM.getReach(target.place, throwableDistance);
-            
-            //Create a path 
+
+            //Create a path
             //GridManager.Grid path = new GridManager.Grid(place);
             //HexGrid destiny = path.grid[path.grid.Count - 1].hex;
-            
+
             foreach (GridManager.GridPoint point in reach.grid)
             {
                 if (point.hex.state.name == "reach")
                     point.hex.changeState("coop");
             }
-            
+
             //target.OnMove(reach, destiny);
             this.stamina -= ATTACK_COST;
         }

@@ -28,7 +28,7 @@ public class CharacterDisplay : MonoBehaviour
 
     void Update() {
         if (character != null) {
-            healthSlider.maxValue = character.maxHP;
+            healthSlider.maxValue = character.stats.maxHP;
             healthSlider.value = character.HP;
 
             //Changes bar color depending on the % of health
@@ -37,8 +37,8 @@ public class CharacterDisplay : MonoBehaviour
             staminaValue.text = character.stamina.ToString();
             /*strengthValue.text = character.strength.ToString();
             evasionValue.text = character.evasion.ToString();*/
-            defenseValue.text = character.evasion.ToString() + "/" + character.defense.ToString();
-            strengthDice.text = "d" + (character.strength * 2 + 4).ToString();
+            defenseValue.text = character.stats.evasion.ToString() + "/" + character.stats.defense.ToString();
+            strengthDice.text = "d" + (character.stats.strength * 2 + 4).ToString();
 
             //TODO: Get these information from Character and Character's Weapon
             proficiencyDice.text = "d8/d12";

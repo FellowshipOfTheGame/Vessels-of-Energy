@@ -17,8 +17,8 @@ public class ChangeColor : MonoBehaviour {
     }
 
     public TeamColor[] colors;
-    
-    
+
+
     public SpriteMesh[] mesh;
 
     // Start is called before the first frame update
@@ -27,6 +27,26 @@ public class ChangeColor : MonoBehaviour {
             foreach (SpriteRenderer piece in mesh[i].pieces) {
                 piece.color = colors[team].color[i];
             }
-        }        
+        }
+    }
+
+    public Color GetColor(char team) {
+        switch (team) {
+            case 'A':
+                return GetColor(0);
+            case 'B':
+                return GetColor(1);
+            case 'C':
+                return GetColor(2);
+            case 'D':
+                return GetColor(3);
+        }
+
+        return Color.black;
+    }
+
+    public Color GetColor(int team) {
+        if (team < colors.Length) return colors[team].color[0];
+        else return Color.black;
     }
 }

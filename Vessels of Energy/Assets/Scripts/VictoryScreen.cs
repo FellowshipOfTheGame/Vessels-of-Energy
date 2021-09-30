@@ -31,20 +31,20 @@ public class VictoryScreen : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void DisplayTeam(List<Character> winners) { //called by any script
         this.winners = winners;
         Raycast.block = true;
 
-       ChangeColor pallete = winners[0].animator.GetComponent<ChangeColor>();
+       /*ChangeColor pallete = winners[0].animator.GetComponent<ChangeColor>();
        switch (winners[0].team) {
             case 'A':
                 teamHeader.color = pallete.colors[0].color[0];
                 teamFocus.color = pallete.colors[0].color[0];
                 teamLabel.outlineColor = pallete.colors[0].color[0];
-                teamLabel.text = "VITÓRIA!"; 
+                teamLabel.text = "VITÓRIA!";
                 break;
 
             case 'B':
@@ -53,8 +53,12 @@ public class VictoryScreen : MonoBehaviour {
                 teamLabel.outlineColor = pallete.colors[1].color[0];
                 teamLabel.text = "VITÓRIA!";
                 break;
-        }
-
+        }*/
+        Color color = animator.GetComponent<ChangeColor>().GetColor(winners[0].team);
+        teamHeader.color = color;
+        teamFocus.color = color;
+        teamLabel.outlineColor = color;
+        teamLabel.text = "VITÓRIA!";
 
         animator.SetBool("show", true);
     }
