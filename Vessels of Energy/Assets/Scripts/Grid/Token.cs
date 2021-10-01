@@ -73,8 +73,16 @@ public class Token : MonoBehaviour
     public void Move(HexGrid destiny)
     {
         GridManager.Grid path = new GridManager.Grid(place);
-        path.grid.Add(new GridManager.GridPoint(destiny, 1));
-        Move(path);
+        place.changeState("default");
+        place.token = null;
+
+        Raycast.block = true;
+        this.OnMove(path, destiny);
+
+        place = destiny;
+        destiny.token = this;
+        destiny.changeState("token");
+        Raycast.block = false;
     }
 
     public virtual void OnMove(GridManager.Grid path, HexGrid destiny)

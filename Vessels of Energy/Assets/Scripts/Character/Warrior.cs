@@ -7,7 +7,7 @@ public class Warrior : Character
 {
     private int maxRange = 1;
     private int minRange = 1;
-
+    //GridManager.Grid path = CoOpGridState.path;
     void Start()
     {
         //Stats still need to be balanced
@@ -73,6 +73,7 @@ public class Warrior : Character
     {
         if (checkRange(minRange, maxRange))
         {
+            bool canMove = false;
             //Find a way to select another character
             locked = false;
             target.Select();
@@ -83,17 +84,14 @@ public class Warrior : Character
             // show throwable hexagons
             GridManager gridM = GridManager.instance;
             GridManager.Grid reach = gridM.getReach(target.place, throwableDistance);
-            
-            //Create a path 
-            //GridManager.Grid path = new GridManager.Grid(place);
-            //HexGrid destiny = path.grid[path.grid.Count - 1].hex;
-            
+
             foreach (GridManager.GridPoint point in reach.grid)
             {
                 if (point.hex.state.name == "reach")
                     point.hex.changeState("coop");
             }
-            
+
+           
             //target.OnMove(reach, destiny);
             this.stamina -= ATTACK_COST;
         }
