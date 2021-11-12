@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a954c1bbea1a414a9cb200f0dd3cf48, type: 3}
-  m_Name: WarriorStats
+  m_Name: ArtificerStats
   m_EditorClassIdentifier: 
-  strength: 4
-  dexterity: 2
-  vitality: 3
-  intelligence: 0
-  perception: 0
-  willpower: 0
+  strength: 0
+  dexterity: 1
+  vitality: 1
+  intelligence: 2
+  perception: 4
+  willpower: 1
   luck: 1
-  maxHP: 33
-  maxStamina: 10
-  evasion: 6
-  defense: 8
-  resistence: 4
+  maxHP: 25
+  maxStamina: 9
+  evasion: 9
+  defense: 5
+  resistence: 6

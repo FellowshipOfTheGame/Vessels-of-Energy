@@ -1,16 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 [CreateAssetMenu (menuName = "Stats", fileName = "New Stats")]
 public class Stats : ScriptableObject
 {
-    public int dexterity;
     public int strength;
+    public int dexterity;
     public int vitality;
     public int intelligence;
     public int perception;
     public int willpower;
+    public int luck;
 
     [Space(5)]
 
@@ -22,10 +24,10 @@ public class Stats : ScriptableObject
 
     //Calculate stats for Character
     public void calculateStats(){
-        this.maxHP = 10 + 2 * this.vitality + this.willpower;
-        this.maxStamina = 10 + 2 * this.dexterity + this.intelligence;
+        this.maxHP = 20 + 4 * this.vitality + this.luck;
+        this.maxStamina = 6 + 2 * this.dexterity + this.willpower;
         this.evasion = 4 + this.dexterity + this.perception;
-        this.defense = 2 + this.vitality + (this.strength / 2);
-        this.resistence = 2 + this.intelligence + (this.willpower / 2);
+        this.defense = 4 + System.Math.Max(this.vitality, this.strength);
+        this.resistence = 4 + System.Math.Max(this.intelligence, this.willpower);
     }
 }
