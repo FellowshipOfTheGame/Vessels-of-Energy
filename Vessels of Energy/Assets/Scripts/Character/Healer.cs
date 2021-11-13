@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Healer : Character {
-    public const int HEAL_COST = 2;
+    public const int HEAL_COST = 3;
     public const int HEAL_RANGE = 1;
 
     void Start() {
@@ -15,6 +15,7 @@ public class Healer : Character {
             Debug.Log("Character don't have stats!!!");
         }
         this.HP = stats.maxHP;
+        this.stamina = stats.maxStamina;
     }
 
     public override void Action(){
@@ -40,22 +41,6 @@ public class Healer : Character {
             target.Select();
         }
 
-        //If selected and target are from the same team
-        /*else if(target.team == GameManager.currentTeam){
-            if(this.stamina >= HEAL_COST && target.HP != target.stats.maxHP){
-
-                //If target is in range of the Heal ability
-                if (checkRange(0, HEAL_RANGE)){
-                    Debug.Log("Healing ally!");
-                    this.Heal(target);
-                }
-                else
-                    Debug.Log("Heal cannot reach target");
-            }
-            else
-                Debug.Log("Not enough stamina or ally has full health");
-        }*/
-
         if(this.stamina == 0){
             locked = false;
         }
@@ -75,27 +60,11 @@ public class Healer : Character {
         Debug.Log("Healing");
         if(checkRange(minRange, maxRange)) {
             this.stamina -= HEAL_COST;
-            //TODO: Balance this ability with a multiplier (mult*willpower)
-            int healing = this.stats.willpower;
+            int healing = this.rollDices(this.stats.willpower+4);
 
             target.HP += healing;
             if(target.HP > target.stats.maxHP) target.HP = target.stats.maxHP;
         }
         return 0;
     }
-
-    //Restores health for target
-    //Target can be an ally or self
-    /*public int Heal(Character target) {
-        this.stamina -= HEAL_COST;
-        //TODO: Balance this ability with a multiplier (mult*willpower)
-        int healing = this.stats.willpower;
-        target.HP += healing;
-        Debug.Log("Healing:");
-        Debug.Log(healing);
-        //If health goes above max health
-        if(target.HP > target.stats.maxHP) target.HP = target.stats.maxHP;
-
-        return 0;
-    }*/
 }

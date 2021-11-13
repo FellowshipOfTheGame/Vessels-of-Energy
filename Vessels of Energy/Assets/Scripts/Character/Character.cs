@@ -17,6 +17,7 @@ public class Character : Token
     public Stats stats;
     public int HP;
     public int stamina;
+    public bool action;
     [Space(5)]
 
     public char team;
@@ -31,6 +32,7 @@ public class Character : Token
     // refill character's stamina
     public void refillStamina() {
         this.stamina = this.stats.maxStamina;
+        this.action = true;
     }
 
     // calculate reach of a character
@@ -39,7 +41,7 @@ public class Character : Token
         animator.Select();
         //Debug.Log("Selected");
         //If selected character has no stamina or is from the other team
-        if (this.stamina == 0 || team != GameManager.currentTeam) return;
+        if (this.stamina == 0 || team != GameManager.currentTeam || this.action == false) return;
 
         GridManager gridM = GridManager.instance;
 
@@ -47,10 +49,16 @@ public class Character : Token
 
         foreach (GridManager.GridPoint point in reach.grid)
         {
-            point.hex.changeState("reach");
+            if(point.hex.state.name == "guard"){
+                GuardedGridState ggs = (GuardedGridState) point.hex.state;
+                Debug.Log(ggs.team);
+                //TODO: Change to a guarded reach state
+            }
+            else
+                point.hex.changeState("reach");
         }
 
-        reach = gridM.getReach(place, this.stamina);
+        reach = gridM.getReach(place, this.stamina, "guard");
         foreach (GridManager.GridPoint point in reach.grid) {
             Character c = (Character)point.hex.token;
             if (point.hex.state.name == "token" && c.team != this.team)
@@ -122,7 +130,13 @@ public class Character : Token
         reach = gridM.getReach(destiny, stamina, "token", "enemy", "ally");
         foreach (GridManager.GridPoint point in reach.grid)
         {
-            point.hex.changeState("reach");
+            if(point.hex.state.name == "guard"){
+                GuardedGridState ggs = (GuardedGridState) point.hex.state;
+                Debug.Log(ggs.team);
+                //TODO: Change to a guarded reach state
+            }
+            else
+                point.hex.changeState("reach");
         }
 
         reach = gridM.getReach(destiny, this.stamina);
@@ -199,4 +213,6 @@ public class Character : Token
             return false;
         return true;
     }
+
+    public virtual void EnableAction() { }
 }

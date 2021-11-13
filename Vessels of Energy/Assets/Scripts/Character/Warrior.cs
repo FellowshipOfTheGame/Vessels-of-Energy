@@ -16,6 +16,7 @@ public class Warrior : Character {
             Debug.Log("Character don't have stats!!!");
         }
         this.HP = stats.maxHP;
+        this.stamina = stats.maxStamina;
     }
 
     public override void Action()
@@ -64,6 +65,10 @@ public class Warrior : Character {
     {
         if (checkRange(1, 1))
         {
+            // If Artificer used Overwatch, cancels ability and let him move again
+            if(!target.action)
+                target.EnableAction();
+
             //Find a way to select another character
             locked = false;
             target.Select();
