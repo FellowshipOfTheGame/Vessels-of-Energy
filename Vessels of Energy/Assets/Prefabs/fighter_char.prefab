@@ -125,6 +125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0c6ffb42f945e94fb406c2e16defdb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isFrozen: 0
   place: {fileID: 0}
   animator: {fileID: 6351760542578990212}
   attack: {fileID: 6756862905065300081}

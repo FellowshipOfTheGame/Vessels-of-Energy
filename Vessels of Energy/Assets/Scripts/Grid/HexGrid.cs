@@ -29,6 +29,8 @@ public class HexGrid : RaycastTarget {
         stateList.Add( new TokenGridState() );
         stateList.Add( new ReachGridState() );
         stateList.Add( new EnemyGridState() );
+        stateList.Add( new FrozenGridState());
+
 
         state = State("default");
 

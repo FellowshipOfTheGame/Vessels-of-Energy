@@ -30,7 +30,7 @@ public class Sorcerer : Character
             if (this.stamina >= ATTACK_COST && target.HP >= 0)
             {
                 target.place.changeState("enemy");
-                this.MediumDistanceAttack(target, minRange, maxRange);
+                this.FrozenAttack(target, minRange, maxRange);
             }
             else
             {
@@ -55,6 +55,17 @@ public class Sorcerer : Character
         {
             this.stamina -= Character.ATTACK_COST;
             target.HP -= Character.ATTACK_COST;
+        }
+    }
+    public void FrozenAttack(Character target, int minRange, int maxRange)
+    {
+        Debug.Log("Frozen Distance Attack");
+        if (checkRange(minRange, maxRange))
+        {
+            this.stamina -= Character.ATTACK_COST;
+            target.isFrozen = true;
+            target.place.changeState("frozen");
+
         }
     }
 }

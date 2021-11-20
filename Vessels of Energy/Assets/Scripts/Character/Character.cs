@@ -9,6 +9,8 @@ public class Character : Token {
     [HideInInspector] public Attack attack;
     public const int ATTACK_COST = 3;
 
+   
+
     [Space(5)]
 
     public int dexterity;
@@ -69,7 +71,7 @@ public class Character : Token {
 
         GridManager gridM = GridManager.instance;
 
-        reach = gridM.getReach(place, stamina, "token", "enemy");
+        reach = gridM.getReach(place, stamina, "token", "enemy","frozen");
 
         foreach (GridManager.GridPoint point in reach.grid) {
             point.hex.changeState("reach");
@@ -108,36 +110,40 @@ public class Character : Token {
     }
 
     public override void OnMove(GridManager.Grid path, HexGrid destiny) {
-        base.OnMove(path, destiny);
-        if (reach == null) return;
+        if (!isFrozen)
+        {
 
-        int qtd = path.grid.Count;
+            base.OnMove(path, destiny);
+            if (reach == null) return;
 
-        foreach (GridManager.GridPoint point in reach.grid) {
-            if (point.hex.state.name == "enemy")
-                point.hex.changeState("token");
+            int qtd = path.grid.Count;
 
-            if (point.hex.state.name == "reach")
-                point.hex.changeState("default");
-        }
+            foreach (GridManager.GridPoint point in reach.grid) {
+                if (point.hex.state.name == "enemy")
+                    point.hex.changeState("token");
 
-        stamina -= qtd;
-        GridManager gridM = GridManager.instance;
-        reach = gridM.getReach(destiny, stamina, "token", "enemy");
+                if (point.hex.state.name == "reach")
+                    point.hex.changeState("default");
+            }
 
-        foreach (GridManager.GridPoint point in reach.grid) {
-            point.hex.changeState("reach");
-        }
+            stamina -= qtd;
+            GridManager gridM = GridManager.instance;
+            reach = gridM.getReach(destiny, stamina, "token", "enemy","frozen");
 
-        reach = gridM.getReach(destiny, stamina);
-        foreach (GridManager.GridPoint point in reach.grid) {
-            Character c = (Character)point.hex.token;
-            if (point.hex.state.name == "token" && c.team != this.team)
-                point.hex.changeState("enemy");
-        }
+            foreach (GridManager.GridPoint point in reach.grid) {
+                point.hex.changeState("reach");
+            }
 
-        if (stamina == 0) {
-            locked = false;
+            reach = gridM.getReach(destiny, stamina);
+            foreach (GridManager.GridPoint point in reach.grid) {
+                Character c = (Character)point.hex.token;
+                if (point.hex.state.name == "token" && c.team != this.team)
+                    point.hex.changeState("enemy");
+            }
+
+            if (stamina == 0) {
+                locked = false;
+            }
         }
     }
 
