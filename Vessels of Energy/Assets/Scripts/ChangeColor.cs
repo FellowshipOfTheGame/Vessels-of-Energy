@@ -23,8 +23,14 @@ public class ChangeColor : MonoBehaviour {
 
     // Start is called before the first frame update
     public void UpdateColors(int team) {
+        if (team >= colors.Length) return;
+
         for(int i = 0; i < mesh.Length; i++) {
             foreach (SpriteRenderer piece in mesh[i].pieces) {
+                if (i >= colors[team].color.Length) {
+                    Debug.Log(colors[team].name + " brush doesn't have a color " + i.ToString());
+                    break;
+                }
                 piece.color = colors[team].color[i];
             }
         }
