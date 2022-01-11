@@ -6,7 +6,7 @@ public class CoOpGridState : HexGridState
 {
     public static Character target = null;
     public override string name { get; set; } = "coop";
-    GridManager.Grid path = null;
+    private GridManager.Grid path = null;
 
     public override void OnEnter(HexGrid hexagon)
     {
@@ -59,7 +59,7 @@ public class CoOpGridState : HexGridState
         else if (mouseButton == 0)
         {
             //hexagon.token.OnTarget();
-            Token.selected.Move(path);
+            Token.selected.Move(hexagon);
         }
 
 
