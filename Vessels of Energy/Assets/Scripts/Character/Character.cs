@@ -9,9 +9,9 @@ public class Character : Token
     public Puppet animator;
     [HideInInspector] public Attack attack;
     public const int ATTACK_COST = 3;
-    public const int EVADE_COST  = 3;
+    public const int EVADE_COST = 3;
 
-   
+
 
     [Space(5)]
 
@@ -27,12 +27,14 @@ public class Character : Token
     GridManager.Grid reach = null;
     GridManager.Grid range = null;
 
-    void Awake() {
+    void Awake()
+    {
         if (animator) color = animator.GetComponent<ChangeColor>().GetColor(team);
     }
 
     // refill character's stamina
-    public void refillStamina() {
+    public void refillStamina()
+    {
         this.stamina = this.stats.maxStamina;
         this.action = true;
     }
@@ -47,12 +49,13 @@ public class Character : Token
 
         GridManager gridM = GridManager.instance;
 
-        reach = gridM.getReach(place, stamina, "token", "enemy", "ally");
+        reach = gridM.getReach(place, stamina, "token", "enemy", "ally", "frozen");
 
         foreach (GridManager.GridPoint point in reach.grid)
         {
-            if(point.hex.state.name == "guard"){
-                GuardedGridState ggs = (GuardedGridState) point.hex.state;
+            if (point.hex.state.name == "guard")
+            {
+                GuardedGridState ggs = (GuardedGridState)point.hex.state;
                 Debug.Log(ggs.team);
                 //TODO: Change to a guarded reach state
             }
@@ -61,7 +64,8 @@ public class Character : Token
         }
 
         reach = gridM.getReach(place, this.stamina, "guard");
-        foreach (GridManager.GridPoint point in reach.grid) {
+        foreach (GridManager.GridPoint point in reach.grid)
+        {
             Character c = (Character)point.hex.token;
             if (point.hex.state.name == "token" && c.team != this.team)
                 point.hex.changeState("enemy");
@@ -104,7 +108,8 @@ public class Character : Token
         target = null;
     }
 
-    public override void OnMove(GridManager.Grid path, HexGrid destiny) {
+    public override void OnMove(GridManager.Grid path, HexGrid destiny)
+    {
         if (!isFrozen)
         {
 
@@ -112,50 +117,53 @@ public class Character : Token
             if (reach == null) return;
 
             int qtd = path.grid.Count;
-        foreach (GridManager.GridPoint point in reach.grid)
-        {
-            if (point.hex.state.name == "enemy")
-                point.hex.changeState("token");
+            foreach (GridManager.GridPoint point in reach.grid)
+            {
+                if (point.hex.state.name == "enemy")
+                    point.hex.changeState("token");
 
-            if (point.hex.state.name == "ally")
-                point.hex.changeState("token");
+                if (point.hex.state.name == "ally")
+                    point.hex.changeState("token");
 
-            if (point.hex.state.name == "coop")
-                point.hex.changeState("reach");
+                if (point.hex.state.name == "coop")
+                    point.hex.changeState("reach");
 
-            if (point.hex.state.name == "reach")
-                point.hex.changeState("default");
-        }
-
-        this.stamina -= qtd;
-        GridManager gridM = GridManager.instance;
-
-        reach = gridM.getReach(destiny, stamina, "token", "enemy", "ally");
-        foreach (GridManager.GridPoint point in reach.grid)
-        {
-            if(point.hex.state.name == "guard"){
-                GuardedGridState ggs = (GuardedGridState) point.hex.state;
-                Debug.Log(ggs.team);
-                //TODO: Change to a guarded reach state
+                if (point.hex.state.name == "reach")
+                    point.hex.changeState("default");
             }
-            else
-                point.hex.changeState("reach");
-        }
 
-        reach = gridM.getReach(destiny, this.stamina);
-        foreach (GridManager.GridPoint point in reach.grid) {
-            Character c = (Character)point.hex.token;
-            if (point.hex.state.name == "token" && c.team != this.team)
-                point.hex.changeState("enemy");
-            else if (point.hex.state.name == "token" && c.team == this.team)
-                point.hex.changeState("ally");
-        }
+            this.stamina -= qtd;
+            GridManager gridM = GridManager.instance;
 
-        if (this.stamina == 0) {
-            locked = false;
+            reach = gridM.getReach(destiny, stamina, "token", "enemy", "ally");
+            foreach (GridManager.GridPoint point in reach.grid)
+            {
+                if (point.hex.state.name == "guard")
+                {
+                    GuardedGridState ggs = (GuardedGridState)point.hex.state;
+                    Debug.Log(ggs.team);
+                    //TODO: Change to a guarded reach state
+                }
+                else
+                    point.hex.changeState("reach");
+            }
+
+            reach = gridM.getReach(destiny, this.stamina);
+            foreach (GridManager.GridPoint point in reach.grid)
+            {
+                Character c = (Character)point.hex.token;
+                if (point.hex.state.name == "token" && c.team != this.team)
+                    point.hex.changeState("enemy");
+                else if (point.hex.state.name == "token" && c.team == this.team)
+                    point.hex.changeState("ally");
+            }
+
+            if (this.stamina == 0)
+            {
+                locked = false;
+            }
         }
     }
-
     //After using using an Action, updates reach for selected
     public override void updateReach()
     {
