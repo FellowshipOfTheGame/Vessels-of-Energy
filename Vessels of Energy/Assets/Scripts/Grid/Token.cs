@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Token : MonoBehaviour
-{
-
+public class Token : MonoBehaviour {
+    public bool isFrozen = false;
     public static Token selected = null;
     public static bool locked = false;
     [HideInInspector] public HexGrid place;

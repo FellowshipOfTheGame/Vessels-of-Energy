@@ -11,6 +11,8 @@ public class Character : Token
     public const int ATTACK_COST = 3;
     public const int EVADE_COST  = 3;
 
+   
+
     [Space(5)]
 
     public Weapon weapon;
@@ -102,13 +104,14 @@ public class Character : Token
         target = null;
     }
 
-    public override void OnMove(GridManager.Grid path, HexGrid destiny)
-    {
-        base.OnMove(path, destiny);
-        if (reach == null) return;
+    public override void OnMove(GridManager.Grid path, HexGrid destiny) {
+        if (!isFrozen)
+        {
 
-        int qtd = path.grid.Count;
+            base.OnMove(path, destiny);
+            if (reach == null) return;
 
+            int qtd = path.grid.Count;
         foreach (GridManager.GridPoint point in reach.grid)
         {
             if (point.hex.state.name == "enemy")
