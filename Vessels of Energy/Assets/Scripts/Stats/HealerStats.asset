@@ -12,14 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a954c1bbea1a414a9cb200f0dd3cf48, type: 3}
   m_Name: HealerStats
   m_EditorClassIdentifier: 
-  dexterity: 2
   strength: 0
+  dexterity: 2
   vitality: 0
   intelligence: 2
   perception: 1
-  willpower: 3
-  maxHP: 13
-  maxStamina: 16
+  willpower: 4
+  luck: 1
+  maxHP: 21
+  maxStamina: 14
   evasion: 7
-  defense: 2
-  resistence: 5
+  defense: 4
+  resistence: 8

@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a954c1bbea1a414a9cb200f0dd3cf48, type: 3}
-  m_Name: WarriorStats
+  m_Name: SorcererStats
   m_EditorClassIdentifier: 
-  strength: 4
-  dexterity: 2
-  vitality: 3
-  intelligence: 0
-  perception: 0
-  willpower: 0
+  strength: 0
+  dexterity: 1
+  vitality: 0
+  intelligence: 4
+  perception: 1
+  willpower: 3
   luck: 1
-  maxHP: 33
-  maxStamina: 10
-  evasion: 6
-  defense: 8
-  resistence: 4
+  maxHP: 0
+  maxStamina: 0
+  evasion: 0
+  defense: 0
+  resistence: 0

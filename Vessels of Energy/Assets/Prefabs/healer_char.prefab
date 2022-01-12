@@ -132,6 +132,7 @@ MonoBehaviour:
   stats: {fileID: 11400000, guid: 9f1f83074c00a3b4d8b4ec9019d1f59b, type: 2}
   HP: 0
   stamina: 0
+  action: 0
   team: 0
   color: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &6756862905065300081

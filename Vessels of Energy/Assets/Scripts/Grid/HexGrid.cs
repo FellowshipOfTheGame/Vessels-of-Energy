@@ -33,6 +33,7 @@ public class HexGrid : RaycastTarget
         stateList.Add(new EnemyGridState());
         stateList.Add(new AllyGridState());
         stateList.Add(new CoOpGridState());
+        stateList.Add(new GuardedGridState());
 
         state = State("default");
 

@@ -116,9 +116,8 @@ public class Attack : MonoBehaviour {
         DiceRoller.instance.Clear();
 
         // permitir contra ataque (reação) se o ataque errou
-        // TODO: Check if attack range allows counter
         if (missed) {
-            if (target.stamina >= Character.ATTACK_COST) {
+            if (target.stamina >= Character.ATTACK_COST && target.checkRange(target.weapon.minRange, target.weapon.maxRange)) {
                 QTE.instance.startQTE("counter", target, () => {
                     Debug.Log("COUNTER!");
                     self.animator.TurnAround();
