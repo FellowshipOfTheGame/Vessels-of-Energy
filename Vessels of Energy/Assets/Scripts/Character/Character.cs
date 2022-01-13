@@ -25,6 +25,7 @@ public class Character : Token {
     [HideInInspector] public Color color;
     GridManager.Grid reach = null;
     GridManager.Grid range = null;
+    bool used = false;
 
     void Awake() {
         if (animator) color = animator.GetComponent<ChangeColor>().GetColor(team);
@@ -38,8 +39,13 @@ public class Character : Token {
 
     // calculate reach of a character
     public override void OnSelect() {
+        if (used) {
+            Unselect();
+            return;
+        }
+
         animator.Select();
-        //Debug.Log("Selected");
+        Debug.Log(Colored("Selected"));
         //If selected character has no stamina or is from the other team
         if (this.stamina == 0 || team != GameManager.currentTeam || this.action == false) return;
 
@@ -136,8 +142,19 @@ public class Character : Token {
             }
         }
     }
+
+    public override void OnFinishAction() {
+        if (!used) {
+            updateReach();
+        }
+    }
+    public override void OnTurnStart() { used = false; }
+
+    public void FinishTurn() { used = true; }
+
+
     //After using using an Action, updates reach for selected
-    public override void updateReach() {
+    public void updateReach() {
         if (reach == null) return;
         foreach (GridManager.GridPoint point in reach.grid) {
             if (point.distance > this.stamina) {
@@ -190,4 +207,11 @@ public class Character : Token {
     }
 
     public virtual void EnableAction() { }
+
+    public string Colored(string text) {
+        //Colored Debug.Log: Debug.Log("<color=#0000FF>colored text</color> normal text");
+        string _prefix = $"<color=#{ColorUtility.ToHtmlStringRGB(color)}>";
+        string _suffix = "</color>";
+        return _prefix + name + ": " + _suffix + text;
+    }
 }

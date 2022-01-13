@@ -68,8 +68,13 @@ public class HexHandler : MonoBehaviour {
         TurnStart += () => { newEffect.OnTurnStart(hex); };
         TurnEnd += () => { newEffect.OnTurnEnd(hex); };
 
-        //running effect enter
-        newEffect.OnAdded(hex);
+        //initializing effect
+        GameObject newEffectArt = Instantiate(hex.art.transform.GetChild(0).gameObject, hex.art.transform);
+        newEffectArt.SetActive(true);
+        newEffectArt.transform.position = hex.art.transform.GetChild(0).position;
+        newEffect.Setup(hex, null, newEffectArt);
+
+        Debug.Log(effectName + " effect added...");
         return newEffect;
     }
 

@@ -80,9 +80,11 @@ public class HexGrid : RaycastTarget {
 
     public virtual void OnTurnStart() {
         handler.TurnStart();
+        token.OnTurnStart();
     }
     public virtual void OnTurnEnd() {
         handler.TurnEnd();
+        token.OnTurnEnd();
     }
 
 

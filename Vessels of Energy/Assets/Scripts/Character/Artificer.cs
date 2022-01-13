@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Artificer : Character {
-    public const int OVERWATCH_COST = 3;
+    public const int OVERWATCH_COST = 2;
     public const int OVERWATCH_MIN_RANGE = 1;
     public const int OVERWATCH_MAX_RANGE = 5;
 
@@ -24,7 +24,7 @@ public class Artificer : Character {
 
     public override void Action() {
         //If selected and target are from different teams
-        if (target.team != GameManager.currentTeam) {
+        if (target.team != team) {
             if (this.stamina >= ATTACK_COST && target.HP >= 0) {
                 target.place.changeState("enemy");
                 this.Attack(target, this.weapon.minRange, this.weapon.maxRange);
@@ -33,9 +33,9 @@ public class Artificer : Character {
         }
 
         //If selected and target are from the same team
-        else if (target.team == GameManager.currentTeam) {
+        else if (target.team == team) {
             if (this.stamina >= OVERWATCH_COST) {
-                this.Overwatch(target, OVERWATCH_MIN_RANGE, OVERWATCH_MAX_RANGE);
+                this.Overwatch(target.place, OVERWATCH_MIN_RANGE, OVERWATCH_MAX_RANGE);
                 Debug.Log("Overwatch used...");
             } else
                 Debug.Log("Not Enough Stamina");
@@ -57,14 +57,14 @@ public class Artificer : Character {
         return 0;
     }
 
-    public int Overwatch(Character target, int minRange, int maxRange) {
-        Debug.Log("Overwatching Grid");
+    public int Overwatch(HexGrid target, int minRange, int maxRange) {
+        Debug.Log(Colored("Overwatching Grid"));
         if (checkRange(minRange, maxRange)) {
             this.stamina -= OVERWATCH_COST;
             this.action = false;
 
             GridManager gridM = GridManager.instance;
-            GridManager.Grid reach = gridM.getReach(target.place, 1);
+            GridManager.Grid reach = gridM.getReach(target, 1);
             overwatchArea = reach;
             overwatch = new List<HexGridEffect>();
             foreach (GridManager.GridPoint point in reach.grid) {
@@ -73,7 +73,7 @@ public class Artificer : Character {
                 }
             }
 
-            this.Unselect();
+            this.FinishTurn();
         }
 
         return 0;

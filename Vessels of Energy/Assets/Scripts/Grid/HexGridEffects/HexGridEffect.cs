@@ -3,13 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class HexGridEffect {
-    public virtual string name { get; set; } = "effect";
+    public virtual string name { get; set; } = "none";
     public HexGrid.ColorSet colorSet;
-    public Token user = null;
     HexGrid hexagon;
+    public Token user = null;
+    SpriteRenderer art;
+
+    public void Setup(HexGrid hexagon, Token user, GameObject representation) {
+        this.hexagon = hexagon;
+        this.colorSet = colorSet = hexagon.GetColors(name);
+        this.user = user;
+        representation.name = this.name + "_effect";
+        this.art = representation.GetComponent<SpriteRenderer>();
+        OnAdded(hexagon);
+    }
 
     public virtual void OnAdded(HexGrid hexagon) {
-        this.hexagon = hexagon;
         colorSet = hexagon.GetColors("default");
         changeColor(hexagon, 0);
     }
@@ -27,7 +36,7 @@ public class HexGridEffect {
     public virtual void OnTurnStart(HexGrid hexagon) { }
     public virtual void OnTurnEnd(HexGrid hexagon) { }
 
-    public void changeColor(HexGrid hexagon, int color) { hexagon.art.color = colorSet.colors[color]; }
+    public void changeColor(HexGrid hexagon, int color) { art.color = colorSet.colors[color]; }
 
     public void Cancel() { hexagon.removeEffect(this); }
 }
