@@ -9,133 +9,108 @@ public class GameManager : MonoBehaviour {
     public SceneLoader sceneLoader;
 
     public List<Character> unitsList;
-    [HideInInspector] public List<Character> teamAList;
-    [HideInInspector] public List<Character> teamBList;
 
-    public static char currentTeam;
+    public static Team currentTeam;
     [HideInInspector] public bool endTurn;
     [HideInInspector] public bool newTurn;
 
     public VictoryScreen victoryScreen;
+    public Team[] teams;
 
-    private void Awake () {
-        if ( instance != null && instance != this )
-            Destroy(this.gameObject);
-        else
-            instance = this;
+    class Crew {
+        public Team team;
+        public List<Character> members;
+        public Crew(Team team) {
+            this.team = team;
+            members = new List<Character>();
+        }
     }
 
-    void Start()
-    {
-        teamAList = new List<Character>();
-        teamBList = new List<Character>();
+    List<Crew> crews;
 
-        //Get Character's team and add it to its team List
-        foreach (Character c in unitsList)
-        {
-            if (c.team == 'A')
-            {
-                teamAList.Add(c);
-            }
-            else if (c.team == 'B')
-            {
-                teamBList.Add(c);
-            }
-        }
 
-        currentTeam = 'A';
-        newTurn = true;
+    private void Awake() {
+        if (instance != null && instance != this) Destroy(this.gameObject);
+        else instance = this;
+
+        //setting things up
         Gyroscope.cam = Camera.main.transform;
+        crews = new List<Crew>();
+        foreach (Team t in teams) {
+            Crew crew = new Crew(t);
+            crews.Add(crew);
+
+            foreach (Character c in unitsList) {
+                if (c.team == t) crew.members.Add(c);
+            }
+        }
     }
 
-    void Update()
-    {
-        //At the start of a new turn
-        if (newTurn) {
-            resetStamina();
-            newTurn = false;
-            HUDManager.instance.Clear();
-            foreach (Character unit in unitsList) unit.place.OnTurnStart();
+    void Start() { ResetGame(); }
+    public void ResetGame() { StartTurn(teams[0]); }
+
+    public void StartTurn(Team t) {
+        currentTeam = t;
+        foreach (HexGrid hex in GridManager.arena) hex.OnTurnStart();
+    }
+
+    public void EndTurn() {
+        //call all end turn events
+        foreach (HexGrid hex in GridManager.arena) hex.OnTurnEnd();
+
+        //clean up everything
+        if (Token.selected != null) Token.selected.Unselect();
+        if (Character.target != null) Character.target.Unselect();
+        HUDManager.instance.Clear();
+
+        //calculate next team
+        for (int i = 0; i < teams.Length; i++) {
+            if (teams[i] == currentTeam) {
+                int next = (i + 1) % teams.Length;
+                StartTurn(teams[next]);
+                return;
+            }
         }
+    }
 
-        if (endTurn) {
-            if ( Token.selected != null ) {
-                Token.selected.Unselect();
-            }
-            if (Character.target != null) {
-                Character.target.Unselect();
-            }
-
-            switch (currentTeam) {
-                case 'A':
-                    currentTeam = 'B';
-                    break;
-                case 'B':
-                    currentTeam = 'A';
-                    break;
-                default:
-                    Debug.Log("Team does not exist");
-                    break;
-            }
-            newTurn = true;
-            endTurn = false;
-        }
-
+    void Update() {
         //Presing space ends the current turn
-        if (Input.GetKeyDown(KeyCode.Space))
-            endTurn = true;
-
+        if (Input.GetKeyDown(KeyCode.Space)) EndTurn();
     }
 
-    public void resetStamina()
-    {
-        if (currentTeam == 'A')
-        {
-            for (int i = 0; i < teamAList.Count; i++)
-            {
-                teamAList[i].refillStamina();
-            }
-        }
-        else
-        {
-            for (int i = 0; i < teamBList.Count; i++)
-            {
-                teamBList[i].refillStamina();
-            }
+    public void CheckEndGame() {
+        Crew winners = getWinners();
+
+        if (winners != null) {
+            Debug.Log(winners.team.name + " is the Winner!");
+            victoryScreen.DisplayTeam(winners.members);
+        } else {
+            Debug.Log("No Winner Yet...");
         }
     }
 
     //Checks if there is a winner after each attack/counter
-    public void checkWinner() {
+    Crew getWinners() {
+        Crew winner = null;
 
-        //If all characters in team A are dead, B is the winner
-        bool endGame = true;
-        foreach (Character c in teamAList){
-            if ( c.HP > 0 ) {
-                endGame = false;
-                break;
+        foreach (Crew crew in crews) {
+            bool dead = true;
+            foreach (Character c in crew.members) {
+                if (c.HP > 0) {
+                    dead = false;
+                    break;
+                }
+            }
+
+            if (!dead) {
+                if (winner == null)
+                    winner = crew;
+                else
+                    return null;
             }
         }
-        if (endGame) {
-            Debug.Log("B is the Winner");
-            victoryScreen.DisplayTeam(teamBList);
-            return;
-        }
 
-        //If all characters in team B are dead, A is the winner
-        endGame = true;
-        foreach (Character c in teamBList){
-            if ( c.HP > 0 ) {
-                endGame = false;
-                break;
-            }
-        }
-        if ( endGame ) {
-            Debug.Log("A is the Winner");
-            victoryScreen.DisplayTeam(teamAList);
-            return;
-        }
-
-        Debug.Log("There is no winner yet...");
+        //suport for future draws
+        return winner;
     }
 }

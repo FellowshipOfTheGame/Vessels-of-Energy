@@ -32,7 +32,7 @@ public class Attack : MonoBehaviour {
 
         extra_evasion = 0;
 
-        if(target.stamina >= Character.EVADE_COST){
+        if (target.stamina >= Character.EVADE_COST) {
             QTE.instance.startQTE("evasion", target, () => {
                 Debug.Log("EVASION!");
                 target.stamina -= Character.EVADE_COST;
@@ -71,11 +71,10 @@ public class Attack : MonoBehaviour {
             //or
             //damage = 1d12 (Weapon) + 1d(2*intelligence+4)
             int damage;
-            if(self.weapon.damagetype == 'p'){
+            if (self.weapon.damagetype == 'p') {
                 Debug.Log("Physical Attack!");
                 damage = DiceRoller.instance.Roll(self, self.weapon.baseDamageDice, 2 * self.stats.strength + 4) - target.stats.defense;
-            }
-            else{ // damagetype == 'm'
+            } else { // damagetype == 'm'
                 Debug.Log("Magic Attack!");
                 damage = DiceRoller.instance.Roll(self, self.weapon.baseDamageDice, 2 * self.stats.intelligence + 4) - target.stats.resistence;
             }
@@ -134,7 +133,7 @@ public class Attack : MonoBehaviour {
                 Reset();
             }
         } else {
-            GameManager.instance.checkWinner();
+            GameManager.instance.CheckEndGame();
             Reset();
         }
         self.animator.RetreatAction();

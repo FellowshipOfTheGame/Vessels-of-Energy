@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TokenGridState : HexGridState {
     public override string name { get; set; } = "token";
-    char team = '-';
+    Team team = null;
 
     public override void OnEnter(HexGrid hexagon) {
         colorSet = hexagon.GetColors("token");

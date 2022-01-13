@@ -7,7 +7,7 @@ public class GuardedGridState : HexGridState {
     public static Character user = null;
     public override string name { get; set; } = "guard";
     GridManager.Grid path = null;
-    public char team = '-';
+    public Team team = null;
 
     public override void OnEnter(HexGrid hexagon) {
         colorSet = hexagon.GetColors("guard");

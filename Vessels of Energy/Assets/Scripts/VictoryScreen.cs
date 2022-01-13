@@ -52,7 +52,7 @@ public class VictoryScreen : MonoBehaviour {
                  teamLabel.text = "VITÓRIA!";
                  break;
          }*/
-        Color color = animator.GetComponent<ChangeColor>().GetColor(winners[0].team);
+        Color color = winners[0].team.color[0];
         teamHeader.color = color;
         teamFocus.color = color;
         teamLabel.outlineColor = color;

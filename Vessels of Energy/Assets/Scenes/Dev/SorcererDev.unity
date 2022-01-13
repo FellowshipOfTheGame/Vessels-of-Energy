@@ -5514,8 +5514,9 @@ PrefabInstance:
     - target: {fileID: 7168464722739318248, guid: e3ab5b9bafa832e4c9a48c96fb15649a,
         type: 3}
       propertyPath: team
-      value: 65
-      objectReference: {fileID: 0}
+      value: 
+      objectReference: {fileID: 11400000, guid: 2b55c4d0efe3e184fa7fc341738cd7c0,
+        type: 2}
     - target: {fileID: 7168464722739318248, guid: e3ab5b9bafa832e4c9a48c96fb15649a,
         type: 3}
       propertyPath: HP
@@ -6570,8 +6571,9 @@ PrefabInstance:
     - target: {fileID: 1787647075506354253, guid: 05dea36a192f0fb4a94455df46d58bd5,
         type: 3}
       propertyPath: team
-      value: 66
-      objectReference: {fileID: 0}
+      value: 
+      objectReference: {fileID: 11400000, guid: 1d934f8c75c134b4b811f41e72713cd8,
+        type: 2}
     - target: {fileID: 1787647075506354253, guid: 05dea36a192f0fb4a94455df46d58bd5,
         type: 3}
       propertyPath: weapon
@@ -14396,8 +14398,9 @@ PrefabInstance:
     - target: {fileID: 1787647075506354253, guid: 05dea36a192f0fb4a94455df46d58bd5,
         type: 3}
       propertyPath: team
-      value: 66
-      objectReference: {fileID: 0}
+      value: 
+      objectReference: {fileID: 11400000, guid: 1d934f8c75c134b4b811f41e72713cd8,
+        type: 2}
     - target: {fileID: 1787647075506354253, guid: 05dea36a192f0fb4a94455df46d58bd5,
         type: 3}
       propertyPath: weapon
@@ -15917,8 +15920,9 @@ PrefabInstance:
     - target: {fileID: 1787647075506354253, guid: 05dea36a192f0fb4a94455df46d58bd5,
         type: 3}
       propertyPath: team
-      value: 66
-      objectReference: {fileID: 0}
+      value: 
+      objectReference: {fileID: 11400000, guid: 1d934f8c75c134b4b811f41e72713cd8,
+        type: 2}
     - target: {fileID: 1787647075506354253, guid: 05dea36a192f0fb4a94455df46d58bd5,
         type: 3}
       propertyPath: weapon
@@ -16631,11 +16635,12 @@ MonoBehaviour:
   - {fileID: 1525431377}
   - {fileID: 770185698}
   - {fileID: 1903545768}
-  teamAList: []
-  teamBList: []
   endTurn: 0
   newTurn: 1
   victoryScreen: {fileID: 1954169543}
+  teams:
+  - {fileID: 11400000, guid: 2b55c4d0efe3e184fa7fc341738cd7c0, type: 2}
+  - {fileID: 11400000, guid: 1d934f8c75c134b4b811f41e72713cd8, type: 2}
 --- !u!4 &978492791
 Transform:
   m_ObjectHideFlags: 0
@@ -20173,6 +20178,12 @@ PrefabInstance:
       propertyPath: stats
       value: 
       objectReference: {fileID: 11400000, guid: f867d35427956434fa121949f1618f02,
+        type: 2}
+    - target: {fileID: 1787647075506354253, guid: 05dea36a192f0fb4a94455df46d58bd5,
+        type: 3}
+      propertyPath: team
+      value: 
+      objectReference: {fileID: 11400000, guid: 2b55c4d0efe3e184fa7fc341738cd7c0,
         type: 2}
     - target: {fileID: 6351760540714064167, guid: 05dea36a192f0fb4a94455df46d58bd5,
         type: 3}
@@ -25399,7 +25410,7 @@ MonoBehaviour:
   HP: 10
   stamina: 10
   action: 0
-  team: 65
+  team: {fileID: 11400000, guid: 2b55c4d0efe3e184fa7fc341738cd7c0, type: 2}
   color: {r: 0, g: 0, b: 0, a: 0}
   bullet: {fileID: 7564036087123806711, guid: 4474db52d2f98a44d91133fbccf50f27, type: 3}
 --- !u!1001 &1907066152
@@ -29449,6 +29460,12 @@ PrefabInstance:
       propertyPath: stats
       value: 
       objectReference: {fileID: 11400000, guid: f867d35427956434fa121949f1618f02,
+        type: 2}
+    - target: {fileID: 1787647075506354253, guid: 05dea36a192f0fb4a94455df46d58bd5,
+        type: 3}
+      propertyPath: team
+      value: 
+      objectReference: {fileID: 11400000, guid: 2b55c4d0efe3e184fa7fc341738cd7c0,
         type: 2}
     - target: {fileID: 6351760540595462178, guid: 05dea36a192f0fb4a94455df46d58bd5,
         type: 3}

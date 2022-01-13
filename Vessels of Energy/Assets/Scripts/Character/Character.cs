@@ -21,20 +21,14 @@ public class Character : Token {
     public bool action;
     [Space(5)]
 
-    public char team;
+    public Team team;
     [HideInInspector] public Color color;
     GridManager.Grid reach = null;
     GridManager.Grid range = null;
     bool used = false;
 
     void Awake() {
-        if (animator) color = animator.GetComponent<ChangeColor>().GetColor(team);
-    }
-
-    // refill character's stamina
-    public void refillStamina() {
-        this.stamina = this.stats.maxStamina;
-        this.action = true;
+        if (animator) color = team.color[0];
     }
 
     // calculate reach of a character
@@ -148,7 +142,11 @@ public class Character : Token {
             updateReach();
         }
     }
-    public override void OnTurnStart() { used = false; }
+    public override void OnTurnStart() {
+        this.stamina = this.stats.maxStamina;
+        this.action = true;
+        this.used = false;
+    }
 
     public void FinishTurn() { used = true; }
 

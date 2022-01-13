@@ -22,6 +22,7 @@ public class GridManager : MonoBehaviour {
     }
 
     public static GridManager instance;
+    public static HexGrid[] arena;
 
     string[] blocks;
 
@@ -31,6 +32,7 @@ public class GridManager : MonoBehaviour {
 
         Token.selected = null;
         Token.locked = false;
+        arena = FindObjectsOfType<HexGrid>();
     }
 
     //returns all the hex on reach given a origin and a distance
