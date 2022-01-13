@@ -1,13 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class HexGrid : RaycastTarget
-{
-
-    public HexGridState state;
-
-    List<HexGridState> stateList;
+public class HexGrid : RaycastTarget {
+    HexHandler handler;
 
     public SpriteRenderer art;
     public ColorSet[] pallete;
@@ -20,108 +15,91 @@ public class HexGrid : RaycastTarget
     public Token token;
     public List<HexGrid> neighbors;
 
-    public override void Awake()
-    {
+    public override void Awake() {
         base.Awake();
         neighbors = new List<HexGrid>();
-
-        //initialize states
-        stateList = new List<HexGridState>();
-        stateList.Add(new HexGridState());
-        stateList.Add(new TokenGridState());
-        stateList.Add(new ReachGridState());
-        stateList.Add(new EnemyGridState());
-        stateList.Add(new AllyGridState());
-        stateList.Add(new CoOpGridState());
-        stateList.Add(new GuardedGridState());
-        stateList.Add( new FrozenGridState());
-
-
-        state = State("default");
+        handler = GetComponent<HexHandler>();
+        handler.Initialize();
 
         //detect grid neighbors
         Vector3 point1 = this.transform.position + Vector3.up * radarHeight;
         Vector3 point2 = this.transform.position + Vector3.down * radarHeight;
         Collider[] detected = Physics.OverlapCapsule(point1, point2, radarRadius, gridLayer);
-        foreach (Collider c in detected)
-        {
+        foreach (Collider c in detected) {
             RaycastCollider collider = c.GetComponent<RaycastCollider>();
-            if (collider != null && collider.target is HexGrid && collider.target != this)
-            {
+            if (collider != null && collider.target is HexGrid && collider.target != this) {
                 neighbors.Add((HexGrid)collider.target);
             }
         }
 
         //detect token on top
         detected = Physics.OverlapSphere(this.transform.position, 0.05f, tokenLayer);
-        foreach (Collider c in detected)
-        {
+        foreach (Collider c in detected) {
             Token t = c.transform.GetComponent<Token>();
             token = t;
-            if (t != null)
-            {
-                state = State("token");
+            if (t != null) {
+                changeState("token");
                 t.place = this;
                 t.transform.position = this.transform.position;
                 break;
             }
         }
-
-        state.OnEnter(this);
     }
 
-    public void changeState(string stateName)
-    {
-        HexGridState newState = State(stateName);
-        if (newState == null) return;
-
-        state.OnExit(this);
-        state = newState;
-        state.OnEnter(this);
-    }
-
-    HexGridState State(string name)
-    {
-        foreach (HexGridState s in stateList)
-        {
-            if (s.name == name)
-                return s;
+    public void setColor(int value) { handler.setColor(value); }
+    public void changeState(string stateName) { handler.changeState(stateName); }
+    public string getState() { return handler.state.name; }
+    public HexGridEffect addEffect(string effectName) { return handler.addEffect(effectName); }
+    public void removeEffect(HexGridEffect effect) { handler.removeEffect(effect); }
+    public bool hasEffect(string effectName) {
+        foreach (HexGridEffect e in handler.effects) {
+            if (e.name == effectName)
+                return true;
         }
-        Debug.Log(name + " state not found...");
-        return null;
+        return false;
     }
 
-    public override void OnPointerEnter()
-    {
+    public override void OnPointerEnter() {
         if (token != null && HUDManager.instance != null) HUDManager.instance.Show(token);
-        state.OnPointerEnter(this);
+        handler.PointerEnter();
     }
-    public override void OnPointerExit()
-    {
+    public override void OnPointerExit() {
         if (token != null && HUDManager.instance != null) HUDManager.instance.Hide(token);
-        state.OnPointerExit(this);
+        handler.PointerExit();
     }
-    public override void OnClick(int mouseButton) { state.OnClick(this, mouseButton); }
+    public override void OnClick(int mouseButton) {
+        switch (mouseButton) {
+            case 0:
+                handler.LeftClick();
+                break;
+            case 1:
+                handler.RightClick();
+                break;
+        }
+    }
 
-    public virtual void OnTurnStart() { state.OnTurnStart(this); }
-    public virtual void OnTurnEnd() { state.OnTurnEnd(this); }
+    public virtual void OnTurnStart() {
+        handler.TurnStart();
+    }
+    public virtual void OnTurnEnd() {
+        handler.TurnEnd();
+    }
+
+
+
 
     [System.Serializable]
-    public class ColorSet
-    {
+    public class ColorSet {
         public string label;
         public Color[] colors;
-        public ColorSet(string label, params Color[] colors)
-        {
+        public ColorSet(string label, params Color[] colors) {
             this.label = label;
             this.colors = colors;
         }
     }
 
-    public ColorSet GetColors(string name)
-    {
-        foreach (ColorSet colors in pallete)
-        {
+    public ColorSet GetColors(string name) {
+        foreach (ColorSet colors in pallete) {
             if (colors.label == name)
                 return colors;
         }

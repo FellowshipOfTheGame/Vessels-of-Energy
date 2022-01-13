@@ -117,7 +117,7 @@ public class GridManager : MonoBehaviour {
 
     bool isAvailable(HexGrid hex) {
         foreach (string state in blocks) {
-            if (hex.state.name == state)
+            if (hex.getState() == state || hex.hasEffect(state))
                 return false;
         }
 

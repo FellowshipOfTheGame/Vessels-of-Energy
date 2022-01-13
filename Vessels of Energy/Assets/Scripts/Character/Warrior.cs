@@ -9,34 +9,27 @@ public class Warrior : Character {
 
     void Start() {
 
-        if(this.stats != null){
+        if (this.stats != null) {
             this.stats.calculateStats();
-        }
-        else{
+        } else {
             Debug.Log("Character don't have stats!!!");
         }
         this.HP = stats.maxHP;
         this.stamina = stats.maxStamina;
     }
 
-    public override void Action()
-    {
+    public override void Action() {
         Debug.Log("Warrior Action");
         //If selected and target are from different teams
-        if (target.team != GameManager.currentTeam)
-        {
+        if (target.team != GameManager.currentTeam) {
             //If warrior has enough stamina and target has health
-            if (this.stamina >= ATTACK_COST && target.HP >= 0)
-            {
+            if (this.stamina >= ATTACK_COST && target.HP >= 0) {
                 target.place.changeState("enemy");
                 this.ShortDistanceAttack(target, this.weapon.minRange, this.weapon.maxRange);
             } else
                 Debug.Log("Not enough stamina");
-        }
-        else
-        {
-            if (this.stamina >= ATTACK_COST)
-            {
+        } else {
+            if (this.stamina >= ATTACK_COST) {
                 this.ThrowAlly(target);
                 return;
             }
@@ -49,11 +42,9 @@ public class Warrior : Character {
             locked = false;
         }
     }
-    public int ShortDistanceAttack(Character target, int minRange, int maxRange)
-    {
+    public int ShortDistanceAttack(Character target, int minRange, int maxRange) {
         Debug.Log("Warrior short Distance Attack");
-        if (checkRange(minRange, maxRange))
-        {
+        if (checkRange(minRange, maxRange)) {
             attack.PrepareAttack(target);
 
         }
@@ -61,13 +52,11 @@ public class Warrior : Character {
         return 0;
     }
 
-    public void ThrowAlly(Character target)
-    {
-        if (checkRange(1, 1))
-        {
-            bool canMove = false;
+    public void ThrowAlly(Character target) {
+        if (checkRange(1, 1)) {
+            //bool canMove = false;
             // If Artificer used Overwatch, cancels ability and let him move again
-            if(!target.action)
+            if (!target.action)
                 target.EnableAction();
 
             //Find a way to select another character
@@ -81,13 +70,12 @@ public class Warrior : Character {
             GridManager gridM = GridManager.instance;
             GridManager.Grid reach = gridM.getReach(target.place, throwableDistance);
 
-            foreach (GridManager.GridPoint point in reach.grid)
-            {
-                if (point.hex.state.name == "reach")
+            foreach (GridManager.GridPoint point in reach.grid) {
+                if (point.hex.getState() == "reach")
                     point.hex.changeState("coop");
             }
 
-           
+
             //target.OnMove(reach, destiny);
             this.stamina -= ATTACK_COST;
         }

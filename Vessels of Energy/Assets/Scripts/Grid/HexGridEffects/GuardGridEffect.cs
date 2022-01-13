@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AllyGridState : HexGridState {
-    public static Character target = null;
-    public override string name { get; set; } = "ally";
+public class GuardGridEffect : HexGridEffect {
+    public override string name { get; set; } = "guard";
     GridManager.Grid path = null;
+    public char team = '-';
 
-    public override void OnEnter(HexGrid hexagon) {
-        colorSet = hexagon.GetColors("ally");
+    public override void OnAdded(HexGrid hexagon) {
+        colorSet = hexagon.GetColors("guard");
         path = null;
         changeColor(hexagon, 0);
+        this.team = GameManager.currentTeam;
     }
 
     public override void OnClick(HexGrid hexagon, int mouseButton) {

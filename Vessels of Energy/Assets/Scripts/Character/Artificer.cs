@@ -2,26 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Artificer : Character{
+public class Artificer : Character {
     public const int OVERWATCH_COST = 3;
     public const int OVERWATCH_MIN_RANGE = 1;
     public const int OVERWATCH_MAX_RANGE = 5;
 
     public GridManager.Grid overwatchArea;
 
+    List<HexGridEffect> overwatch = null;
+
     void Start() {
 
-        if(this.stats != null){
+        if (this.stats != null) {
             this.stats.calculateStats();
-        }
-        else{
+        } else {
             Debug.Log("Character don't have stats!!!");
         }
         this.HP = stats.maxHP;
         this.stamina = stats.maxStamina;
     }
 
-    public override void Action(){
+    public override void Action() {
         //If selected and target are from different teams
         if (target.team != GameManager.currentTeam) {
             if (this.stamina >= ATTACK_COST && target.HP >= 0) {
@@ -32,21 +33,18 @@ public class Artificer : Character{
         }
 
         //If selected and target are from the same team
-        else if(target.team == GameManager.currentTeam){
-            if(this.stamina >= OVERWATCH_COST){
+        else if (target.team == GameManager.currentTeam) {
+            if (this.stamina >= OVERWATCH_COST) {
                 this.Overwatch(target, OVERWATCH_MIN_RANGE, OVERWATCH_MAX_RANGE);
                 Debug.Log("Overwatch used...");
-            }
-            else
+            } else
                 Debug.Log("Not Enough Stamina");
-        }
-
-        else {
+        } else {
             locked = false;
             target.Select();
         }
 
-        if(this.stamina == 0){
+        if (this.stamina == 0) {
             locked = false;
         }
     }
@@ -61,18 +59,17 @@ public class Artificer : Character{
 
     public int Overwatch(Character target, int minRange, int maxRange) {
         Debug.Log("Overwatching Grid");
-        if(checkRange(minRange, maxRange)) {
+        if (checkRange(minRange, maxRange)) {
             this.stamina -= OVERWATCH_COST;
             this.action = false;
 
             GridManager gridM = GridManager.instance;
             GridManager.Grid reach = gridM.getReach(target.place, 1);
             overwatchArea = reach;
-
-            foreach (GridManager.GridPoint point in reach.grid)
-            {
-                if (point.hex.state.name != "token"){
-                    point.hex.changeState("guard");
+            overwatch = new List<HexGridEffect>();
+            foreach (GridManager.GridPoint point in reach.grid) {
+                if (point.hex.getState() != "token") {
+                    overwatch.Add(point.hex.addEffect("guard"));
                 }
             }
 
@@ -82,14 +79,18 @@ public class Artificer : Character{
         return 0;
     }
 
-    public void cancelOverwatch(){
-        foreach (GridManager.GridPoint point in overwatchArea.grid){
-                if (point.hex.state.name == "guard")
-                    point.hex.changeState("default");
-            }
+    public void cancelOverwatch() {/*
+        foreach (GridManager.GridPoint point in overwatchArea.grid) {
+            if (point.hex.getState() == "guard")
+                point.hex.changeState("default");
+        }*/
+
+        foreach (HexGridEffect spot in overwatch) {
+            spot.Cancel();
+        }
     }
 
-    public override void EnableAction(){
+    public override void EnableAction() {
         this.action = true;
         this.stamina += OVERWATCH_COST;
         this.cancelOverwatch();

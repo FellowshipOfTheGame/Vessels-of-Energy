@@ -5,7 +5,7 @@ using UnityEngine;
 public class ReachGridState : HexGridState {
     public override string name { get; set; } = "reach";
     GridManager.Grid path = null;
-    
+
     public override void OnEnter(HexGrid hexagon) {
         colorSet = hexagon.GetColors("reach");
         path = null;
@@ -16,11 +16,11 @@ public class ReachGridState : HexGridState {
         base.OnPointerEnter(hexagon);
 
         GridManager gridM = GridManager.instance;
-        path = gridM.getPath(Token.selected.place, hexagon, "token","enemy","ally");
+        path = gridM.getPath(Token.selected.place, hexagon, "token", "enemy", "ally");
 
         if (path != null) {
-            foreach(GridManager.GridPoint point in path.grid) {
-                point.hex.state.changeColor(point.hex, 1);
+            foreach (GridManager.GridPoint point in path.grid) {
+                point.hex.setColor(1);
             }
         }
     }
@@ -30,7 +30,7 @@ public class ReachGridState : HexGridState {
 
         if (path != null) {
             foreach (GridManager.GridPoint point in path.grid) {
-                point.hex.state.changeColor(point.hex, 0);
+                point.hex.setColor(0);
             }
         }
     }

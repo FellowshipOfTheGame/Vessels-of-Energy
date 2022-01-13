@@ -7,8 +7,7 @@ public class RandomNoiseGenerator : MonoBehaviour {
     public float delay;
     [Range(0f, 1f)]
     public float randomness;
-
-    AudioManager audio;
+    new AudioManager audio;
     public bool playing;
 
     // Start is called before the first frame update
@@ -18,7 +17,7 @@ public class RandomNoiseGenerator : MonoBehaviour {
         StartCoroutine(Play());
     }
 
-    
+
     IEnumerator Play() {
         while (playing && audio.sounds.Length > 0) {
             float delay = this.delay * (1f + randomness * Random.Range(-1f, 1f));
