@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class HexGridEffect {
     public virtual string name { get; set; } = "none";
+    public virtual bool empty { get; set; } = false;
     public HexGrid.ColorSet colorSet;
     HexGrid hexagon;
     public Token user = null;

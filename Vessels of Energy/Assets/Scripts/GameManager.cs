@@ -11,9 +11,6 @@ public class GameManager : MonoBehaviour {
     public List<Character> unitsList;
 
     public static Team currentTeam;
-    [HideInInspector] public bool endTurn;
-    [HideInInspector] public bool newTurn;
-
     public VictoryScreen victoryScreen;
     public Team[] teams;
 

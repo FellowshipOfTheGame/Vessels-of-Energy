@@ -26,6 +26,8 @@ public class GridManager : MonoBehaviour {
 
     string[] blocks;
 
+    Reach reachAlgorithm;
+
     private void Awake() {
         if (instance != null && instance != this) Destroy(this.gameObject);
         else instance = this;
@@ -33,41 +35,29 @@ public class GridManager : MonoBehaviour {
         Token.selected = null;
         Token.locked = false;
         arena = FindObjectsOfType<HexGrid>();
+        reachAlgorithm = new Reach();
     }
 
     //returns all the hex on reach given a origin and a distance
-    public Grid getReach(HexGrid origin, int distance, params string[] blocks) {
-        return getReach(origin, 1, distance, blocks);
+    public Grid getReach(HexGrid origin, int distance, bool obstacle, params string[] blocks) {
+        return getReach(origin, 1, distance, obstacle, blocks);
     } //default
-    public Grid getReach(HexGrid origin, int minDistance, int maxDistance, params string[] blocks) {
-        Grid reach = new Grid(origin);
-
-        List<HexGrid> depth = new List<HexGrid>();
-        List<HexGrid> sweep = new List<HexGrid>();
-        depth.Add(origin);
-        sweep.Add(origin);
-        if (minDistance < 1) reach.grid.Add(new GridPoint(origin, 0));
-
-        this.blocks = blocks;
-        reach = calcReach(reach, depth, sweep, minDistance, maxDistance, 1);
-        return reach;
+    public Grid getReach(HexGrid origin, int minDistance, int maxDistance, bool obstacle, params string[] blocks) {
+        return reachAlgorithm.getReach(origin, minDistance, maxDistance, obstacle, blocks);
     }
 
-    Grid calcReach(Grid reach, List<HexGrid> currDepth, List<HexGrid> sweep, int min, int max, int count) {
-        if (count > max || currDepth.Count == 0) return reach;
-
-        List<HexGrid> nextDepth = new List<HexGrid>();
-        foreach (HexGrid hex in currDepth) {
-            foreach (HexGrid neighbor in hex.neighbors) {
-                if (!sweep.Contains(neighbor) && isAvailable(neighbor)) {
-                    nextDepth.Add(neighbor);
-                    sweep.Add(neighbor);
-                    if (count >= min) reach.grid.Add(new GridPoint(neighbor, count));
-                }
-            }
-        }
-
-        return calcReach(reach, nextDepth, sweep, min, max, count + 1);
+    //return all the hex on reach given a origin and a distance, along with a list of hexagons within range
+    public Grid getReachWithBorder(HexGrid origin, int distance, bool obstacle, out Grid border, int borderDistance, params string[] blocks) {
+        return getReachWithBorder(origin, 1, distance, obstacle, out border, 1, borderDistance, blocks);
+    }
+    public Grid getReachWithBorder(HexGrid origin, int distance, bool obstacle, out Grid border, int minBorderDistance, int maxBorderDistance, params string[] blocks) {
+        return getReachWithBorder(origin, 1, distance, obstacle, out border, minBorderDistance, maxBorderDistance, blocks);
+    }
+    public Grid getReachWithBorder(HexGrid origin, int minDistance, int maxDistance, bool obstacle, out Grid border, int borderDistance, params string[] blocks) {
+        return getReachWithBorder(origin, minDistance, maxDistance, obstacle, out border, 1, borderDistance, blocks);
+    }
+    public Grid getReachWithBorder(HexGrid origin, int minDistance, int maxDistance, bool obstacle, out Grid border, int minBorderDistance, int maxBorderDistance, params string[] blocks) {
+        return reachAlgorithm.getReachWithBorder(origin, minDistance, maxDistance, obstacle, out border, minBorderDistance, maxBorderDistance, blocks);
     }
 
     //get the shortest path, given origin and destination

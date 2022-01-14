@@ -68,10 +68,11 @@ public class Warrior : Character {
 
             // show throwable hexagons
             GridManager gridM = GridManager.instance;
-            GridManager.Grid reach = gridM.getReach(target.place, throwableDistance);
+            GridManager.Grid reach = gridM.getReach(target.place, throwableDistance, false);
 
             foreach (GridManager.GridPoint point in reach.grid) {
-                if (point.hex.getState() == "reach")
+                string state = point.hex.getState();
+                if (state == "reach" || state == "default")
                     point.hex.changeState("coop");
             }
 

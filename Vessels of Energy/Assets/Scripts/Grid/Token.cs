@@ -60,24 +60,18 @@ public class Token : MonoBehaviour {
         destiny.token = this;
         destiny.changeState("token");
         Raycast.block = false;
+        this.OnFinishMove();
     }
 
     public void Move(HexGrid destiny) {
         GridManager.Grid path = new GridManager.Grid(place);
-        place.changeState("default");
-        place.token = null;
-
-        Raycast.block = true;
-        this.OnMove(path, destiny);
-
-        place = destiny;
-        destiny.token = this;
-        destiny.changeState("token");
-        Raycast.block = false;
+        Move(path);
     }
 
     public virtual void OnMove(GridManager.Grid path, HexGrid destiny) {
         this.transform.position = destiny.transform.position;
         //Debug.Log("MOVED");
     }
+
+    public virtual void OnFinishMove() { }
 }

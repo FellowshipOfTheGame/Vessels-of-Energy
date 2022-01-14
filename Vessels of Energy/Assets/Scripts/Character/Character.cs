@@ -23,8 +23,7 @@ public class Character : Token {
 
     public Team team;
     [HideInInspector] public Color color;
-    GridManager.Grid reach = null;
-    GridManager.Grid range = null;
+    GridManager.Grid reach = null, border = null;
     bool used = false;
 
     void Awake() {
@@ -42,25 +41,23 @@ public class Character : Token {
         Debug.Log(Colored("Selected"));
         //If selected character has no stamina or is from the other team
         if (this.stamina == 0 || team != GameManager.currentTeam || this.action == false) return;
+        scan();
+        locked = true;
+    }
 
+    void scan() {
         GridManager gridM = GridManager.instance;
 
-        reach = gridM.getReach(place, stamina, "token", "enemy", "ally", "frozen");
+        reach = gridM.getReachWithBorder(place, stamina, true, out border, 1);
+        foreach (GridManager.GridPoint point in reach.grid) point.hex.changeState("reach");
 
-        foreach (GridManager.GridPoint point in reach.grid) {
-            point.hex.changeState("reach");
-        }
-
-        reach = gridM.getReach(place, this.stamina, "guard");
-        foreach (GridManager.GridPoint point in reach.grid) {
+        foreach (GridManager.GridPoint point in border.grid) {
             Character c = (Character)point.hex.token;
             if (point.hex.getState() == "token" && c.team != this.team)
                 point.hex.changeState("enemy");
             else if (point.hex.getState() == "token" && c.team == this.team)
                 point.hex.changeState("ally");
         }
-
-        locked = true;
     }
 
     //Get the target of an action
@@ -71,75 +68,28 @@ public class Character : Token {
 
     public override void OnCancelSelect() {
         //animator.Unselect();
-        if (reach == null) return;
-
-        foreach (GridManager.GridPoint point in reach.grid) {
-            if (point.hex.getState() == "reach")
-                point.hex.changeState("default");
-
-            if (point.hex.getState() == "enemy")
-                point.hex.changeState("token");
-
-            if (point.hex.getState() == "ally")
-                point.hex.changeState("token");
-
-            if (point.hex.getState() == "coop")
-                point.hex.changeState("default");
-        }
-        Debug.Log("Cancelling select on " + name);
-
+        updateReach(true);
         locked = false;
         target = null;
     }
 
     public override void OnMove(GridManager.Grid path, HexGrid destiny) {
         if (!isFrozen) {
-
-            base.OnMove(path, destiny);
-            if (reach == null) return;
-
             int qtd = path.grid.Count;
-            foreach (GridManager.GridPoint point in reach.grid) {
-                if (point.hex.getState() == "enemy")
-                    point.hex.changeState("token");
-
-                if (point.hex.getState() == "ally")
-                    point.hex.changeState("token");
-
-                if (point.hex.getState() == "coop")
-                    point.hex.changeState("reach");
-
-                if (point.hex.getState() == "reach")
-                    point.hex.changeState("default");
-            }
-
             this.stamina -= qtd;
-            GridManager gridM = GridManager.instance;
-
-            reach = gridM.getReach(destiny, stamina, "token", "enemy", "ally");
-
-            foreach (GridManager.GridPoint point in reach.grid) {
-                point.hex.changeState("reach");
-            }
-
-            reach = gridM.getReach(destiny, this.stamina);
-            foreach (GridManager.GridPoint point in reach.grid) {
-                Character c = (Character)point.hex.token;
-                if (point.hex.getState() == "token" && c.team != this.team)
-                    point.hex.changeState("enemy");
-                else if (point.hex.getState() == "token" && c.team == this.team)
-                    point.hex.changeState("ally");
-            }
-
-            if (this.stamina == 0) {
-                locked = false;
-            }
+            base.OnMove(path, destiny);
+            updateReach(true);
         }
+    }
+
+    public override void OnFinishMove() {
+        scan();
+        if (this.stamina == 0) locked = false;
     }
 
     public override void OnFinishAction() {
         if (!used) {
-            updateReach();
+            updateReach(false);
         }
     }
     public override void OnTurnStart() {
@@ -152,31 +102,39 @@ public class Character : Token {
 
 
     //After using using an Action, updates reach for selected
-    public void updateReach() {
-        if (reach == null) return;
-        foreach (GridManager.GridPoint point in reach.grid) {
-            if (point.distance > this.stamina) {
-                if (point.hex.getState() == "enemy")
-                    point.hex.changeState("token");
-
-                if (point.hex.getState() == "ally")
-                    point.hex.changeState("token");
-
-                if (point.hex.getState() == "coop")
-                    point.hex.changeState("reach");
-
-                if (point.hex.getState() == "reach")
+    public void updateReach(bool erase) {
+        if (reach != null) {
+            Debug.Log("updating reach...");
+            foreach (GridManager.GridPoint point in reach.grid) {
+                if (point.distance > this.stamina || erase) {
                     point.hex.changeState("default");
+                } else {
+                    point.hex.changeState("reach");
+                }
             }
         }
-        Debug.Log("Reach " + reach.grid.Count.ToString() + " Updated on " + name);
+
+        if (border != null) {
+            foreach (GridManager.GridPoint point in border.grid) {
+                if (point.distance > this.stamina || erase) {
+                    if (point.hex.getState() == "enemy") point.hex.changeState("token");
+                    if (point.hex.getState() == "ally") point.hex.changeState("token");
+                }
+            }
+        }
+
+        if (erase) {
+            reach = null;
+            border = null;
+        }
     }
 
     //Check if ability can be used based on its min and max range
     public bool checkRange(int minDistance, int maxDistance) {
         GridManager gridM = GridManager.instance;
+        GridManager.Grid range = null;
 
-        range = gridM.getReach(place, minDistance, maxDistance);
+        range = gridM.getReach(place, minDistance, maxDistance, false);
 
         foreach (GridManager.GridPoint point in range.grid) {
             if (point.hex.token == target)
@@ -195,13 +153,6 @@ public class Character : Token {
         int value2 = Random.Range(1, dice2 + 1);
         Debug.Log(value1 + value2);
         return value1 + value2;
-    }
-
-    //Checks if character evades an Attack
-    public bool evade(int precision, int evasion) {
-        if (precision >= evasion)
-            return false;
-        return true;
     }
 
     public virtual void EnableAction() { }

@@ -46,6 +46,9 @@ public class HexHandler : MonoBehaviour {
     }
 
     public void setColor(int value) { state.changeColor(hex, value); }
+
+    public bool isEmpty() { return state.isEmpty(); }
+
     public void changeState(string stateName) {
         HexGridState newState = State(stateName);
         if (newState == null) return;

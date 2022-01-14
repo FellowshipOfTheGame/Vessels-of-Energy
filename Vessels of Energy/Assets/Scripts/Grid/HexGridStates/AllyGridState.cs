@@ -7,6 +7,7 @@ public class AllyGridState : HexGridState {
     public override string name { get; set; } = "ally";
     GridManager.Grid path = null;
 
+    public override bool isEmpty() { return true; }
     public override void OnEnter(HexGrid hexagon) {
         colorSet = hexagon.GetColors("ally");
         path = null;

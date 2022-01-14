@@ -6,6 +6,7 @@ public class TokenGridState : HexGridState {
     public override string name { get; set; } = "token";
     Team team = null;
 
+    public override bool isEmpty() { return true; }
     public override void OnEnter(HexGrid hexagon) {
         colorSet = hexagon.GetColors("token");
         if (hexagon.token is Character) {

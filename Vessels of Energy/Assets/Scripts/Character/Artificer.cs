@@ -64,7 +64,7 @@ public class Artificer : Character {
             this.action = false;
 
             GridManager gridM = GridManager.instance;
-            GridManager.Grid reach = gridM.getReach(target, 1);
+            GridManager.Grid reach = gridM.getReach(target, 1, false);
             overwatchArea = reach;
             overwatch = new List<HexGridEffect>();
             foreach (GridManager.GridPoint point in reach.grid) {

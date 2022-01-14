@@ -24,6 +24,7 @@ public class HexGridState {
     public virtual void OnTurnStart(HexGrid hexagon) { }
     public virtual void OnTurnEnd(HexGrid hexagon) { }
 
+    public virtual bool isEmpty() { return false; }
     public void changeColor(HexGrid hexagon, int color) {
         hexagon.art.color = colorSet.colors[color];
     }

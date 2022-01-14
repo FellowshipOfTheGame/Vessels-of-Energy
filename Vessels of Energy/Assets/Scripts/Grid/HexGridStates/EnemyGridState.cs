@@ -7,6 +7,7 @@ public class EnemyGridState : HexGridState {
     public override string name { get; set; } = "enemy";
     GridManager.Grid path = null;
 
+    public override bool isEmpty() { return true; }
     public override void OnEnter(HexGrid hexagon) {
         colorSet = hexagon.GetColors("enemy");
         path = null;

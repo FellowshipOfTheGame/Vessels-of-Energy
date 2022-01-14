@@ -45,7 +45,7 @@ public class HexGrid : RaycastTarget {
             }
         }
     }
-
+    public bool isEmpty() { return handler.isEmpty(); }
     public void setColor(int value) { handler.setColor(value); }
     public void changeState(string stateName) { handler.changeState(stateName); }
     public string getState() { return handler.state.name; }
