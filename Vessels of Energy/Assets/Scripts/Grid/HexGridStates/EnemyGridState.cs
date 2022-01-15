@@ -17,7 +17,8 @@ public class EnemyGridState : HexGridState {
         Character enemy = (Character)Token.selected;
 
         if (mouseButton == 0) {
-            enemy.attack.PrepareAttack(self);
+            self.OnTarget();
+            enemy.Attack(self);
         } else if (mouseButton == 1) {
             enemy.Action(self);
         }

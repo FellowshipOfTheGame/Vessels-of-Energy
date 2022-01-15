@@ -52,7 +52,7 @@ public class Artificer : Character {
 
     public int Attack(Character target, int minRange, int maxRange) {
         Debug.Log("Artificer Attack");
-        if (checkRange(minRange, maxRange)) {
+        if (checkRange(minRange, maxRange, target.place)) {
             attack.PrepareAttack(target);
         }
         return 0;
@@ -60,7 +60,7 @@ public class Artificer : Character {
 
     public int Overwatch(HexGrid target, int minRange, int maxRange) {
         Debug.Log(Colored("Overwatching Grid"));
-        if (checkRange(minRange, maxRange)) {
+        if (checkRange(minRange, maxRange, target)) {
             this.stamina -= OVERWATCH_COST;
             this.action = false;
 

@@ -130,7 +130,6 @@ MonoBehaviour:
   place: {fileID: 0}
   boardMoveSpeed: 0.5
   animator: {fileID: 6351760542578990212}
-  attack: {fileID: 6756862905065300081}
   weapon: {fileID: 0}
   stats: {fileID: 0}
   HP: 20

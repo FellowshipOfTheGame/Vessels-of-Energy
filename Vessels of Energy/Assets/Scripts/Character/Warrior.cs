@@ -23,20 +23,11 @@ public class Warrior : Character {
             ThrowAlly(c);
         }
     }
-    public int ShortDistanceAttack(Character target, int minRange, int maxRange) {
-        Debug.Log("Warrior short Distance Attack");
-        if (checkRange(minRange, maxRange)) {
-            attack.PrepareAttack(target);
-
-        }
-        //Debug.Log("Out of range");
-        return 0;
-    }
 
     public void ThrowAlly(Character target) {
         Debug.Log(Colored("Throw!"));
 
-        if (checkRange(1, 1) && target.canBeMoved) {
+        if (checkRange(1, 1, target.place) && target.canBeMoved) {
             updateReach(true);
 
             // If Artificer used Overwatch, cancels ability and let him move again

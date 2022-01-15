@@ -24,7 +24,7 @@ public class Healer : Character {
         if (c.team != GameManager.currentTeam) {
             if (this.stamina >= ATTACK_COST && c.HP >= 0) {
                 target.place.changeState("enemy");
-                this.Attack(c, this.weapon.minRange, this.weapon.maxRange);
+                this.Attack(c);
             } else
                 Debug.Log("Not enough stamina");
         }
@@ -45,19 +45,11 @@ public class Healer : Character {
         }
     }
 
-    public int Attack(Character target, int minRange, int maxRange) {
-        Debug.Log("Healer Attack");
-        if (checkRange(minRange, maxRange)) {
-            attack.PrepareAttack(target);
-        }
-        return 0;
-    }
-
     //Restores health for target
     //Target can be an ally or self
     public int Heal(Character target, int minRange, int maxRange) {
         Debug.Log("Healing");
-        if (checkRange(minRange, maxRange)) {
+        if (checkRange(minRange, maxRange, target.place)) {
             this.stamina -= HEAL_COST;
             int healing = this.rollDices(this.stats.willpower + 4);
 

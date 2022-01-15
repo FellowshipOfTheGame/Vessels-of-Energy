@@ -6,7 +6,7 @@ using TMPro;
 public class Character : Token {
     //public static Character target = null;
     public Puppet animator;
-    [HideInInspector] public Attack attack;
+    protected Attack attack;
     public const int ATTACK_COST = 3;
     public const int EVADE_COST = 3;
 
@@ -30,9 +30,24 @@ public class Character : Token {
     new void Awake() {
         base.Awake();
         if (animator) color = team.color[0];
+        attack = GetComponent<Attack>();
+
         OnStartMoving += OnStartMove;
         OnStepOut += OnMoveOneStep;
         OnStopMoving = OnFinishMove;
+    }
+
+    public void Attack(Token target) {
+        if (stamina >= ATTACK_COST) {
+            if (checkRange(weapon.minRange, weapon.maxRange, target.place)) {
+                Debug.Log(Colored("Attack!"));
+                this.attack.PrepareAttack((Character)target);
+            } else {
+                Debug.Log("Target out of Range...");
+            }
+        } else {
+            Debug.Log("Not Enough Stamina...");
+        }
     }
 
     // calculate reach of a character
@@ -131,16 +146,16 @@ public class Character : Token {
     }
 
     //Check if ability can be used based on its min and max range
-    public bool checkRange(int minDistance, int maxDistance) {
+    public bool checkRange(int minDistance, int maxDistance, HexGrid target) {
         GridManager gridM = GridManager.instance;
         GridManager.Grid range = null;
 
         range = gridM.getReach(place, minDistance, maxDistance, false);
-
         foreach (GridManager.GridPoint point in range.grid) {
-            if (point.hex.token == targeted)
+            if (point.hex == target)
                 return true;
         }
+
         return false;
     }
 

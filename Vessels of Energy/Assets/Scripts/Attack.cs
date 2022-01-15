@@ -12,7 +12,6 @@ public class Attack : MonoBehaviour {
 
     private void Awake() {
         self = this.GetComponent<Character>();
-        self.attack = this;
     }
 
     public void PrepareAttack(Character target) {
@@ -87,7 +86,7 @@ public class Attack : MonoBehaviour {
                     target.animator.Die();
                     target.HP = 0;
 
-                    if (self.checkRange(0, self.stamina))
+                    if (self.checkRange(0, self.stamina, target.place))
                         target.place.changeState("reach");
                     else
                         target.place.changeState("default");
@@ -116,12 +115,12 @@ public class Attack : MonoBehaviour {
 
         // permitir contra ataque (reação) se o ataque errou
         if (missed) {
-            if (target.stamina >= Character.ATTACK_COST && target.checkRange(target.weapon.minRange, target.weapon.maxRange)) {
+            if (target.stamina >= Character.ATTACK_COST && target.checkRange(target.weapon.minRange, target.weapon.maxRange, self.place)) {
                 QTE.instance.startQTE("counter", target, () => {
                     Debug.Log("COUNTER!");
                     self.animator.TurnAround();
                     target.animator.TurnAround();
-                    target.attack.PrepareAttack(self);
+                    target.Attack(self);
                 },
                 () => {
                     Debug.Log("Missed Opportunity to Counter...");
@@ -137,6 +136,7 @@ public class Attack : MonoBehaviour {
             Reset();
         }
         self.animator.RetreatAction();
+        self.updateReach(false);
     }
 
     private void Reset() {

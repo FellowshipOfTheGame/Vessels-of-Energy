@@ -20,17 +20,7 @@ public class Token : MonoBehaviour {
         OnStartMoving = (HexGrid hex) => { };
     }
 
-    public void Select() {/*
-        if (!locked) {
-            if (selected != null) {
-                selected.Unselect();
-                if (HUDManager.instance != null) HUDManager.instance.Show(this);
-            }
-            selected = this;
-            this.OnSelect();
-        } else {
-            this.TargetSelect();
-        }*/
+    public void Select() {
         if (selected != null) {
             selected.Unselect();
             HUDManager.instance.Show(this);
