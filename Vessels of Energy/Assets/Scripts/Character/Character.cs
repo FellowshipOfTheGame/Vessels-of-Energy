@@ -26,8 +26,11 @@ public class Character : Token {
     GridManager.Grid reach = null, border = null;
     bool used = false;
 
-    void Awake() {
+    new void Awake() {
+        base.Awake();
         if (animator) color = team.color[0];
+        OnStepOut += OnStep;
+        OnStopMoving = OnFinishMove;
     }
 
     // calculate reach of a character
@@ -73,16 +76,13 @@ public class Character : Token {
         target = null;
     }
 
-    public override void OnMove(GridManager.Grid path, HexGrid destiny) {
-        if (!isFrozen) {
-            int qtd = path.grid.Count;
-            this.stamina -= qtd;
-            base.OnMove(path, destiny);
-            updateReach(true);
-        }
+    void OnStep(HexGrid lastHex) {
+        Debug.Log(Colored("Step"));
+        this.stamina -= 1; //we can do difficult terrain with this in the future
     }
 
-    public override void OnFinishMove() {
+    void OnFinishMove(HexGrid origin) {
+        updateReach(true);
         scan();
         if (this.stamina == 0) locked = false;
     }
@@ -106,6 +106,8 @@ public class Character : Token {
         if (reach != null) {
             Debug.Log("updating reach...");
             foreach (GridManager.GridPoint point in reach.grid) {
+                if (point.hex == place) continue;
+
                 if (point.distance > this.stamina || erase) {
                     point.hex.changeState("default");
                 } else {

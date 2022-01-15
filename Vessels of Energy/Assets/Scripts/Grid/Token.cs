@@ -7,6 +7,16 @@ public class Token : MonoBehaviour {
     public static Token selected = null;
     public static bool locked = false;
     [HideInInspector] public HexGrid place;
+    public float boardMoveSpeed = 1f;
+    float boardStepSpeed = 0.05f;
+
+    public delegate void MovingEvent(HexGrid hex);
+    public MovingEvent OnStepOut, OnStopMoving;
+
+    protected void Awake() {
+        OnStepOut = (HexGrid hex) => { };
+        OnStopMoving = (HexGrid hex) => { };
+    }
 
     public void Select() {
         if (!locked) {
@@ -48,30 +58,70 @@ public class Token : MonoBehaviour {
     public virtual void OnTurnStart() { }
     public virtual void OnTurnEnd() { }
 
-    public void Move(GridManager.Grid path) {
-        place.changeState("default");
-        place.token = null;
-
-        HexGrid destiny = path.grid[path.grid.Count - 1].hex;
+    public void Move(GridManager.Grid path) { Move(path, true); }
+    public void Move(HexGrid destiny) { //teleport
+        GridManager.Grid path = new GridManager.Grid(place);
+        Move(path, false);
+    }
+    void Move(GridManager.Grid path, bool walk) {
         Raycast.block = true;
-        this.OnMove(path, destiny);
+        if (walk) {
+            HexGrid nextStep = path.grid[0].hex;
+            int distance = path.grid.Count;
+            boardStepSpeed = boardMoveSpeed * (1f / 8f - 0.1f * Mathf.Log10(distance));
+            StartCoroutine(WalkTo(nextStep, boardStepSpeed, () => { SetNewPlace(path, nextStep, 1); }));
+        }
 
+        //OnStopMoving(path.origin);
+        Raycast.block = false;
+    }
+
+    void SetNewPlace(GridManager.Grid path, HexGrid destiny, int step) {
+        HexGrid lastHex = path.grid[step - 1].hex;
         place = destiny;
         destiny.token = this;
         destiny.changeState("token");
-        Raycast.block = false;
-        this.OnFinishMove();
+        OnStepOut(lastHex);
+        WalkStep(path, step);
     }
 
-    public void Move(HexGrid destiny) {
-        GridManager.Grid path = new GridManager.Grid(place);
-        Move(path);
+    System.Action WalkStep(GridManager.Grid path, int step) {
+        if (path == null) return null;
+        if (step < path.grid.Count) {
+            HexGrid destiny = path.grid[step].hex;
+            StartCoroutine(WalkTo(destiny, boardStepSpeed, () => { SetNewPlace(path, destiny, step + 1); }));
+        } else {
+            path.origin.changeState("default");
+            foreach (GridManager.GridPoint point in path.grid) {
+                if (point.hex != place) point.hex.changeState("default");
+                OnStopMoving(path.origin);
+            }
+        }
+
+        return null;
     }
 
-    public virtual void OnMove(GridManager.Grid path, HexGrid destiny) {
-        this.transform.position = destiny.transform.position;
-        //Debug.Log("MOVED");
-    }
+    IEnumerator WalkTo(HexGrid destiny, float delay, System.Action onStop) {
+        //place.changeState("reach");
+        place.setColor(1);
+        place.token = null;
 
-    public virtual void OnFinishMove() { }
+        Vector3 start = this.transform.position;
+        Vector3 end = destiny.transform.position;
+        float timeElapsed = 0;
+        float distance = (end - start).magnitude;
+
+        while (timeElapsed < delay) {
+            float step = timeElapsed / delay;
+            float smooth = step * step * (3f - 2f * step); //smooth curve (x = 3t^2 - 2t^3)
+            float linear = step; //linear curve (x = t)
+
+            this.transform.position = Vector3.Lerp(start, end, linear);
+            timeElapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        this.transform.position = end;
+        onStop.Invoke();
+    }
 }

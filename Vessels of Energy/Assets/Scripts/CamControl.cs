@@ -40,7 +40,7 @@ public class CamControl : MonoBehaviour {
         cam = this.GetComponent<Camera>();
         offset = (offsetY * Vector3.up - offsetZ * Vector3.forward).magnitude;
         defaultConfig = new Configuration(this.transform.position + this.transform.forward * offset, this.transform.forward, cam.orthographicSize);
-        Debug.Log(defaultConfig.rot.eulerAngles);
+        //Debug.Log(defaultConfig.rot.eulerAngles);
         pivot = this.transform.GetChild(0);
         pivot.localPosition = this.transform.forward * offset;
         onFocus = false;
