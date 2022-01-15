@@ -4,8 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Warrior : Character {
-    /*private int maxRange = 1;
-    private int minRange = 1;*/
+    const int THROW_COST = 3;
 
     void Start() {
 
@@ -18,28 +17,10 @@ public class Warrior : Character {
         this.stamina = stats.maxStamina;
     }
 
-    public override void Action() {
-        Debug.Log("Warrior Action");
-        //If selected and target are from different teams
-        if (target.team != GameManager.currentTeam) {
-            //If warrior has enough stamina and target has health
-            if (this.stamina >= ATTACK_COST && target.HP >= 0) {
-                target.place.changeState("enemy");
-                this.ShortDistanceAttack(target, this.weapon.minRange, this.weapon.maxRange);
-            } else
-                Debug.Log("Not enough stamina");
-        } else {
-            if (this.stamina >= ATTACK_COST) {
-                this.ThrowAlly(target);
-                return;
-            }
-            locked = false;
-            target.Select();
-        }
-
-
-        if (this.stamina == 0) {
-            locked = false;
+    public override void Action(Token target) {
+        Character c = (Character)target;
+        if (c.team == team && this.stamina >= THROW_COST) {
+            ThrowAlly(c);
         }
     }
     public int ShortDistanceAttack(Character target, int minRange, int maxRange) {
@@ -53,32 +34,38 @@ public class Warrior : Character {
     }
 
     public void ThrowAlly(Character target) {
-        if (checkRange(1, 1)) {
-            //bool canMove = false;
+        Debug.Log(Colored("Throw!"));
+
+        if (checkRange(1, 1) && target.canBeMoved) {
+            updateReach(true);
+
             // If Artificer used Overwatch, cancels ability and let him move again
             if (!target.action)
                 target.EnableAction();
 
-            //Find a way to select another character
-            locked = false;
-            target.Select();
-
             //target.OnTarget();
-            int throwableDistance = stats.strength;
+            int throwableDistance = 2 + stats.strength;
 
             // show throwable hexagons
             GridManager gridM = GridManager.instance;
             GridManager.Grid reach = gridM.getReach(target.place, throwableDistance, false);
-
             foreach (GridManager.GridPoint point in reach.grid) {
                 string state = point.hex.getState();
                 if (state == "reach" || state == "default")
                     point.hex.changeState("coop");
             }
 
+            DelayedAction = (HexGrid chosenSpot) => {
+                target.Move(chosenSpot);
+                target.place.setColor(1);
+                this.stamina -= THROW_COST;
+                scan();
 
-            //target.OnMove(reach, destiny);
-            this.stamina -= ATTACK_COST;
+                foreach (GridManager.GridPoint point in reach.grid) {
+                    if (point.hex.getState() == "coop")
+                        point.hex.changeState("default");
+                }
+            };
         }
     }
 

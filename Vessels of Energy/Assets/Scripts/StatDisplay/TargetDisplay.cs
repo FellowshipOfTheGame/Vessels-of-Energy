@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TargetDisplay : MonoBehaviour
-{
+public class TargetDisplay : MonoBehaviour {
     public Slider healthSlider;
     public Gradient healthGradient;
     public Image healthFill;
@@ -16,10 +15,9 @@ public class TargetDisplay : MonoBehaviour
     public Text proficiencyDice;
     public Text damageDice;
 
-    void Update()
-    {
-        if (Character.target != null){
-            Character c = Character.target;
+    void Update() {
+        if (Token.targeted != null) {
+            Character c = (Character)Token.targeted;
 
             healthSlider.maxValue = c.stats.maxHP;
             healthSlider.value = c.HP;
@@ -35,8 +33,7 @@ public class TargetDisplay : MonoBehaviour
             //TODO: Get information from Character
             proficiencyDice.text = "1d8";
             damageDice.text = "1d" + c.weapon.baseDamageDice.ToString();
-        }
-        else{
+        } else {
             healthSlider.maxValue = 1;
             healthSlider.value = 0;
 

@@ -5,41 +5,21 @@ using UnityEngine;
 public class EnemyGridState : HexGridState {
     public static Character target = null;
     public override string name { get; set; } = "enemy";
-    GridManager.Grid path = null;
 
     public override bool isEmpty() { return true; }
     public override void OnEnter(HexGrid hexagon) {
         colorSet = hexagon.GetColors("enemy");
-        path = null;
         changeColor(hexagon, 0);
     }
 
     public override void OnClick(HexGrid hexagon, int mouseButton) {
-        hexagon.token.Select();
-    }
+        Character self = (Character)hexagon.token;
+        Character enemy = (Character)Token.selected;
 
-    public override void OnPointerExit(HexGrid hexagon) {
-        changeColor(hexagon, 0);
-
-        if (path != null) {
-            foreach (GridManager.GridPoint point in path.grid) {
-                point.hex.changeState("default");
-            }
-        }
-    }
-
-    public void OnPointerEnter(HexGrid hexagon, Character target) {
-        base.OnPointerEnter(Token.selected.place);
-
-        GridManager gridM = GridManager.instance;
-        path = gridM.getPath(Token.selected.place, target.place);
-
-        if (path != null) {
-            foreach (GridManager.GridPoint point in path.grid) {
-                point.hex.setColor(1);
-                if (point.hex.token == target)
-                    point.hex.changeState("enemy");
-            }
+        if (mouseButton == 0) {
+            enemy.attack.PrepareAttack(self);
+        } else if (mouseButton == 1) {
+            enemy.Action(self);
         }
     }
 }

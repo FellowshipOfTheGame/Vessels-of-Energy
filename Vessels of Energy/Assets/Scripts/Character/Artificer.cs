@@ -22,18 +22,19 @@ public class Artificer : Character {
         this.stamina = stats.maxStamina;
     }
 
-    public override void Action() {
+    public override void Action(Token target) {
+        Character c = (Character)target;
         //If selected and target are from different teams
-        if (target.team != team) {
-            if (this.stamina >= ATTACK_COST && target.HP >= 0) {
+        if (c.team != team) {
+            if (this.stamina >= ATTACK_COST && c.HP >= 0) {
                 target.place.changeState("enemy");
-                this.Attack(target, this.weapon.minRange, this.weapon.maxRange);
+                this.Attack(c, this.weapon.minRange, this.weapon.maxRange);
             } else
                 Debug.Log("Not enough stamina");
         }
 
         //If selected and target are from the same team
-        else if (target.team == team) {
+        else if (c.team == team) {
             if (this.stamina >= OVERWATCH_COST) {
                 this.Overwatch(target.place, OVERWATCH_MIN_RANGE, OVERWATCH_MAX_RANGE);
                 Debug.Log("Overwatch used...");

@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 
 public class Character : Token {
-    public static Character target = null;
+    //public static Character target = null;
     public Puppet animator;
     [HideInInspector] public Attack attack;
     public const int ATTACK_COST = 3;
@@ -25,11 +25,13 @@ public class Character : Token {
     [HideInInspector] public Color color;
     GridManager.Grid reach = null, border = null;
     bool used = false;
+    public HexEvent DelayedAction;
 
     new void Awake() {
         base.Awake();
         if (animator) color = team.color[0];
-        OnStepOut += OnStep;
+        OnStartMoving += OnStartMove;
+        OnStepOut += OnMoveOneStep;
         OnStopMoving = OnFinishMove;
     }
 
@@ -48,7 +50,7 @@ public class Character : Token {
         locked = true;
     }
 
-    void scan() {
+    protected void scan() {
         GridManager gridM = GridManager.instance;
 
         reach = gridM.getReachWithBorder(place, stamina, true, out border, 1);
@@ -64,25 +66,23 @@ public class Character : Token {
     }
 
     //Get the target of an action
-    public override void TargetSelect() {
+    public override void OnTarget() {
         if (selected != this) animator.Target();
-        target = this;
     }
 
     public override void OnCancelSelect() {
         //animator.Unselect();
         updateReach(true);
         locked = false;
-        target = null;
+        targeted = null;
     }
 
-    void OnStep(HexGrid lastHex) {
-        Debug.Log(Colored("Step"));
-        this.stamina -= 1; //we can do difficult terrain with this in the future
-    }
-
-    void OnFinishMove(HexGrid origin) {
+    void OnStartMove(HexGrid destiny) {
+        Debug.Log(Colored("Move!"));
         updateReach(true);
+    }
+    void OnMoveOneStep(HexGrid lastHex) { this.stamina -= 1; }
+    void OnFinishMove(HexGrid origin) {
         scan();
         if (this.stamina == 0) locked = false;
     }
@@ -104,7 +104,6 @@ public class Character : Token {
     //After using using an Action, updates reach for selected
     public void updateReach(bool erase) {
         if (reach != null) {
-            Debug.Log("updating reach...");
             foreach (GridManager.GridPoint point in reach.grid) {
                 if (point.hex == place) continue;
 
@@ -139,7 +138,7 @@ public class Character : Token {
         range = gridM.getReach(place, minDistance, maxDistance, false);
 
         foreach (GridManager.GridPoint point in range.grid) {
-            if (point.hex.token == target)
+            if (point.hex.token == targeted)
                 return true;
         }
         return false;

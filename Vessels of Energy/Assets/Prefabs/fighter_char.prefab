@@ -126,6 +126,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isFrozen: 0
+  canBeMoved: 1
   place: {fileID: 0}
   boardMoveSpeed: 0.5
   animator: {fileID: 6351760542578990212}

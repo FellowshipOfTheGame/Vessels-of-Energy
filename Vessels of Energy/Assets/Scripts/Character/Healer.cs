@@ -8,40 +8,39 @@ public class Healer : Character {
 
     void Start() {
 
-        if(this.stats != null){
+        if (this.stats != null) {
             this.stats.calculateStats();
-        }
-        else{
+        } else {
             Debug.Log("Character don't have stats!!!");
         }
         this.HP = stats.maxHP;
         this.stamina = stats.maxStamina;
     }
 
-    public override void Action(){
+    public override void Action(Token target) {
+        Character c = (Character)target;
+
         //If selected and target are from different teams
-        if (target.team != GameManager.currentTeam) {
-            if (this.stamina >= ATTACK_COST && target.HP >= 0) {
+        if (c.team != GameManager.currentTeam) {
+            if (this.stamina >= ATTACK_COST && c.HP >= 0) {
                 target.place.changeState("enemy");
-                this.Attack(target, this.weapon.minRange, this.weapon.maxRange);
+                this.Attack(c, this.weapon.minRange, this.weapon.maxRange);
             } else
                 Debug.Log("Not enough stamina");
         }
 
         //If selected and target are from the same team
-        else if(target.team == GameManager.currentTeam){
-            if(this.stamina >= HEAL_COST && target.HP != target.stats.maxHP)
-                this.Heal(target, 0, HEAL_RANGE);
+        else if (c.team == GameManager.currentTeam) {
+            if (this.stamina >= HEAL_COST && c.HP != c.stats.maxHP)
+                this.Heal(c, 0, HEAL_RANGE);
             else
                 Debug.Log("Not enough stamina or target at full health");
-        }
-
-        else {
+        } else {
             locked = false;
             target.Select();
         }
 
-        if(this.stamina == 0){
+        if (this.stamina == 0) {
             locked = false;
         }
     }
@@ -58,12 +57,12 @@ public class Healer : Character {
     //Target can be an ally or self
     public int Heal(Character target, int minRange, int maxRange) {
         Debug.Log("Healing");
-        if(checkRange(minRange, maxRange)) {
+        if (checkRange(minRange, maxRange)) {
             this.stamina -= HEAL_COST;
-            int healing = this.rollDices(this.stats.willpower+4);
+            int healing = this.rollDices(this.stats.willpower + 4);
 
             target.HP += healing;
-            if(target.HP > target.stats.maxHP) target.HP = target.stats.maxHP;
+            if (target.HP > target.stats.maxHP) target.HP = target.stats.maxHP;
         }
         return 0;
     }

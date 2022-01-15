@@ -57,7 +57,7 @@ public class GameManager : MonoBehaviour {
 
         //clean up everything
         if (Token.selected != null) Token.selected.Unselect();
-        if (Character.target != null) Character.target.Unselect();
+        if (Token.targeted != null) Token.targeted.Unselect();
         HUDManager.instance.Clear();
 
         //calculate next team

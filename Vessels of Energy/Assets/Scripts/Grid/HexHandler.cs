@@ -25,11 +25,12 @@ public class HexHandler : MonoBehaviour {
         stateList.Add(new AllyGridState());
         stateList.Add(new CoOpGridState());
         //stateList.Add(new GuardedGridState());
-        stateList.Add(new FrozenGridState());
+        //stateList.Add(new FrozenGridState());
 
         //initialize effects
         effectList = new List<HexGridEffect>();
         effectList.Add(new GuardGridEffect());
+        effectList.Add(new FrozenGridEffect());
 
         //set events
         hex = this.GetComponent<HexGrid>();

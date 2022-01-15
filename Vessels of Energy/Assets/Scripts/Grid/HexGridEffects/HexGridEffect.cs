@@ -23,21 +23,17 @@ public class HexGridEffect {
         colorSet = hexagon.GetColors("default");
         changeColor(hexagon, 0);
     }
-    public virtual void OnRemoved(HexGrid hexagon) { }
+    public virtual void OnRemoved(HexGrid hexagon) {
+        Object.Destroy(art.gameObject);
+    }
 
     public virtual void OnPointerEnter(HexGrid hexagon) { changeColor(hexagon, 1); }
     public virtual void OnPointerExit(HexGrid hexagon) { changeColor(hexagon, 0); }
-    public virtual void OnClick(HexGrid hexagon, int mouseButton) {
-        if (Token.selected != null) {
-            Debug.Log("Cancel");
-            Token.selected.Unselect();
-        }
-    }
+    public virtual void OnClick(HexGrid hexagon, int mouseButton) { }
 
     public virtual void OnTurnStart(HexGrid hexagon) { }
     public virtual void OnTurnEnd(HexGrid hexagon) { }
 
     public void changeColor(HexGrid hexagon, int color) { art.color = colorSet.colors[color]; }
-
     public void Cancel() { hexagon.removeEffect(this); }
 }
