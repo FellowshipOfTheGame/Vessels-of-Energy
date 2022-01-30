@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 
 public class Character : Token {
-    //public static Character target = null;
+    [Header("Character")]
     public Puppet animator;
     protected Attack attack;
     public const int ATTACK_COST = 3;
@@ -15,8 +15,6 @@ public class Character : Token {
     [Space(5)]
 
     public Weapon weapon;
-    public Stats stats;
-    public int HP;
     public int stamina;
     public bool action;
     [Space(5)]
@@ -47,6 +45,27 @@ public class Character : Token {
             }
         } else {
             Debug.Log("Not Enough Stamina...");
+        }
+    }
+    public virtual void Action(Token target) { }
+
+    public override void Animate(string command) {
+        switch (command) {
+            case "evade":
+                animator.Die();
+                break;
+
+            case "block":
+                animator.Block();
+                break;
+
+            case "damage":
+                animator.Damage();
+                break;
+
+            case "destroy":
+                animator.Die();
+                break;
         }
     }
 
@@ -102,11 +121,6 @@ public class Character : Token {
         if (this.stamina == 0) locked = false;
     }
 
-    public override void OnFinishAction() {
-        if (!used) {
-            updateReach(false);
-        }
-    }
     public override void OnTurnStart() {
         this.stamina = this.stats.maxStamina;
         this.action = true;

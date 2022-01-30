@@ -5,7 +5,7 @@ using UnityEngine;
 public class Attack : MonoBehaviour {
 
     [HideInInspector] public Character self;
-    Character target;
+    Token target;
     int roll;
     bool missed = true, counterable = true;
     int extra_evasion = 0;
@@ -14,37 +14,30 @@ public class Attack : MonoBehaviour {
         self = this.GetComponent<Character>();
     }
 
-    public void PrepareAttack(Character target) {
+    public void PrepareAttack(Token target) {
         Raycast.block = true;
         this.target = target;
         self.stamina -= Character.ATTACK_COST;
 
         self.animator.Attack();
-        target.animator.Attacked();
-        Debug.Log("ATTACK!");
-        // logica de chance te ataque
 
-        // precision = 1d8 + 1d(2*stat+4)
-        // evasion = evasion //+ 1d(2*dexterity+4)
-        //missed = DiceRoller.instance.Roll(self, 8, 2 * self.strength + 4) < target.evasion;
-        roll = DiceRoller.instance.Roll(self, 8, 2 * self.stats.strength + 4);
+        if (target is Character) {
+            Character enemy = (Character)target;
+            enemy.animator.Attacked();
 
-        extra_evasion = 0;
-
-        if (target.stamina >= Character.EVADE_COST) {
-            QTE.instance.startQTE("evasion", target, () => {
-                Debug.Log("EVASION!");
-                target.stamina -= Character.EVADE_COST;
-                extra_evasion = target.rollDices(2 * target.stats.dexterity + 4);
-                //extra_evasion = 100; // extra_evasion test
-            },
-            () => {
-                Debug.Log("Missed Opportunity to Evade...");
-                //extra_evasion = 0;
-            });
+            //rolling dice and giving chance to Evade
+            roll = DiceRoller.instance.Roll(self, 8, 2 * self.stats.strength + 4);
+            extra_evasion = 0;
+            if (enemy.stamina >= Character.EVADE_COST) {
+                QTE.instance.startQTE("evasion", enemy, () => {
+                    Debug.Log(enemy.Colored("DODGE!"));
+                    enemy.stamina -= Character.EVADE_COST;
+                    extra_evasion = enemy.rollDices(2 * enemy.stats.dexterity + 4);
+                },
+                () => { Debug.Log("Missed Opportunity to Evade..."); });
+            }
         }
 
-        //missed = true; //the ultimate Counter test
         //make camera focus on combat
         if (CamControl.instance != null) {
             Vector3 center = (self.transform.position + target.transform.position) / 2;
@@ -58,12 +51,12 @@ public class Attack : MonoBehaviour {
         self.animator.ExecuteAction();
         DiceRoller.instance.ShowNumbers("ATAQUE!");
 
-        //Debug.Log("extra_evasion:");
-        //Debug.Log(extra_evasion);
-
-        //missed = self.rollDices(8, 2 * self.stats.strength + 4) < target.stats.evasion + extra_evasion;
-        //missed = self.rollDices(8, 2 * self.stats.strength + 4) < extra_evasion; //extra_evasion test
-        missed = roll < target.stats.evasion + extra_evasion;
+        if (target is Character) {
+            Character enemy = (Character)target;
+            missed = roll < enemy.stats.evasion + extra_evasion;
+        } else {
+            missed = false;
+        }
 
         if (!missed) {
             //damage = 1d12 (Weapon) + 1d(2*strength+4)
@@ -83,7 +76,7 @@ public class Attack : MonoBehaviour {
                 Debug.Log("Attack Hit! Damage " + damage);
 
                 if (target.HP <= 0) {
-                    target.animator.Die();
+                    target.Animate("destroy");
                     target.HP = 0;
 
                     if (self.checkRange(0, self.stamina, target.place))
@@ -92,16 +85,17 @@ public class Attack : MonoBehaviour {
                         target.place.changeState("default");
                     //target.gameObject.SetActive(false);
                 } else {
-                    target.animator.Damage();
+                    target.Animate("damage");
                 }
             } else {
                 Debug.Log("Attack Blocked");
-                target.animator.Block();
+                target.Animate("block");
             }
         } else {
             Debug.Log("Attack Missed!");
-            target.animator.Evade();
+            target.Animate("evade");
         }
+
     }
 
     public void LandAttack() {
@@ -114,21 +108,23 @@ public class Attack : MonoBehaviour {
         DiceRoller.instance.Clear();
 
         // permitir contra ataque (reação) se o ataque errou
-        if (missed) {
-            if (target.stamina >= Character.ATTACK_COST && target.checkRange(target.weapon.minRange, target.weapon.maxRange, self.place)) {
-                QTE.instance.startQTE("counter", target, () => {
+        if (missed && target is Character) {
+            Character enemy = (Character)target;
+
+            if (enemy.stamina >= Character.ATTACK_COST && enemy.checkRange(enemy.weapon.minRange, enemy.weapon.maxRange, self.place)) {
+                QTE.instance.startQTE("counter", enemy, () => {
                     Debug.Log("COUNTER!");
                     self.animator.TurnAround();
-                    target.animator.TurnAround();
-                    target.Attack(self);
+                    enemy.animator.TurnAround();
+                    enemy.Attack(self);
                 },
                 () => {
                     Debug.Log("Missed Opportunity to Counter...");
-                    target.animator.RetreatAction();
+                    enemy.animator.RetreatAction();
                     Reset();
                 });
             } else {
-                target.animator.RetreatAction();
+                enemy.animator.RetreatAction();
                 Reset();
             }
         } else {
