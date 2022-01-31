@@ -39,7 +39,7 @@ public class Character : Token {
         if (stamina >= ATTACK_COST) {
             if (checkRange(weapon.minRange, weapon.maxRange, target.place)) {
                 Debug.Log(Colored("Attack!"));
-                this.attack.PrepareAttack((Character)target);
+                this.attack.PrepareAttack(target);
             } else {
                 Debug.Log("Target out of Range...");
             }

@@ -35,5 +35,6 @@ public class Raycast : MonoBehaviour {
 
         if (lastHit != null && Input.GetMouseButtonDown(0)) lastHit.OnClick(0);
         if (lastHit != null && Input.GetMouseButtonDown(1)) lastHit.OnClick(1);
+        if (lastHit != null && Input.GetMouseButtonDown(2)) lastHit.OnClick(2);
     }
 }

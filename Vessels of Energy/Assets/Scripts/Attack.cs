@@ -44,7 +44,6 @@ public class Attack : MonoBehaviour {
             Vector3 direction = Quaternion.Euler(0f, 90f, 0f) * (self.transform.position - target.transform.position).normalized;
             CamControl.instance.Focus(center, direction);
         }
-
     }
 
     public void ExecuteAttack() {
@@ -76,13 +75,15 @@ public class Attack : MonoBehaviour {
                 Debug.Log("Attack Hit! Damage " + damage);
 
                 if (target.HP <= 0) {
-                    target.Animate("destroy");
                     target.HP = 0;
+                    target.place.RemoveToken(target);
+                    target.Animate("destroy");
 
+                    /*
                     if (self.checkRange(0, self.stamina, target.place))
                         target.place.changeState("reach");
                     else
-                        target.place.changeState("default");
+                        target.place.changeState("default");*/
                     //target.gameObject.SetActive(false);
                 } else {
                     target.Animate("damage");

@@ -9,11 +9,12 @@ public class HexHandler : MonoBehaviour {
 
     HexGrid hex;
     public delegate void HexEvent();
-    public HexEvent PointerEnter, PointerExit, LeftClick, RightClick, TurnStart, TurnEnd;
-
 
     List<HexGridState> stateList;
     List<HexGridEffect> effectList;
+
+    bool processing = false;
+    List<HexGridEffect> effectsToRemove;
 
     public void Initialize() {
         //initialize states
@@ -32,16 +33,12 @@ public class HexHandler : MonoBehaviour {
         effectList.Add(new GuardGridEffect());
         effectList.Add(new FrozenGridEffect());
 
-        //set events
-        hex = this.GetComponent<HexGrid>();
-        PointerEnter = () => { state.OnPointerEnter(hex); };
-        PointerExit = () => { state.OnPointerExit(hex); };
-        LeftClick = () => { state.OnClick(hex, 0); };
-        RightClick = () => { state.OnClick(hex, 1); };
-        TurnStart = () => { state.OnTurnStart(hex); };
-        TurnEnd = () => { state.OnTurnEnd(hex); };
+        //set control values
+        processing = false;
+        effectsToRemove = new List<HexGridEffect>();
 
         //set default values
+        hex = this.GetComponent<HexGrid>();
         effects = new List<HexGridEffect>();
         changeState("default");
     }
@@ -65,12 +62,6 @@ public class HexHandler : MonoBehaviour {
 
         //registering effect
         effects.Add(newEffect);
-        PointerEnter += () => { newEffect.OnPointerEnter(hex); };
-        PointerExit += () => { newEffect.OnPointerExit(hex); };
-        LeftClick += () => { newEffect.OnClick(hex, 0); };
-        RightClick += () => { newEffect.OnClick(hex, 1); };
-        TurnStart += () => { newEffect.OnTurnStart(hex); };
-        TurnEnd += () => { newEffect.OnTurnEnd(hex); };
 
         //initializing effect
         GameObject newEffectArt = Instantiate(hex.art.transform.GetChild(0).gameObject, hex.art.transform);
@@ -84,17 +75,14 @@ public class HexHandler : MonoBehaviour {
 
     public void removeEffect(HexGridEffect effect) {
         if (!effects.Contains(effect)) return;
+        StartCoroutine(removeEffectWhenSafe(effect));
+    }
+
+    IEnumerator removeEffectWhenSafe(HexGridEffect effect) {
+        while (processing) yield return null;
 
         //unregistering effect
         effects.Remove(effect);
-        PointerEnter -= () => { effect.OnPointerEnter(hex); };
-        PointerExit -= () => { effect.OnPointerExit(hex); };
-        LeftClick -= () => { effect.OnClick(hex, 0); };
-        RightClick -= () => { effect.OnClick(hex, 1); };
-        TurnStart -= () => { effect.OnTurnStart(hex); };
-        TurnEnd -= () => { effect.OnTurnEnd(hex); };
-
-        //running effect exit
         effect.OnRemoved(hex);
     }
 
@@ -119,5 +107,47 @@ public class HexHandler : MonoBehaviour {
         }
         Debug.Log(name + " effect not found...");
         return null;
+    }
+
+    public void OnPointerEnter() {
+        processing = true;
+        foreach (HexGridEffect e in effects) e.OnPointerEnter(hex);
+        state.OnPointerEnter(hex);
+        processing = false;
+    }
+
+    public void OnPointerExit() {
+        processing = true;
+        foreach (HexGridEffect e in effects) e.OnPointerExit(hex);
+        state.OnPointerExit(hex);
+        processing = false;
+    }
+
+    public void OnClick(int mouseButton) {
+        processing = true;
+        foreach (HexGridEffect e in effects) e.OnClick(hex, mouseButton);
+        state.OnClick(hex, mouseButton);
+        processing = false;
+    }
+
+    public void OnTurnStart() {
+        processing = true;
+        foreach (HexGridEffect e in effects) e.OnTurnStart(hex);
+        state.OnTurnStart(hex);
+        processing = false;
+    }
+
+    public void OnTurnEnd() {
+        processing = true;
+        foreach (HexGridEffect e in effects) e.OnTurnEnd(hex);
+        state.OnTurnEnd(hex);
+        processing = false;
+    }
+
+    public void OnRemoveToken(Token token) {
+        processing = true;
+        foreach (HexGridEffect e in effects) e.OnRemoveToken(hex, token);
+        state.OnRemoveToken(hex, token);
+        processing = false;
     }
 }

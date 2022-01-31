@@ -39,8 +39,4 @@ public class FrozenGridState : HexGridState {
             }
         }
     }
-
-    public void OnPointerEnter(HexGrid hexagon, Character target) {
-        base.OnPointerEnter(Token.selected.place);
-    }
 }

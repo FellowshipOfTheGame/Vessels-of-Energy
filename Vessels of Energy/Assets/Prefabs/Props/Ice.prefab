@@ -88,7 +88,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8065870733152301677}
-  - component: {fileID: 4137787574393297269}
   m_Layer: 9
   m_Name: Art
   m_TagString: Untagged
@@ -112,40 +111,6 @@ Transform:
   m_Father: {fileID: 8916706969339384776}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 14.785001, y: 34.398003, z: -0.26900002}
---- !u!114 &4137787574393297269
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5125777175234822015}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 692be460c9e409842b672edbf4c82cda, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  order: 0
-  renderers:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!1 &7275429062292864685
 GameObject:
   m_ObjectHideFlags: 0
@@ -4968,7 +4933,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8916706969339384776}
   - component: {fileID: 539639741929094317}
-  - component: {fileID: 8890440919921007454}
+  - component: {fileID: 8469415539892501690}
   - component: {fileID: 3320783373159822105}
   m_Layer: 9
   m_Name: Ice
@@ -5005,7 +4970,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.1, y: 0.2, z: 0.1}
   m_Center: {x: 0, y: 0.1, z: 0}
---- !u!114 &8890440919921007454
+--- !u!114 &8469415539892501690
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

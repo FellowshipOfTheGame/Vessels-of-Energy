@@ -13,6 +13,7 @@ public class HexGrid : RaycastTarget {
 
     [Header("Grid Info")]
     public Token token;
+
     public List<HexGrid> neighbors;
 
     public override void Awake() {
@@ -61,32 +62,28 @@ public class HexGrid : RaycastTarget {
 
     public override void OnPointerEnter() {
         if (token != null && HUDManager.instance != null) HUDManager.instance.Show(token);
-        handler.PointerEnter();
+        handler.OnPointerEnter();
     }
     public override void OnPointerExit() {
         if (token != null && HUDManager.instance != null) HUDManager.instance.Hide(token);
-        handler.PointerExit();
+        handler.OnPointerExit();
     }
     public override void OnClick(int mouseButton) {
-        switch (mouseButton) {
-            case 0:
-                handler.LeftClick();
-                break;
-            case 1:
-                handler.RightClick();
-                break;
-        }
+        handler.OnClick(mouseButton);
     }
 
     public virtual void OnTurnStart() {
-        handler.TurnStart();
+        handler.OnTurnStart();
         if (token != null) token.OnTurnStart();
     }
     public virtual void OnTurnEnd() {
-        handler.TurnEnd();
+        handler.OnTurnEnd();
         if (token != null) token.OnTurnEnd();
     }
 
+    public virtual void RemoveToken(Token token) {
+        handler.OnRemoveToken(token);
+    }
 
 
 

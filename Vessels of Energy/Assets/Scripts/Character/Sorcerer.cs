@@ -3,14 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Sorcerer : Character {
+    [Header("Sorcerer")]
     private int minRange = 2, maxRange = 4;
     public GameObject bullet;
     //public ParticleSystem attackParticle;
     public const int FREEZE_COST = 2;
 
+    List<FrozenGridEffect> frozenBlocks;
+
     void Start() {
         this.stats.calculateStats();
         this.HP = stats.maxHP;
+        frozenBlocks = new List<FrozenGridEffect>();
     }
 
     public override void Action(Token target) {
@@ -37,9 +41,10 @@ public class Sorcerer : Character {
         Debug.Log("Frozen Distance Attack");
         if (checkRange(minRange, maxRange, target.place)) {
             this.stamina -= FREEZE_COST;
-            //target.isFrozen = true;
-            //target.place.changeState("frozen");
-            target.place.addEffect("frozen");
+            FrozenGridEffect ice = target.place.addEffect("frozen") as FrozenGridEffect;
+            ice.user = this;
+            ice.SpawnIce(target.place, bullet);
+            frozenBlocks.Add(ice);
         }
     }
 }

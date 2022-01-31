@@ -9,8 +9,11 @@ public class Prop : Token {
     public override void Animate(string command) {
         switch (command) {
             case "destroy":
+                OnRemoved();
                 this.gameObject.SetActive(false);
                 break;
         }
     }
+
+    public virtual void OnRemoved() { }
 }
