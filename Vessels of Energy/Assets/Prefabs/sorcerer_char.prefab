@@ -1015,8 +1015,7 @@ PrefabInstance:
         type: 3}
       propertyPath: OnDrawWeapon.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 6756862905065300081, guid: 05dea36a192f0fb4a94455df46d58bd5,
-        type: 3}
+      objectReference: {fileID: 4218516693320376806}
     - target: {fileID: 8576927385890664890, guid: 9a0765ce3102cc4449cb767315358af5,
         type: 3}
       propertyPath: OnDrawWeapon.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -1041,8 +1040,7 @@ PrefabInstance:
         type: 3}
       propertyPath: OnFallDeadEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 9024702881133675655, guid: 05dea36a192f0fb4a94455df46d58bd5,
-        type: 3}
+      objectReference: {fileID: 1905078593544652048}
     - target: {fileID: 8576927385890664890, guid: 9a0765ce3102cc4449cb767315358af5,
         type: 3}
       propertyPath: OnFallDeadEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -1067,8 +1065,7 @@ PrefabInstance:
         type: 3}
       propertyPath: OnFinishAttackEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 6756862905065300081, guid: 05dea36a192f0fb4a94455df46d58bd5,
-        type: 3}
+      objectReference: {fileID: 4218516693320376806}
     - target: {fileID: 8576927385890664890, guid: 9a0765ce3102cc4449cb767315358af5,
         type: 3}
       propertyPath: OnFinishAttackEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -1093,8 +1090,7 @@ PrefabInstance:
         type: 3}
       propertyPath: OnHitTargetEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 6756862905065300081, guid: 05dea36a192f0fb4a94455df46d58bd5,
-        type: 3}
+      objectReference: {fileID: 4218516693320376806}
     - target: {fileID: 8576927385890664890, guid: 9a0765ce3102cc4449cb767315358af5,
         type: 3}
       propertyPath: OnHitTargetEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
