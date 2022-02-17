@@ -17,7 +17,7 @@ public class QTEIcon : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
-        animator = GetComponent<Animator>();   
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -31,8 +31,8 @@ public class QTEIcon : MonoBehaviour {
         }
     }
 
-    public void ShowKey(char key, string action, float duration, Character actor) {
-        keyName.text = key.ToString();
+    public void ShowKey(string key, string action, float duration, Character actor) {
+        keyName.text = key;
         label.text = action;
         keyboard.color = actor.color;
         waiting = true;

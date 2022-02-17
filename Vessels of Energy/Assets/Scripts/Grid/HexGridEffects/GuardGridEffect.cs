@@ -5,7 +5,6 @@ using UnityEngine;
 public class GuardGridEffect : HexGridEffect {
     public override string name { get; set; } = "guard";
     GridManager.Grid path = null;
-    public Team team = null;
 
     public override void OnAdded(HexGrid hexagon) {
         colorSet = hexagon.GetColors("guard");
@@ -18,7 +17,24 @@ public class GuardGridEffect : HexGridEffect {
     }
 
     public override void OnSetToken(HexGrid hexagon, Token token) {
-        Debug.Log("PISOU NO GUARD");
+        if (token is Character) {
+            Character target = (Character)token;
+            Character shooter = (Character)user;
+
+            if (target.team != shooter.team) {
+                target.canBeMoved = false;
+
+                QTE.instance.startQTE(QTE.Reaction.AMBUSH, shooter, () => {
+                    Debug.Log(shooter.Colored("AMBUSH!"));
+                    shooter.Attack(target);
+                    target.canBeMoved = true;
+                },
+                () => {
+                    Debug.Log("Missed Opportunity to Ambush...");
+                    target.canBeMoved = true;
+                });
+            }
+        }
     }
 
     public override void OnPointerEnter(HexGrid hexagon) {

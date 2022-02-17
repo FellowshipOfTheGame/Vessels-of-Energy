@@ -29,7 +29,7 @@ public class Attack : MonoBehaviour {
             roll = DiceRoller.instance.Roll(self, 8, 2 * self.stats.strength + 4);
             extra_evasion = 0;
             if (enemy.stamina >= Character.EVADE_COST) {
-                QTE.instance.startQTE("evasion", enemy, () => {
+                QTE.instance.startQTE(QTE.Reaction.DODGE, enemy, () => {
                     Debug.Log(enemy.Colored("DODGE!"));
                     enemy.stamina -= Character.EVADE_COST;
                     extra_evasion = enemy.rollDices(2 * enemy.stats.dexterity + 4);
@@ -113,7 +113,7 @@ public class Attack : MonoBehaviour {
             Character enemy = (Character)target;
 
             if (enemy.stamina >= Character.ATTACK_COST && enemy.checkRange(enemy.weapon.minRange, enemy.weapon.maxRange, self.place)) {
-                QTE.instance.startQTE("counter", enemy, () => {
+                QTE.instance.startQTE(QTE.Reaction.COUNTER, enemy, () => {
                     Debug.Log("COUNTER!");
                     self.animator.TurnAround();
                     enemy.animator.TurnAround();

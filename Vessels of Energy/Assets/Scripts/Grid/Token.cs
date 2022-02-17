@@ -21,7 +21,7 @@ public class Token : MonoBehaviour {
     protected void Awake() {
         movement = this.GetComponent<MoveToken>();
         this.stats.calculateStats();
-        OnStepOut = (HexGrid hex) => { hex.SetToken(this); };
+        OnStepOut = (HexGrid hex) => { };
         OnStopMoving = (HexGrid hex) => { };
         OnStartMoving = (HexGrid hex) => { };
     }

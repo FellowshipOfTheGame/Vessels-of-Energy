@@ -3,16 +3,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class QTE : MonoBehaviour
-{
+public class QTE : MonoBehaviour {
+    public enum Reaction { COUNTER, DODGE, AMBUSH };
+
+    [System.Serializable]
+    public class QuickTimeEvent {
+        public Reaction reaction;
+        public string message;
+        public KeyCode key;
+    }
+
     public static QTE instance;
     public float countDownTime = 1f;
-    KeyCode key;
+    public QuickTimeEvent[] reactions;
+
+    QuickTimeEvent reactionEvent;
+
     [Space(5)]
     public QTEIcon ui;
 
-    private void Awake () {
-        if ( instance != null && instance != this ) Destroy(this.gameObject);
+    private void Awake() {
+        if (instance != null && instance != this) Destroy(this.gameObject);
         else instance = this;
     }
 
@@ -21,34 +32,44 @@ public class QTE : MonoBehaviour
     }
 
     //Initiates a QTE
-    public void startQTE( string type, Character actor, Action onPress, Action onMiss ) {
-        //Set type of QTE
-        if(type == "counter"){
+    public void startQTE(Reaction type, Character actor, Action onPress, Action onMiss) {
+        /*//Set type of QTE
+        if (type == "counter") {
             key = KeyCode.C;
             ui.ShowKey('C', "COUNTER!", countDownTime, actor);
-        }
-        else if (type == "evasion"){
+        } else if (type == "evasion") {
             key = KeyCode.E;
-            ui.ShowKey('C', "DODGE!", countDownTime, actor);
-        }
-        else{
+            ui.ShowKey('E', "DODGE!", countDownTime, actor);
+        } else if (type == "ambush") {
+            key = KeyCode.E;
+            ui.ShowKey('A', "AMBUSH!", countDownTime, actor);
+        } else {
             Debug.Log("Invalid type of QTE");
             return;
+        }*/
+
+        foreach (QuickTimeEvent re in reactions) {
+            if (re.reaction == type) {
+                reactionEvent = re;
+                ui.ShowKey(re.key.ToString(), re.message, countDownTime, actor);
+
+                Debug.Log("QTE activated");
+                StopAllCoroutines();
+                StartCoroutine(CountDown(onPress, onMiss));
+                return;
+            }
         }
 
-        Debug.Log("QTE activated");
-        
-        StopAllCoroutines();
-        StartCoroutine( CountDown(onPress, onMiss) );
+        Debug.Log("Invalid type of QTE...");
     }
 
-    IEnumerator CountDown(Action onPress, Action onMiss){
+    IEnumerator CountDown(Action onPress, Action onMiss) {
         float elapsedTime = 0f;
         bool countingDown = true;
         bool correctKey = false;
 
         while (countingDown) {
-            if (Input.GetKeyDown(key)) {
+            if (Input.GetKeyDown(reactionEvent.key)) {
                 onPress();
                 countingDown = false;
                 correctKey = true;
@@ -65,6 +86,6 @@ public class QTE : MonoBehaviour
         }
 
         ui.Stop(correctKey);
-        if ( !correctKey ) onMiss();
+        if (!correctKey) onMiss();
     }
 }

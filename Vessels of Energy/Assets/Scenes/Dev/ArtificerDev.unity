@@ -8833,6 +8833,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countDownTime: 1.5
+  reactions:
+  - reaction: 0
+    message: COUNTER!
+    key: 99
+  - reaction: 1
+    message: DODGE!
+    key: 101
+  - reaction: 2
+    message: AMBUSH!
+    key: 97
   ui: {fileID: 664381891}
 --- !u!1 &751788742
 GameObject:

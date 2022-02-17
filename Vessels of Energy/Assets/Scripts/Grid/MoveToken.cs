@@ -36,6 +36,8 @@ public class MoveToken : MonoBehaviour {
 
         destiny.token = token;
         destiny.changeState("token");
+        destiny.SetToken(token);
+        Debug.Log("step");
         token.OnStepOut(lastHex);
     }
 
