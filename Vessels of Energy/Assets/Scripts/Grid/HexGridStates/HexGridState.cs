@@ -23,6 +23,12 @@ public class HexGridState {
 
     public virtual void OnTurnStart(HexGrid hexagon) { }
     public virtual void OnTurnEnd(HexGrid hexagon) { }
+
+    public virtual void OnSetToken(HexGrid hexagon, Token token) {
+        hexagon.token = token;
+        //hexagon.changeState("token");
+    }
+
     public virtual void OnRemoveToken(HexGrid hexagon, Token token) {
         if (hexagon.token == token) {
             hexagon.token = null;

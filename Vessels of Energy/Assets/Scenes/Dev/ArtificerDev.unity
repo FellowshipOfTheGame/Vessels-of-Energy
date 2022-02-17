@@ -1680,6 +1680,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: f867d35427956434fa121949f1618f02,
         type: 2}
+    - target: {fileID: 1787647075506354253, guid: 05dea36a192f0fb4a94455df46d58bd5,
+        type: 3}
+      propertyPath: team
+      value: 
+      objectReference: {fileID: 11400000, guid: 2b55c4d0efe3e184fa7fc341738cd7c0,
+        type: 2}
     - target: {fileID: 6351760540714064167, guid: 05dea36a192f0fb4a94455df46d58bd5,
         type: 3}
       propertyPath: m_LocalRotation.y
@@ -5692,8 +5698,9 @@ PrefabInstance:
     - target: {fileID: 7168464722739318248, guid: e3ab5b9bafa832e4c9a48c96fb15649a,
         type: 3}
       propertyPath: team
-      value: 65
-      objectReference: {fileID: 0}
+      value: 
+      objectReference: {fileID: 11400000, guid: 2b55c4d0efe3e184fa7fc341738cd7c0,
+        type: 2}
     - target: {fileID: 7168464722739318248, guid: e3ab5b9bafa832e4c9a48c96fb15649a,
         type: 3}
       propertyPath: HP
@@ -6748,8 +6755,9 @@ PrefabInstance:
     - target: {fileID: 1787647075506354253, guid: 05dea36a192f0fb4a94455df46d58bd5,
         type: 3}
       propertyPath: team
-      value: 66
-      objectReference: {fileID: 0}
+      value: 
+      objectReference: {fileID: 11400000, guid: 1d934f8c75c134b4b811f41e72713cd8,
+        type: 2}
     - target: {fileID: 1787647075506354253, guid: 05dea36a192f0fb4a94455df46d58bd5,
         type: 3}
       propertyPath: weapon
@@ -9714,8 +9722,9 @@ PrefabInstance:
     - target: {fileID: 1787647075506354253, guid: 05dea36a192f0fb4a94455df46d58bd5,
         type: 3}
       propertyPath: team
-      value: 66
-      objectReference: {fileID: 0}
+      value: 
+      objectReference: {fileID: 11400000, guid: 1d934f8c75c134b4b811f41e72713cd8,
+        type: 2}
     - target: {fileID: 1787647075506354253, guid: 05dea36a192f0fb4a94455df46d58bd5,
         type: 3}
       propertyPath: weapon
@@ -11241,8 +11250,9 @@ PrefabInstance:
     - target: {fileID: 1787647075506354253, guid: 05dea36a192f0fb4a94455df46d58bd5,
         type: 3}
       propertyPath: team
-      value: 66
-      objectReference: {fileID: 0}
+      value: 
+      objectReference: {fileID: 11400000, guid: 1d934f8c75c134b4b811f41e72713cd8,
+        type: 2}
     - target: {fileID: 1787647075506354253, guid: 05dea36a192f0fb4a94455df46d58bd5,
         type: 3}
       propertyPath: weapon
@@ -11956,11 +11966,10 @@ MonoBehaviour:
   - {fileID: 1516253169}
   - {fileID: 1621789659}
   - {fileID: 901303569}
-  teamAList: []
-  teamBList: []
-  endTurn: 0
-  newTurn: 1
   victoryScreen: {fileID: 1954169543}
+  teams:
+  - {fileID: 11400000, guid: 2b55c4d0efe3e184fa7fc341738cd7c0, type: 2}
+  - {fileID: 11400000, guid: 1d934f8c75c134b4b811f41e72713cd8, type: 2}
 --- !u!4 &978492791
 Transform:
   m_ObjectHideFlags: 0
@@ -15474,6 +15483,12 @@ PrefabInstance:
       propertyPath: stats
       value: 
       objectReference: {fileID: 11400000, guid: f867d35427956434fa121949f1618f02,
+        type: 2}
+    - target: {fileID: 1787647075506354253, guid: 05dea36a192f0fb4a94455df46d58bd5,
+        type: 3}
+      propertyPath: team
+      value: 
+      objectReference: {fileID: 11400000, guid: 2b55c4d0efe3e184fa7fc341738cd7c0,
         type: 2}
     - target: {fileID: 6351760540714064167, guid: 05dea36a192f0fb4a94455df46d58bd5,
         type: 3}
@@ -23019,8 +23034,9 @@ PrefabInstance:
     - target: {fileID: 6158361514904130489, guid: 13d6b9f544f4b8c4a9ee13315cc768d4,
         type: 3}
       propertyPath: team
-      value: 66
-      objectReference: {fileID: 0}
+      value: 
+      objectReference: {fileID: 11400000, guid: 1d934f8c75c134b4b811f41e72713cd8,
+        type: 2}
     - target: {fileID: 7456175484750942219, guid: 13d6b9f544f4b8c4a9ee13315cc768d4,
         type: 3}
       propertyPath: m_Color.r
@@ -23821,6 +23837,12 @@ PrefabInstance:
       propertyPath: stats
       value: 
       objectReference: {fileID: 11400000, guid: f867d35427956434fa121949f1618f02,
+        type: 2}
+    - target: {fileID: 1787647075506354253, guid: 05dea36a192f0fb4a94455df46d58bd5,
+        type: 3}
+      propertyPath: team
+      value: 
+      objectReference: {fileID: 11400000, guid: 2b55c4d0efe3e184fa7fc341738cd7c0,
         type: 2}
     - target: {fileID: 6351760540595462178, guid: 05dea36a192f0fb4a94455df46d58bd5,
         type: 3}

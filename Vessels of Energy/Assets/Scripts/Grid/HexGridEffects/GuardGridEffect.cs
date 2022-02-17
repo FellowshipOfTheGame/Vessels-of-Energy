@@ -11,13 +11,14 @@ public class GuardGridEffect : HexGridEffect {
         colorSet = hexagon.GetColors("guard");
         path = null;
         changeColor(hexagon, 0);
-
-        Character c = (Character)user;
-        this.team = c.team;
     }
 
     public override void OnClick(HexGrid hexagon, int mouseButton) {
         //hexagon.token.Select();
+    }
+
+    public override void OnSetToken(HexGrid hexagon, Token token) {
+        Debug.Log("PISOU NO GUARD");
     }
 
     public override void OnPointerEnter(HexGrid hexagon) {

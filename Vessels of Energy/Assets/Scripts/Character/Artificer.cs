@@ -70,7 +70,9 @@ public class Artificer : Character {
             overwatch = new List<HexGridEffect>();
             foreach (GridManager.GridPoint point in reach.grid) {
                 if (point.hex.getState() != "token") {
-                    overwatch.Add(point.hex.addEffect("guard"));
+                    GuardGridEffect effect = point.hex.addEffect("guard") as GuardGridEffect;
+                    effect.user = this;
+                    overwatch.Add(effect);
                 }
             }
 

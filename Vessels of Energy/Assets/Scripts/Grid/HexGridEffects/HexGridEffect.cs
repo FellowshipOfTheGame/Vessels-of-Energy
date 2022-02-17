@@ -33,6 +33,7 @@ public class HexGridEffect {
 
     public virtual void OnTurnStart(HexGrid hexagon) { }
     public virtual void OnTurnEnd(HexGrid hexagon) { }
+    public virtual void OnSetToken(HexGrid hexagon, Token token) { }
     public virtual void OnRemoveToken(HexGrid hexagon, Token token) { }
 
     public void changeColor(HexGrid hexagon, int color) { art.color = colorSet.colors[color]; }

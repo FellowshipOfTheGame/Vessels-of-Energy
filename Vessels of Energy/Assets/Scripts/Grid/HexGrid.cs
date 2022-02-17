@@ -81,6 +81,10 @@ public class HexGrid : RaycastTarget {
         if (token != null) token.OnTurnEnd();
     }
 
+    public virtual void SetToken(Token token) {
+        handler.OnSetToken(token);
+    }
+
     public virtual void RemoveToken(Token token) {
         handler.OnRemoveToken(token);
     }

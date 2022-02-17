@@ -144,6 +144,13 @@ public class HexHandler : MonoBehaviour {
         processing = false;
     }
 
+    public void OnSetToken(Token token) {
+        processing = true;
+        foreach (HexGridEffect e in effects) e.OnSetToken(hex, token);
+        state.OnSetToken(hex, token);
+        processing = false;
+    }
+
     public void OnRemoveToken(Token token) {
         processing = true;
         foreach (HexGridEffect e in effects) e.OnRemoveToken(hex, token);
