@@ -39,10 +39,12 @@ public class Attack : MonoBehaviour {
         }
 
         //make camera focus on combat
-        if (CamControl.instance != null) {
+        if (CamControl.instance != null) {/*
             Vector3 center = (self.transform.position + target.transform.position) / 2;
             Vector3 direction = Quaternion.Euler(0f, 90f, 0f) * (self.transform.position - target.transform.position).normalized;
-            CamControl.instance.Focus(center, direction);
+            CamControl.instance.Focus(center, direction);*/
+
+            CamControl.instance.Focus(self.transform, target.transform);
         }
     }
 

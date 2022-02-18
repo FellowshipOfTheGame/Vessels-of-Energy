@@ -19,10 +19,11 @@ public class GuardGridEffect : HexGridEffect {
     public override void OnSetToken(HexGrid hexagon, Token token) {
         if (token is Character) {
             Character target = (Character)token;
-            Character shooter = (Character)user;
+            Artificer shooter = (Artificer)user;
 
             if (target.team != shooter.team) {
                 target.canBeMoved = false;
+                shooter.cancelOverwatch();
 
                 QTE.instance.startQTE(QTE.Reaction.AMBUSH, shooter, () => {
                     Debug.Log(shooter.Colored("AMBUSH!"));
