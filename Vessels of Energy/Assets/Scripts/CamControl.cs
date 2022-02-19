@@ -25,7 +25,7 @@ public class CamControl : MonoBehaviour {
     Transform pivot;
     bool onFocus;
 
-    public float zoomIncrement = 0.02f;
+    public float zoomIncrement = 0.02f, offsetIncrement = 0.024f;
     public float zoom = 0.2f, delay = 0.5f, tolerance = 0.1f;
     public float height = 0.19f;
     [Space(5)]
@@ -33,11 +33,14 @@ public class CamControl : MonoBehaviour {
     public float offsetZ = 0.4f;
     float offset;
 
+    CamOcclusion occlusion;
+
     private void Awake() {
         if (instance != null && instance != this) Destroy(this.gameObject);
         else instance = this;
 
         cam = this.GetComponent<Camera>();
+        occlusion = this.GetComponent<CamOcclusion>();
         offset = (offsetY * Vector3.up - offsetZ * Vector3.forward).magnitude;
         defaultConfig = new Configuration(this.transform.position + this.transform.forward * offset, this.transform.forward, cam.orthographicSize);
         //Debug.Log(defaultConfig.rot.eulerAngles);
@@ -61,7 +64,7 @@ public class CamControl : MonoBehaviour {
 
     public void Focus(params Transform[] target) {
         if (target.Length == 0) return;
-
+        occlusion.targets = target;
 
         //getting most distant targets
         Vector3 focus1 = Vector3.zero, focus2 = Vector3.zero;
@@ -77,30 +80,20 @@ public class CamControl : MonoBehaviour {
         //calculate the camera plane and zoom
         Vector3 center = (focus1 + focus2) / 2f;
         Vector3 direction = Quaternion.Euler(0f, 90f, 0f) * (focus1 - focus2).normalized;
-        float frame = zoom + zoomIncrement * (focus1 - focus2).magnitude / 0.166f;
-        CamControl.instance.Focus(center, direction);
+        float multiplier = (focus1 - focus2).magnitude / 0.166f;
 
         //calculating cam forward based on center and direction
         Vector3 pos = center + height * Vector3.up;
-        pivot.transform.position = pos + offsetY * Vector3.up - offsetZ * direction;
+        pivot.transform.position = pos + (offsetY * Vector3.up - offsetZ * direction) * (1 + offsetIncrement * multiplier);
         pivot.LookAt(pos);
 
         //starting process
         onFocus = true;
-        StartCoroutine(Move(new Configuration(pos, pivot.forward, frame), delay, () => { }));
-    }
-
-    public void Focus(Vector3 destiny, Vector3 direction) {
-        onFocus = true;
-        //calculating cam forward based on destiny and direction
-        Vector3 pos = destiny + height * Vector3.up;
-        pivot.transform.position = pos + offsetY * Vector3.up - offsetZ * direction;
-        pivot.LookAt(pos);
-
-        StartCoroutine(Move(new Configuration(pos, pivot.forward, zoom), delay, () => { }));
+        StartCoroutine(Move(new Configuration(pos, pivot.forward, zoom + zoomIncrement * multiplier), delay, () => { }));
     }
 
     public void Unfocus() {
+        occlusion.targets = new Transform[0];
         StartCoroutine(Move(defaultConfig, delay, () => { onFocus = false; }));
     }
 

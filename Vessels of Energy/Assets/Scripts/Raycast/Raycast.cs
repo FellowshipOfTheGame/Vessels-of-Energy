@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -8,33 +8,68 @@ public class Raycast : MonoBehaviour {
     RaycastCollider lastHit = null;
     public LayerMask interactableLayer = 1 << 8;
 
-    void Start() {
+    CamOcclusion occlusion;
+
+    void Awake() {
         lastHit = null;
+        occlusion = this.GetComponent<CamOcclusion>();
+    }
+
+    void Start() {
+        StopAllCoroutines();
+        StartCoroutine(CastLoop());
     }
 
     void Update() {
-        if (block || EventSystem.current.IsPointerOverGameObject()) return;
+        if (Input.GetMouseButtonDown(0)) PointerClick(lastHit, 0);
+        if (Input.GetMouseButtonDown(1)) PointerClick(lastHit, 1);
+        if (Input.GetMouseButtonDown(2)) PointerClick(lastHit, 2);
+    }
 
+    IEnumerator CastLoop() {
+        while (true) {
+            if (!block && !EventSystem.current.IsPointerOverGameObject()) {
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                Debug.DrawRay(ray.origin, ray.direction * 10, Color.cyan);
+                Cast(ray);
+            }
+
+            occlusion.Scan();
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+
+    void Cast(Ray ray) {
         RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        Debug.DrawRay(ray.origin, ray.direction * 10, Color.cyan);
 
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, interactableLayer)) {
+            occlusion.mouse = hit.transform;
             RaycastCollider target = hit.transform.GetComponent<RaycastCollider>();
-            if (target != null && lastHit != target) {
-                if (lastHit != null) lastHit.OnPointerExit();
-                target.OnPointerEnter();
-                lastHit = target;
-            }
+            PointerEnter(target);
         } else {
-            if (lastHit != null) {
-                lastHit.OnPointerExit();
-                lastHit = null;
-            }
+            occlusion.mouse = null;
+            PointerExit(lastHit);
         }
+    }
 
-        if (lastHit != null && Input.GetMouseButtonDown(0)) lastHit.OnClick(0);
-        if (lastHit != null && Input.GetMouseButtonDown(1)) lastHit.OnClick(1);
-        if (lastHit != null && Input.GetMouseButtonDown(2)) lastHit.OnClick(2);
+    void PointerEnter(RaycastCollider target) {
+        if (target != null && lastHit != target) {
+            if (lastHit != null) lastHit.OnPointerExit();
+            target.OnPointerEnter();
+            lastHit = target;
+        }
+    }
+
+    void PointerExit(RaycastCollider target) {
+        if (target != null) {
+            target.OnPointerExit();
+            target = null;
+        }
+    }
+
+    void PointerClick(RaycastCollider target, int index) {
+        if (target != null) {
+            target.OnClick(index);
+        }
     }
 }
