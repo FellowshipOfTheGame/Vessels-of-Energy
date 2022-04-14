@@ -5,6 +5,7 @@ using UnityEngine;
 public class HexGridState {
     public virtual string name { get; set; } = "default";
     protected HexGrid.ColorSet colorSet;
+    [HideInInspector] public Attack attack;
 
     public virtual void OnEnter(HexGrid hexagon) {
         colorSet = hexagon.GetColors("default");

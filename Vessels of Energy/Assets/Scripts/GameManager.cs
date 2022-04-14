@@ -72,7 +72,19 @@ public class GameManager : MonoBehaviour {
 
     void Update() {
         //Presing space ends the current turn
-        if (Input.GetKeyDown(KeyCode.Space)) EndTurn();
+        if (Input.GetKeyDown(KeyCode.Space)) 
+        {
+            //Limpa o attack count do time atual
+            if (currentTeam.name == "B")
+            {
+                foreach (Character character in teams)
+                {
+                    character.attack.attackAmount = 0;
+                }
+            }
+           
+            EndTurn(); 
+        }
     }
 
     public void CheckEndGame() {

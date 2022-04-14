@@ -9,6 +9,7 @@ public class Attack : MonoBehaviour {
     int roll;
     bool missed = true, counterable = true;
     int extra_evasion = 0;
+    public int attackAmount = 0;
 
     private void Awake() {
         self = this.GetComponent<Character>();
@@ -17,7 +18,8 @@ public class Attack : MonoBehaviour {
     public void PrepareAttack(Token target) {
         Raycast.block = true;
         this.target = target;
-        self.stamina -= Character.ATTACK_COST;
+        self.stamina -= (Character.ATTACK_COST + attackAmount);
+        attackAmount += 1;
 
         self.animator.Attack();
 

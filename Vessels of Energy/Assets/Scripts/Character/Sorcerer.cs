@@ -22,7 +22,7 @@ public class Sorcerer : Character {
         Character c = (Character)target;
 
         if (c.team != GameManager.currentTeam) {
-            if (this.stamina >= ATTACK_COST && c.HP >= 0) {
+            if (this.stamina >= (ATTACK_COST + attack.attackAmount) && c.HP >= 0) {
                 target.place.changeState("enemy");
                 this.FrozenAttack(c, minRange, maxRange);
             } else {

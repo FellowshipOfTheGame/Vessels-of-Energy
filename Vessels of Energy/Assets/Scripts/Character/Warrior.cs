@@ -19,7 +19,7 @@ public class Warrior : Character {
 
     public override void Action(Token target) {
         Character c = (Character)target;
-        if (c.team == team && this.stamina >= THROW_COST) {
+        if (c.team == team && this.stamina >= (THROW_COST + attack.attackAmount)) {
             ThrowAlly(c);
         }
     }
