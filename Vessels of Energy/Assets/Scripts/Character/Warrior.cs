@@ -15,6 +15,7 @@ public class Warrior : Character {
         }
         this.HP = stats.maxHP;
         this.stamina = stats.maxStamina;
+        this.energy = 0;
     }
 
     public override void Action(Token target) {

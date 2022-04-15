@@ -16,6 +16,7 @@ public class Character : Token {
 
     public Weapon weapon;
     public int stamina;
+    public int energy;
     public bool action;
     [Space(5)]
 

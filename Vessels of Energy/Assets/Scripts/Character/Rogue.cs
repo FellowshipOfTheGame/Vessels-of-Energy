@@ -6,6 +6,7 @@ public class Rogue : Character {
     void Start() {
         this.stats.calculateStats();
         this.HP = stats.maxHP;
+        this.energy = 0;
     }
 
     public override void Action(Token target) {

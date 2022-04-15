@@ -21,6 +21,7 @@ public class Stats : ScriptableObject
     public int evasion;
     public int defense;
     public int resistence;
+    public int power;
 
     //Calculate stats for Character
     public void calculateStats(){
@@ -29,5 +30,6 @@ public class Stats : ScriptableObject
         this.evasion = 4 + this.dexterity + this.perception;
         this.defense = 4 + System.Math.Max(this.vitality, this.strength);
         this.resistence = 4 + System.Math.Max(this.intelligence, this.willpower);
+        this.power = 6 + this.strength + this.intelligence + this.luck;
     }
 }
