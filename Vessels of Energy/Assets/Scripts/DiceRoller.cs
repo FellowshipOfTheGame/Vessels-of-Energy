@@ -16,7 +16,7 @@ public class DiceRoller : MonoBehaviour {
 
     bool rolling;
     Animator animator;
-    
+
 
     public class Die {
         public Image type;
@@ -65,14 +65,38 @@ public class DiceRoller : MonoBehaviour {
     public int Roll(Character actor, params int[] dice) {
 
         int sum = 0;
+        bool reroll = false;
         for (int i = 0; i < diceOnUI.Length; i++) {
             if (i < dice.Length) {
                 diceOnUI[i].gameObject.SetActive(true);
                 this.dice[i].type.color = actor.color;
                 this.dice[i].changeSize(dice[i]);
 
+                // Test
+                if (i == 1){
+                    this.dice[i].value = dice[i] + 1;
+                }
+                else{
                 this.dice[i].value = Random.Range(1, dice[i] + 1);
                 sum += this.dice[i].value;
+                }
+                // Test
+
+                if (this.dice[i].value == dice[i] + 1 && actor.energy > 0){
+                    QTE.instance.startQTE(QTE.Reaction.EXPLOSION, actor, () => {
+                        Debug.Log(actor.Colored("EXPLOSION!"));
+                        actor.energy -= 1;
+                        reroll = true;
+                        Debug.Log("Extra dice!");
+                        },
+                        () => { Debug.Log("Missed Opportunity to Explode..."); });
+                }
+
+                if(reroll){
+                    reroll = false;
+                    this.Roll(actor, dice[i]);
+                }
+
             } else {
                 diceOnUI[i].gameObject.SetActive(false);
             }

@@ -28,6 +28,7 @@ public class GuardGridEffect : HexGridEffect {
                 QTE.instance.startQTE(QTE.Reaction.AMBUSH, shooter, () => {
                     Debug.Log(shooter.Colored("AMBUSH!"));
                     shooter.Attack(target);
+                    shooter.energy = Mathf.Min(shooter.energy+1, shooter.stats.power);
                     target.canBeMoved = true;
                 },
                 () => {

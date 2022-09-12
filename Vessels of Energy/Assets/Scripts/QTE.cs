@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class QTE : MonoBehaviour {
-    public enum Reaction { COUNTER, DODGE, AMBUSH };
+    public enum Reaction { COUNTER, DODGE, AMBUSH, EXPLOSION };
 
     [System.Serializable]
     public class QuickTimeEvent {
