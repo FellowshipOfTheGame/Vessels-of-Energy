@@ -75,6 +75,7 @@ public class Attack : MonoBehaviour {
             if (damage > 0) {
                 target.HP -= damage;
                 Debug.Log("Attack Hit! Damage " + damage);
+                self.energy = Mathf.Min(self.energy+1, self.stats.power);
 
                 if (target.HP <= 0) {
                     target.HP = 0;

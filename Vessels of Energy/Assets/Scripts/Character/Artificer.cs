@@ -55,6 +55,7 @@ public class Artificer : Character {
         Debug.Log("Artificer Attack");
         if (checkRange(minRange, maxRange, target.place)) {
             attack.PrepareAttack(target);
+            this.energy = Mathf.Min(this.energy+1, this.stats.power);
         }
         return 0;
     }

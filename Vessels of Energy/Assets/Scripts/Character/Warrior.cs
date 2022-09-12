@@ -51,6 +51,7 @@ public class Warrior : Character {
                 target.Move(chosenSpot);
                 target.place.setColor(1);
                 this.stamina -= THROW_COST;
+                this.energy = Mathf.Min(this.energy+1, this.stats.power);
                 scan();
 
                 foreach (GridManager.GridPoint point in reach.grid) {

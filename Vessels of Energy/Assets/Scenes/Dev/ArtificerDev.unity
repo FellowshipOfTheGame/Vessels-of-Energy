@@ -8839,10 +8839,13 @@ MonoBehaviour:
     key: 99
   - reaction: 1
     message: DODGE!
-    key: 101
+    key: 100
   - reaction: 2
     message: AMBUSH!
     key: 97
+  - reaction: 3
+    message: EXPLOSION!
+    key: 101
   ui: {fileID: 664381891}
 --- !u!1 &751788742
 GameObject:
@@ -10822,6 +10825,7 @@ GameObject:
   - component: {fileID: 963194229}
   - component: {fileID: 963194230}
   - component: {fileID: 963194231}
+  - component: {fileID: 963194232}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -10945,6 +10949,20 @@ MonoBehaviour:
   speed: 1
   lowerLimit: {x: -0.7, y: 0.5, z: -1}
   upperLimit: {x: 0.5, y: 1.5, z: -0.3}
+--- !u!114 &963194232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a2fed6feaa0adb498f161ff133ab81c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targets: []
+  mouse: {fileID: 0}
 --- !u!1001 &963536994
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -69,6 +69,7 @@ MonoBehaviour:
   animator: {fileID: 7771221377052943107}
   weapon: {fileID: 11400000, guid: caac09f818b744547bbbf95b43bb6c63, type: 2}
   stamina: 20
+  energy: 0
   action: 0
   team: {fileID: 0}
   color: {r: 0, g: 0, b: 0, a: 0}

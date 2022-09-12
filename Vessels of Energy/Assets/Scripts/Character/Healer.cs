@@ -52,10 +52,10 @@ public class Healer : Character {
         Debug.Log("Healing");
         if (checkRange(minRange, maxRange, target.place)) {
             this.stamina -= HEAL_COST;
+            this.energy = Mathf.Min(this.energy+1, this.stats.power);
             int healing = this.rollDices(this.stats.willpower + 4);
 
-            target.HP += healing;
-            if (target.HP > target.stats.maxHP) target.HP = target.stats.maxHP;
+            target.HP = Mathf.Min(target.HP+healing, target.stats.maxHP);
         }
         return 0;
     }

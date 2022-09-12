@@ -41,6 +41,7 @@ public class Sorcerer : Character {
         Debug.Log("Frozen Distance Attack");
         if (checkRange(minRange, maxRange, target.place)) {
             this.stamina -= FREEZE_COST;
+            this.energy = Mathf.Min(this.energy+1, this.stats.power);
             FrozenGridEffect ice = target.place.addEffect("frozen") as FrozenGridEffect;
             ice.user = this;
             ice.SpawnIce(target.place, bullet);
