@@ -23,10 +23,10 @@ public class GuardGridEffect : HexGridEffect {
 
             if (target.team != shooter.team) {
                 target.canBeMoved = false;
-                shooter.cancelOverwatch();
 
                 QTE.instance.startQTE(QTE.Reaction.AMBUSH, shooter, () => {
                     Debug.Log(shooter.Colored("AMBUSH!"));
+                    shooter.cancelOverwatch();
                     shooter.Attack(target);
                     target.canBeMoved = true;
                 },
